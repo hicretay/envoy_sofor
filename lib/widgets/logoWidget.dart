@@ -14,7 +14,7 @@ class LogoWidget extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: const EdgeInsets.only(bottom: maxSpace),
+        padding: const EdgeInsets.only(bottom: maxSpace, top: maxSpace),
         child: SvgPicture.asset(
           "assets/images/logo.svg",
           color: logoColor,

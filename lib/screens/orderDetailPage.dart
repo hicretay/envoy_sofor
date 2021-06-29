@@ -116,9 +116,18 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     style: cardTextStyle,
                                   ),
                                 ),
-                                Text(
-                                  " : MERSİN - AYHANLAR MADENCİLİK",
-                                  style: contentTextStyle,
+                                Container(
+                                  child: Text(
+                                    " : ",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                Container(
+                                  width: deviceWidth(context) * 0.5,
+                                  child: Text(
+                                    "MERSİN - AYHANLAR MADENCİLİK",
+                                    style: contentTextStyle,
+                                  ),
                                 ),
                               ],
                             ),
@@ -376,9 +385,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               ),
             ),
             SizedBox(height: maxSpace),
-            LogoWidget()
           ],
         ),
+      ),
+      bottomNavigationBar: Container(
+        color: bgColor,
+        height: 50,
+        child: LogoWidget(),
       ),
     );
   }

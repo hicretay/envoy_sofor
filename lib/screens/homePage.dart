@@ -28,60 +28,68 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             SizedBox(height: maxSpace),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  OrdersCardWidget(
-                    orderStatus: "Yeni Sipariş",
-                    textColor: Colors.white,
-                    child: ButtonWidget(
-                      buttonText: "onayla",
-                      buttonWidth: deviceWidth(context),
-                      buttonColor: btnColor,
-                      onPressed: () {},
+            Flexible(
+              flex: 9,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    OrdersCardWidget(
+                      orderStatus: "Yeni Sipariş",
+                      textColor: Colors.white,
+                      child: ButtonWidget(
+                        buttonText: "onayla",
+                        buttonWidth: deviceWidth(context),
+                        buttonColor: btnColor,
+                        onPressed: () {},
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, "/updateDocumentPage");
+                        // belge güncelle sayfasına yönlendirme
+                      },
                     ),
-                    onTap: () {
-                      Navigator.pushNamed(context, "/updateDocumentPage");
-                      // belge güncelle sayfasına yönlendirme
-                    },
-                  ),
-                  OrdersCardWidget(
-                    orderStatus: "Onaylandı",
-                    textColor: checkedTxtColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //------------------doldur butonu---------------------
-                        ButtonWidget(
-                          buttonText: "doldur",
-                          buttonWidth:
-                              deviceWidth(context) * 0.46, // buton genişliği
-                          buttonColor: btnColor,
-                          onPressed: () {},
-                        ),
-                        //----------------------------------------------------
-                        //------------------boşalt butonu---------------------
-                        ButtonWidget(
-                          buttonText: "boşalt",
-                          buttonWidth:
-                              deviceWidth(context) * 0.46, // buton genişliği
-                          buttonColor: checkDateColor,
-                          onPressed: () {},
-                        ),
-                        //----------------------------------------------------
-                      ],
+                    OrdersCardWidget(
+                      orderStatus: "Onaylandı",
+                      textColor: checkedTxtColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          //------------------doldur butonu---------------------
+                          ButtonWidget(
+                            buttonText: "doldur",
+                            buttonWidth:
+                                deviceWidth(context) * 0.46, // buton genişliği
+                            buttonColor: btnColor,
+                            onPressed: () {},
+                          ),
+                          //----------------------------------------------------
+                          //------------------boşalt butonu---------------------
+                          ButtonWidget(
+                            buttonText: "boşalt",
+                            buttonWidth:
+                                deviceWidth(context) * 0.46, // buton genişliği
+                            buttonColor: checkDateColor,
+                            onPressed: () {},
+                          ),
+                          //----------------------------------------------------
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, "/orderDetailPage");
+                        // Slidable'a tıklandığında sipariş detaya gidecek
+                      },
                     ),
-                    onTap: () {
-                      Navigator.pushNamed(context, "/orderDetailPage");
-                      // Slidable'a tıklandığında sipariş detaya gidecek
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            Flexible(child: LogoWidget()), // alttaki logo görünümü
+            // alttaki logo görünümü
           ],
         ),
+      ),
+      bottomNavigationBar: Container(
+        color: bgColor,
+        height: 50,
+        child: LogoWidget(),
       ),
     );
   }

@@ -26,7 +26,7 @@ class _OrdersCardWidgetState extends State<OrdersCardWidget> {
   Widget build(BuildContext context) {
     return Slidable(
       actionPane: SlidableBehindActionPane(),
-      //-------------Slidable sağa kaydırılınca çıkacak görünüm---------------
+      //--------------Slidable sağa kaydırılınca çıkacak görünüm----------------
       secondaryActions: [
         Container(
           decoration: BoxDecoration(
@@ -88,8 +88,11 @@ class _OrdersCardWidgetState extends State<OrdersCardWidget> {
                     //teslimat istasyonu yazısının genişliği
                     child: Text("teslimat istasyonu", style: cardTextStyle),
                   ),
-                  Text(" : MERSİN - AYHANLAR MADENCİLİK",
-                      style: contentTextStyle),
+                  Container(
+                    width: deviceWidth(context) * 0.5,
+                    child: Text(" : MERSİN - AYHANLAR MADENCİLİK",
+                        style: contentTextStyle),
+                  ),
                 ],
               ),
             ),
