@@ -2,26 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../consts.dart';
+import 'buttonWidget.dart';
 
-class OrdersCardWidget extends StatefulWidget {
-  final Widget child;
+class FillEmptyCardWidget extends StatefulWidget {
   final VoidCallback onTap;
-  final String orderStatus;
-  final Color textColor;
 
-  const OrdersCardWidget({
+  FillEmptyCardWidget({
     Key key,
-    this.child,
     this.onTap,
-    this.orderStatus,
-    this.textColor,
   }) : super(key: key);
 
   @override
-  _OrdersCardWidgetState createState() => _OrdersCardWidgetState();
+  _FillEmptyCardWidgetState createState() => _FillEmptyCardWidgetState();
 }
 
-class _OrdersCardWidgetState extends State<OrdersCardWidget> {
+class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -136,8 +131,8 @@ class _OrdersCardWidgetState extends State<OrdersCardWidget> {
                     child: Text("durum", style: cardTextStyle),
                   ),
                   Text(
-                    " : ${widget.orderStatus}",
-                    style: TextStyle(color: widget.textColor),
+                    " : Onaylandı",
+                    style: TextStyle(color: checkedTxtColor),
                     //durum card oluşturulurken alınacak
                   ),
                 ],
@@ -148,7 +143,27 @@ class _OrdersCardWidgetState extends State<OrdersCardWidget> {
             //butonlar - card arası üst boşluk
             Padding(
               padding: const EdgeInsets.all(minSpace),
-              child: widget.child,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  //------------------doldur butonu---------------------
+                  ButtonWidget(
+                    buttonText: "doldur",
+                    buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
+                    buttonColor: btnColor,
+                    onPressed: () {},
+                  ),
+                  //----------------------------------------------------
+                  //------------------boşalt butonu---------------------
+                  ButtonWidget(
+                    buttonText: "boşalt",
+                    buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
+                    buttonColor: checkDateColor,
+                    onPressed: () {},
+                  ),
+                  //----------------------------------------------------
+                ],
+              ),
               //carda eklenecek butonlar child ile tanımlanacak
             ),
             SizedBox(height: maxSpace),

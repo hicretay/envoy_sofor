@@ -1,7 +1,7 @@
 import 'package:envoy/consts.dart';
-import 'package:envoy/widgets/buttonWidget.dart';
+import 'package:envoy/widgets/fillEmptyCardWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
-import 'package:envoy/widgets/ordersCardWidget.dart';
+import 'package:envoy/widgets/confirmCardWidget.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,6 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool selected = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,61 +30,30 @@ class _HomePageState extends State<HomePage> {
           children: [
             SizedBox(height: maxSpace),
             Flexible(
-              flex: 9,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    OrdersCardWidget(
-                      orderStatus: "Yeni Sipariş",
-                      textColor: Colors.white,
-                      child: ButtonWidget(
-                        buttonText: "onayla",
-                        buttonWidth: deviceWidth(context),
-                        buttonColor: btnColor,
-                        onPressed: () {
-                          setState(() {
-                                                      
-                                                    });
-                        },
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, "/orderDetailPage");
-                        // Slidable'a tıklandığında sipariş detaya gidecek
-                      },
-                    ),
-                    OrdersCardWidget(
-                      orderStatus: "Onaylandı",
-                      textColor: checkedTxtColor,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          //------------------doldur butonu---------------------
-                          ButtonWidget(
-                            buttonText: "doldur",
-                            buttonWidth:
-                                deviceWidth(context) * 0.46, // buton genişliği
-                            buttonColor: btnColor,
-                            onPressed: () {},
-                          ),
-                          //----------------------------------------------------
-                          //------------------boşalt butonu---------------------
-                          ButtonWidget(
-                            buttonText: "boşalt",
-                            buttonWidth:
-                                deviceWidth(context) * 0.46, // buton genişliği
-                            buttonColor: checkDateColor,
-                            onPressed: () {},
-                          ),
-                          //----------------------------------------------------
-                        ],
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, "/orderDetailPage");
-                        // Slidable'a tıklandığında sipariş detaya gidecek
-                      },
-                    ),
-                  ],
-                ),
+              child: ListView.builder(
+                itemCount: 1,
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
+                    children: [
+                      selected == true
+                          ? FillEmptyCardWidget(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, "/orderDetailPage");
+                              },
+                            )
+                          : ConfirmCardWidget(
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    selected = true;
+                                  },
+                                );
+                              },
+                            ),
+                    ],
+                  );
+                },
               ),
             ),
             // alttaki logo görünümü
