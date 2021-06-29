@@ -26,11 +26,15 @@ class _OrdersCardWidgetState extends State<OrdersCardWidget> {
   Widget build(BuildContext context) {
     return Slidable(
       actionPane: SlidableBehindActionPane(),
+
       //--------------Slidable sağa kaydırılınca çıkacak görünüm----------------
       secondaryActions: [
         Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(30.0))),
+            borderRadius: BorderRadius.all(
+              Radius.circular(30.0),
+            ),
+          ),
           child: IconSlideAction(
             iconWidget: Text("sipariş\ndetayı", style: cardTextStyle),
             color: btnColor,
@@ -89,8 +93,14 @@ class _OrdersCardWidgetState extends State<OrdersCardWidget> {
                     child: Text("teslimat istasyonu", style: cardTextStyle),
                   ),
                   Container(
-                    width: deviceWidth(context) * 0.5,
-                    child: Text(" : MERSİN - AYHANLAR MADENCİLİK",
+                    child: Text(
+                      ":",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  Container(
+                    width: deviceWidth(context) * 0.55,
+                    child: Text(" MERSİN - AYHANLAR MADENCİLİK",
                         style: contentTextStyle),
                   ),
                 ],

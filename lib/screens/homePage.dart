@@ -40,7 +40,11 @@ class _HomePageState extends State<HomePage> {
                         buttonText: "onayla",
                         buttonWidth: deviceWidth(context),
                         buttonColor: btnColor,
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                                                      
+                                                    });
+                        },
                       ),
                       onTap: () {
                         Navigator.pushNamed(context, "/orderDetailPage");

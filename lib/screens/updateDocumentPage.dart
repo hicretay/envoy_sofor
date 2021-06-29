@@ -39,7 +39,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                           elevation: 20.0,
                           color: darkCardColor,
                           child: Column(
-                            children: [
+                          children: [
                               SizedBox(
                                 height: maxSpace,
                               ),
@@ -47,22 +47,19 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "dolum belgesi güncelle",
-                                  style: TextStyle(
+                                      style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: leadingFont,
                                       fontSize: 18),
                                 ),
                               ),
-                              Divider(
-                                color: Colors.grey,
-                              ),
+                              Divider(color: Colors.grey),
                               Container(
                                 width: deviceWidth(context),
                                 height: deviceHeight(context),
                                 decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/images/document.png"),
+                                image: DecorationImage(
+                                image: AssetImage("assets/images/document.png"),
                                   ),
                                 ),
                               ),

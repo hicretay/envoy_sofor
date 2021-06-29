@@ -28,7 +28,7 @@ class _DocumentViewWidgetState extends State<DocumentViewWidget> {
         ),
         onTap: (){
           Navigator.pushNamed(context, "/updateDocumentPage");
-                        // belge güncelle sayfasına yönlendirme
+          // belge güncelle sayfasına yönlendirme
         },
       ),
     );
