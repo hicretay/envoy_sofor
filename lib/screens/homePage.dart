@@ -16,55 +16,50 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //--------------------------Appbar Stili----------------------------------
-      appBar: AppBar(
-        title: Text(
-          "siparişler",
-          style: leadingStyle, // text stili
+        //--------------------------Appbar Stili----------------------------------
+        appBar: AppBar(
+          title: Text(
+            "siparişler",
+            style: leadingStyle, // text stili
+          ),
         ),
-      ),
-      //------------------------------------------------------------------------
-      body: Container(
-        color: bgColor, // arkaplan rengi
-        child: Column(
-          children: [
-            SizedBox(height: maxSpace),
-            Flexible(
-              child: ListView.builder(
-                itemCount: 1,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: [
-                      selected == true
-                          ? FillEmptyCardWidget(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, "/orderDetailPage");
-                              },
-                            )
-                          : ConfirmCardWidget(
-                              onPressed: () {
-                                setState(
-                                  () {
-                                    selected = true;
-                                  },
-                                );
-                              },
-                            ),
-                    ],
-                  );
-                },
+        //------------------------------------------------------------------------
+        body: Container(
+          color: bgColor, // arkaplan rengi
+          child: Column(
+            children: [
+              SizedBox(height: maxSpace),
+              Flexible(
+                child: ListView.builder(
+                  itemCount: 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        selected == true
+                            ? FillEmptyCardWidget(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, "/orderDetailPage");
+                                },
+                              )
+                            : ConfirmCardWidget(
+                                onPressed: () {
+                                  setState(
+                                    () {
+                                      selected = true;
+                                    },
+                                  );
+                                },
+                              ),
+                      ],
+                    );
+                  },
+                ),
               ),
-            ),
-            // alttaki logo görünümü
-          ],
+              // alttaki logo görünümü
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: Container(
-        color: bgColor,
-        height: 50,
-        child: LogoWidget(),
-      ),
-    );
+        bottomNavigationBar: LogoWidget());
   }
 }

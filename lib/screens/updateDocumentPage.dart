@@ -15,31 +15,31 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-              appBar: AppBar(
-              title: Text(
-              "belge güncelle",
-              style: TextStyle(
+        appBar: AppBar(
+          title: Text(
+            "belge güncelle",
+            style: TextStyle(
               color: Colors.white,
               fontFamily: leadingFont,
               fontSize: 28,
             ),
           ),
         ),
-          body: Container(
+        body: Container(
           color: bgColor,
           child: Column(
-          children: [
+            children: [
               Flexible(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
                       Padding(
-                          padding: const EdgeInsets.all(maxSpace),
-                          child: Card(
+                        padding: const EdgeInsets.all(maxSpace),
+                        child: Card(
                           elevation: 20.0,
                           color: darkCardColor,
                           child: Column(
-                          children: [
+                            children: [
                               SizedBox(
                                 height: maxSpace,
                               ),
@@ -47,7 +47,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "dolum belgesi güncelle",
-                                      style: TextStyle(
+                                  style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: leadingFont,
                                       fontSize: 18),
@@ -58,8 +58,9 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                 width: deviceWidth(context),
                                 height: deviceHeight(context),
                                 decoration: BoxDecoration(
-                                image: DecorationImage(
-                                image: AssetImage("assets/images/document.png"),
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/document.png"),
                                   ),
                                 ),
                               ),
@@ -88,13 +89,8 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
             ],
           ),
         ),
-        //------------------------alttaki Logo görünümü---------------------------
-        bottomNavigationBar: Container(
-          color: bgColor,
-          height: 50,
-          child: LogoWidget(),
-        ),
-        //------------------------------------------------------------------------
+        //alttaki Logo görünümü
+        bottomNavigationBar: LogoWidget(),
       ),
     );
   }

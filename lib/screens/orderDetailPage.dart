@@ -323,13 +323,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        color: bgColor,
-        height: 50,
-        child: LogoWidget(),
-      ),
+      bottomNavigationBar: LogoWidget(),
     );
   }
 }
-
-

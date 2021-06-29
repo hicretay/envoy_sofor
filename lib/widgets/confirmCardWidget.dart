@@ -26,7 +26,7 @@ class _ConfirmCardWidgetState extends State<ConfirmCardWidget> {
       child: Column(
         children: [
           SizedBox(height: maxSpace),
-          //----------------------teslim tarihi satırı------------------------
+          //----------------------teslim tarihi satırı--------------------------
           Padding(
             padding: const EdgeInsets.all(minSpace),
             child: Row(
@@ -40,8 +40,8 @@ class _ConfirmCardWidgetState extends State<ConfirmCardWidget> {
               ],
             ),
           ),
-          //------------------------------------------------------------------
-          //------------------------dolum yeri satırı-------------------------
+          //--------------------------------------------------------------------
+          //------------------------dolum yeri satırı---------------------------
           Padding(
             padding: const EdgeInsets.all(minSpace),
             child: Row(
@@ -55,8 +55,8 @@ class _ConfirmCardWidgetState extends State<ConfirmCardWidget> {
               ],
             ),
           ),
-          //------------------------------------------------------------------
-          //-------------------teslimat istasyonu satırı----------------------
+          //--------------------------------------------------------------------
+          //-------------------teslimat istasyonu satırı------------------------
           Padding(
             padding: const EdgeInsets.all(minSpace),
             child: Row(
@@ -80,8 +80,8 @@ class _ConfirmCardWidgetState extends State<ConfirmCardWidget> {
               ],
             ),
           ),
-          //------------------------------------------------------------------
-          //-----------------------toplam litre satırı------------------------
+          //--------------------------------------------------------------------
+          //------------------------toplam litre satırı-------------------------
           Padding(
             padding: const EdgeInsets.all(minSpace),
             child: Row(
@@ -103,8 +103,8 @@ class _ConfirmCardWidgetState extends State<ConfirmCardWidget> {
               ],
             ),
           ),
-          //------------------------------------------------------------------
-          //---------------------------durum satırı---------------------------
+          //--------------------------------------------------------------------
+          //---------------------------durum satırı-----------------------------
           Padding(
             padding: const EdgeInsets.all(minSpace),
             child: Row(
@@ -121,7 +121,7 @@ class _ConfirmCardWidgetState extends State<ConfirmCardWidget> {
               ],
             ),
           ),
-          //------------------------------------------------------------------
+          //--------------------------------------------------------------------
           SizedBox(height: defaultPadding),
           //butonlar - card arası üst boşluk
           Padding(
