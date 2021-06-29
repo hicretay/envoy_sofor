@@ -68,7 +68,7 @@ class _ConfirmCardWidgetState extends State<ConfirmCardWidget> {
                 ),
                 Container(
                   child: Text(
-                    ":",
+                    " :",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -92,7 +92,11 @@ class _ConfirmCardWidgetState extends State<ConfirmCardWidget> {
                   child: Text("toplam litre", style: cardTextStyle),
                 ),
                 Text(
-                  " : 100.00 LT",
+                  " :",
+                  style: TextStyle(color: Colors.white),
+                ),
+                Text(
+                  " 100.00 LT",
                   style: TextStyle(color: totalLtTxtColor),
                   // litre yazı tipi
                 ),

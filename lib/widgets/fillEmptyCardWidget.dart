@@ -89,7 +89,7 @@ class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
                   ),
                   Container(
                     child: Text(
-                      ":",
+                      " :",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -113,7 +113,11 @@ class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
                     child: Text("toplam litre", style: cardTextStyle),
                   ),
                   Text(
-                    " : 100.00 LT",
+                    " :",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  Text(
+                    " 100.00 LT",
                     style: TextStyle(color: totalLtTxtColor),
                     // litre yazı tipi
                   ),
@@ -131,7 +135,11 @@ class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
                     child: Text("durum", style: cardTextStyle),
                   ),
                   Text(
-                    " : Onaylandı",
+                    " :",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  Text(
+                    " Onaylandı",
                     style: TextStyle(color: checkedTxtColor),
                     //durum card oluşturulurken alınacak
                   ),
