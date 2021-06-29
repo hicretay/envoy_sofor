@@ -1,4 +1,5 @@
 import 'package:envoy/consts.dart';
+import 'package:envoy/widgets/documentViewWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -270,42 +271,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Flexible(
-                                    child: Container(
-                                      width: deviceWidth(context),
-                                      height: 130,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/document.png"),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    child: Container(
-                                      width: deviceWidth(context),
-                                      height: 130,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/document.png"),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    child: Container(
-                                      width: deviceWidth(context),
-                                      height: 130,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/document.png"),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  DocumentViewWidget(),
+                                  DocumentViewWidget(),
+                                  DocumentViewWidget(),
                                 ],
                               ),
                             ),
@@ -334,42 +302,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Flexible(
-                                    child: Container(
-                                      width: deviceWidth(context),
-                                      height: 130,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/document.png"),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    child: Container(
-                                      width: deviceWidth(context),
-                                      height: 130,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/document.png"),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    child: Container(
-                                      width: deviceWidth(context),
-                                      height: 130,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/document.png"),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  DocumentViewWidget(),
+                                  DocumentViewWidget(),
+                                  DocumentViewWidget(),
                                 ],
                               ),
                             ),
@@ -396,3 +331,5 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     );
   }
 }
+
+

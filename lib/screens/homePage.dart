@@ -43,8 +43,8 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {},
                       ),
                       onTap: () {
-                        Navigator.pushNamed(context, "/updateDocumentPage");
-                        // belge güncelle sayfasına yönlendirme
+                        Navigator.pushNamed(context, "/orderDetailPage");
+                        // Slidable'a tıklandığında sipariş detaya gidecek
                       },
                     ),
                     OrdersCardWidget(
