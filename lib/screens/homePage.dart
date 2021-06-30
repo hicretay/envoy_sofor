@@ -13,6 +13,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool selected = false;
+  List<FillEmptyCardWidget> orders = [];
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +37,13 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (BuildContext context, int index) {
                     return Column(
                       children: [
+                        
                         selected == true
                             ? FillEmptyCardWidget(
+                              deliveryDate: "23.06.2021 17:00",
+                              fillingPoint: "mersin aytemiz",
+                              deliveryStation: " MERSİN - AYHANLAR MADENCİLİK",
+                              totalLT: 100.00,
                                 onTap: () {
                                   Navigator.pushNamed(
                                       context, "/orderDetailPage");

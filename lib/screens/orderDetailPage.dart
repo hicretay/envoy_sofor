@@ -282,13 +282,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           SizedBox(height: maxSpace),
                           //-------------boşaltma belgeleri container'ı------------------
                           Container(
-                            width: deviceWidth(context),
+                            width : deviceWidth(context),
                             height: 22,
-                            color: btnColor,
-                            child: Center(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(" boşaltma belgeleri",
+                            color : btnColor,
+                            child : Center(
+                              child    : Align(
+                              alignment: Alignment.centerLeft,
+                              child    : Text(" boşaltma belgeleri",
                                     style: cardTextStyle),
                               ),
                             ),
@@ -299,9 +299,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                             color: lightCardColor,
                             width: deviceWidth(context),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
+                              padding : const EdgeInsets.all(8.0),
+                              child   : Row(
+                              children: [
                                   DocumentViewWidget(),
                                   DocumentViewWidget(),
                                   DocumentViewWidget(),

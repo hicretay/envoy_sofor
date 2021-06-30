@@ -15,13 +15,13 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
+          appBar: AppBar(
+          title : Text(
             "belge güncelle",
-            style: TextStyle(
-              color: Colors.white,
+              style     : TextStyle(
+              color     : Colors.white,
               fontFamily: leadingFont,
-              fontSize: 28,
+              fontSize  : 28,
             ),
           ),
         ),
@@ -37,29 +37,28 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                         padding: const EdgeInsets.all(maxSpace),
                         child: Card(
                           elevation: 20.0,
-                          color: darkCardColor,
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: maxSpace,
-                              ),
+                          color    : darkCardColor,
+                          child    : Column(
+                          children : [
+                              SizedBox(height: maxSpace),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "dolum belgesi güncelle",
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color     : Colors.white,
                                       fontFamily: leadingFont,
-                                      fontSize: 18),
+                                      fontSize  : 18,
+                                  ),
                                 ),
                               ),
                               Divider(color: Colors.grey),
                               Container(
-                                width: deviceWidth(context),
-                                height: deviceHeight(context),
+                                width     : deviceWidth(context),
+                                height    : deviceHeight(context),
                                 decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
+                                image     : DecorationImage(
+                                image     : AssetImage(
                                         "assets/images/document.png"),
                                   ),
                                 ),
@@ -68,12 +67,12 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                 height: maxSpace,
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ButtonWidget(
+                                  padding    : const EdgeInsets.all(8.0),
+                                  child      : ButtonWidget(
                                   buttonColor: btnColor,
-                                  buttonText: "güncelle",
+                                  buttonText : "güncelle",
                                   buttonWidth: deviceWidth(context),
-                                  onPressed: () {},
+                                  onPressed  : () {},
                                 ),
                               ),
                               SizedBox(height: defaultPadding),

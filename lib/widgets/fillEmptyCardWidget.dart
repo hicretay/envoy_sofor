@@ -5,11 +5,20 @@ import '../consts.dart';
 import 'buttonWidget.dart';
 
 class FillEmptyCardWidget extends StatefulWidget {
-  final VoidCallback onTap;
-
+  final VoidCallback onTap, fillOnTap, emptyOnTap;
+  final String deliveryDate, fillingPoint, deliveryStation, status;
+  final double totalLT;
+  //
   FillEmptyCardWidget({
     Key key,
     this.onTap,
+    this.deliveryDate,
+    this.fillOnTap,
+    this.emptyOnTap,
+    this.fillingPoint,
+    this.deliveryStation,
+    this.status,
+    this.totalLT,
   }) : super(key: key);
 
   @override
@@ -21,7 +30,6 @@ class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
   Widget build(BuildContext context) {
     return Slidable(
       actionPane: SlidableBehindActionPane(),
-
       //--------------Slidable sağa kaydırılınca çıkacak görünüm----------------
       secondaryActions: [
         Container(
@@ -37,7 +45,7 @@ class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
           ),
         ),
       ],
-      //----------------------------------------------------------------------
+      //------------------------------------------------------------------------
       child: Card(
         color: darkCardColor,
         shape: RoundedRectangleBorder(
@@ -57,7 +65,11 @@ class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
                     //teslim tarihi yazısının genişliği
                     child: Text("teslim tarihi", style: cardTextStyle),
                   ),
-                  Text(" : 23.06.2021 17:00", style: contentTextStyle),
+                  Text(
+                    " :",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  Text(" " + widget.deliveryDate, style: contentTextStyle),
                 ],
               ),
             ),
@@ -72,7 +84,11 @@ class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
                     //dolum yeri yazısının genişliği
                     child: Text("dolum yeri", style: cardTextStyle),
                   ),
-                  Text(" : mersin aytemiz", style: contentTextStyle),
+                  Text(
+                    " :",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  Text(" " + widget.fillingPoint, style: contentTextStyle),
                 ],
               ),
             ),
@@ -95,8 +111,8 @@ class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
                   ),
                   Container(
                     width: deviceWidth(context) * 0.55,
-                    child: Text(" MERSİN - AYHANLAR MADENCİLİK",
-                        style: contentTextStyle),
+                    child:
+                        Text(widget.deliveryStation, style: contentTextStyle),
                   ),
                 ],
               ),
@@ -117,7 +133,7 @@ class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
                     style: TextStyle(color: Colors.white),
                   ),
                   Text(
-                    " 100.00 LT",
+                    " ${widget.totalLT} LT",
                     style: TextStyle(color: totalLtTxtColor),
                     // litre yazı tipi
                   ),
