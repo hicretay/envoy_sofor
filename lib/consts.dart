@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 // Renkler
@@ -42,3 +44,5 @@ const contentTextStyle = TextStyle(
   color: Colors.white,
   fontSize: 12
 );
+
+  File selectedImage;

@@ -172,18 +172,18 @@ class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
                 children: [
                   //------------------doldur butonu---------------------
                   ButtonWidget(
-                    buttonText: "doldur",
+                    buttonText : "doldur",
                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
                     buttonColor: btnColor,
-                    onPressed: () {},
+                    onPressed  : widget.fillOnTap,
                   ),
                   //----------------------------------------------------
                   //------------------boşalt butonu---------------------
                   ButtonWidget(
-                    buttonText: "boşalt",
+                    buttonText : "boşalt",
                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
                     buttonColor: checkDateColor,
-                    onPressed: () {},
+                    onPressed  : widget.emptyOnTap,
                   ),
                   //----------------------------------------------------
                 ],

@@ -21,8 +21,7 @@ class _DocumentViewWidgetState extends State<DocumentViewWidget> {
           height: 130,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(
-                  "assets/images/document.png"),
+              image: selectedImage != null ? FileImage(selectedImage) :null,
             ),
           ),
         ),
