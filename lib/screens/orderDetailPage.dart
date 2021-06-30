@@ -12,10 +12,13 @@ class OrderDetailPage extends StatefulWidget {
 class _OrderDetailPageState extends State<OrderDetailPage> {
   List<Image> documents = [];
   var img = base64ToImage(img1);
+  int counter;
 
   @override
   Widget build(BuildContext context) {
+    List<String> temp = ModalRoute.of(context).settings.arguments;
     documents.add(img);
+    counter = temp.length + documents.length;
     return Scaffold(
       appBar: AppBar(
         title: Text("sipariş detay", style: leadingStyle),
@@ -274,9 +277,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: maxSpace),
                               child: GridView.builder(
-                                  itemCount: documents.length != 0
-                                      ? documents.length
-                                      : 0,
+                                  itemCount: counter,
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 3,
@@ -284,7 +285,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     mainAxisSpacing: maxSpace,
                                   ),
                                   itemBuilder:
-                                      (BuildContext context, int index) {
+                                      (BuildContext context, int index) {                                    
+                                    for (var item in temp) {
+                                      documents.add(base64ToImage(item));
+                                    }
                                     return GestureDetector(
                                       onTap: () {
                                         Navigator.pushNamed(

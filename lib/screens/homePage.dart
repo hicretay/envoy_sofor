@@ -18,6 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool selected = false;
   List<FillEmptyCardWidget> orders = [];
+  List<String> documents = [];
 
 //--------------------seçilen resmi yükleme fonksiyonu--------------------------
   void uploadSelectedImage(ImageSource source) async {
@@ -26,7 +27,6 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       if (selected != null) {
-        //selectedImage = File(selected.path);
         imageCrop(File(selected.path));
       }
     });
@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
         selectedImage = croppedImage;
       });
     }
+    documents.add(imageToBase64(selectedImage));
   }
 
 //------------------------------------------------------------------------------
@@ -83,7 +84,8 @@ class _HomePageState extends State<HomePage> {
                                 totalLT: 100.00,
                                 onTap: () {
                                   Navigator.pushNamed(
-                                      context, "/orderDetailPage");
+                                      context, "/orderDetailPage",
+                                      arguments: documents);
                                 },
                                 fillOnTap: () {
                                   setState(() {

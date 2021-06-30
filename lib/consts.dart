@@ -46,8 +46,8 @@ const contentTextStyle = TextStyle(color: Colors.white, fontSize: 12);
 File selectedImage; // çekilen resmi tutacak
 
 //-----------------------Resmi base64'e dönüştürme(encode)----------------------
-imageToBase64(String imagePath) async {
-  var imageBytes = File(imagePath).readAsBytesSync();
+String imageToBase64(File imagePath) {
+  var imageBytes = imagePath.readAsBytesSync();
   var encodedImage = base64.encode(imageBytes);
   //encodedImage: base64' e dönüşmüş resim
   return encodedImage;
@@ -60,7 +60,7 @@ Image base64ToImage(String image) {
   Uint8List _imageBytesDecoded;
   _imageBytesDecoded = base64.decode(image);
   return Image.memory(_imageBytesDecoded);
-  }
+}
 
 /*base64ToImage(String _imgString) {
   Uint8List _bytesImage;

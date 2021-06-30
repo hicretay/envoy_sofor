@@ -5,21 +5,26 @@ import 'package:envoy/screens/splashPage.dart';
 import 'package:envoy/screens/updateDocumentPage.dart';
 import 'package:flutter/material.dart';
 
-class Roots{
+class Roots {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splashRoute:
-        return MaterialPageRoute(builder: (_) => SplashPage());
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => SplashPage());
       case loginRoute:
-        return MaterialPageRoute(builder: (_) => LoginPage());
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => LoginPage());
       case orderDetailRoute:
-        return MaterialPageRoute(builder: (_) => OrderDetailPage());
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => OrderDetailPage());
       case homeRoute:
-        return MaterialPageRoute(builder: (_) => HomePage());
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => HomePage());
       case updateDocumentRoute:
-        return MaterialPageRoute(builder: (_) => UpdateDocumentPage());
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => UpdateDocumentPage());
       default:
-      //---------------------hatalı Routing işleminde çalışacak-----------------
+        //---------------------hatalı Routing işleminde çalışacak-----------------
         return MaterialPageRoute(
           builder: (_) => Scaffold(
             appBar: AppBar(),
@@ -31,10 +36,11 @@ class Roots{
             ),
           ),
         );
-     //-------------------------------------------------------------------------
+      //-------------------------------------------------------------------------
     }
   }
 }
+
 //---------------------------Routing Adlandırmaları-----------------------------
 const String splashRoute = "/";
 const String loginRoute = "/loginPage";
