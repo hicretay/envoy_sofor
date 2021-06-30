@@ -1,5 +1,4 @@
 import 'package:envoy/consts.dart';
-import 'package:envoy/widgets/documentViewWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +10,12 @@ class OrderDetailPage extends StatefulWidget {
 }
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
+  List<Image> documents = [];
+  var img = base64ToImage(img1);
+
   @override
   Widget build(BuildContext context) {
+    documents.add(img);
     return Scaffold(
       appBar: AppBar(
         title: Text("sipariş detay", style: leadingStyle),
@@ -265,15 +268,35 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           //------------------------------------------------------------
                           //----------------yükleme belgeleri içeriği-------------------
                           Container(
+                            height: 150,
                             color: lightCardColor,
                             width: deviceWidth(context),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  DocumentViewWidget(),
-                                ],
-                              ),
+                              padding: const EdgeInsets.only(top: maxSpace),
+                              child: GridView.builder(
+                                  itemCount: documents.length != 0
+                                      ? documents.length
+                                      : 0,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: maxSpace,
+                                    mainAxisSpacing: maxSpace,
+                                  ),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, "/updateDocumentPage");
+                                      },
+                                      child: Container(
+                                        width: deviceWidth(context),
+                                        height: 130,
+                                        child: documents[index],
+                                      ),
+                                    );
+                                  }),
                             ),
                           ),
                           //------------------------------------------------------------
