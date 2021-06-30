@@ -13,6 +13,7 @@ class UpdateDocumentPage extends StatefulWidget {
 class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
   @override
   Widget build(BuildContext context) {
+    Image img = ModalRoute.of(context).settings.arguments;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -56,11 +57,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                               Container(
                                 width: deviceWidth(context),
                                 height: deviceHeight(context),
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: FileImage(selectedImage),
-                                  ),
-                                ),
+                                child: img,
                               ),
                               SizedBox(
                                 height: maxSpace,

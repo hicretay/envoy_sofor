@@ -11,14 +11,12 @@ class OrderDetailPage extends StatefulWidget {
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
   List<Image> documents = [];
-  var img = base64ToImage(img1);
   int counter;
 
   @override
   Widget build(BuildContext context) {
-    List<String> temp = ModalRoute.of(context).settings.arguments;
-    documents.add(img);
-    counter = temp.length + documents.length;
+    List<String> base64Doc = ModalRoute.of(context).settings.arguments;
+    counter = base64Doc.length + documents.length;
     return Scaffold(
       appBar: AppBar(
         title: Text("sipariş detay", style: leadingStyle),
@@ -285,14 +283,17 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     mainAxisSpacing: maxSpace,
                                   ),
                                   itemBuilder:
-                                      (BuildContext context, int index) {                                    
-                                    for (var item in temp) {
+                                      (BuildContext context, int index) {
+                                    for (var item in base64Doc) {
                                       documents.add(base64ToImage(item));
                                     }
                                     return GestureDetector(
                                       onTap: () {
                                         Navigator.pushNamed(
-                                            context, "/updateDocumentPage");
+                                          context,
+                                          "/updateDocumentPage",
+                                          arguments: documents[index],
+                                        );
                                       },
                                       child: Container(
                                         width: deviceWidth(context),
