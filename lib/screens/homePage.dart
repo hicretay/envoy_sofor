@@ -18,25 +18,28 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool selected = false;
   List<FillEmptyCardWidget> orders = [];
-  List<String> base64Doc = []; 
-  // base64 images listesi
 
+  List<String> base64Doc = [];
+  // base64 images listesi yükleme
+
+  List<String> base64Doc2 = [];
+  // base64 images listesi boşaltma
 
 //--------------------seçilen resmi yükleme fonksiyonu--------------------------
-  void uploadSelectedImage(ImageSource source) async {
+  void uploadSelectedImage(ImageSource source, List<String> base) async {
     final imagePicker = ImagePicker();
     final selected = await imagePicker.getImage(source: source);
 
     setState(() {
       if (selected != null) {
-        imageCrop(File(selected.path));
+        imageCrop(File(selected.path), base);
       }
     });
   }
 //------------------------------------------------------------------------------
 
 //-----------------------image kırpma fonksiyonu--------------------------------
-  void imageCrop(File image) async {
+  void imageCrop(File image, List<String> base) async {
     File croppedImage = await ImageCropper.cropImage(
         sourcePath: image.path,
         aspectRatioPresets: [
@@ -51,8 +54,8 @@ class _HomePageState extends State<HomePage> {
         selectedImage = croppedImage;
       });
     }
-    base64Doc.add(imageToBase64(selectedImage));
-    //çekilip kesilen resmi base64' dönüştürüp, base64Doc listesine ekleme
+    base.add(imageToBase64(selectedImage));
+    //çekilip kesilen resmi base64' dönüştürüp, listeye ekleme
   }
 
 //------------------------------------------------------------------------------
@@ -85,21 +88,23 @@ class _HomePageState extends State<HomePage> {
                                 deliveryStation:
                                     " MERSİN - AYHANLAR MADENCİLİK",
                                 totalLT: 100.00,
-                                onTap: () {
+                                onTap: () { // slidable onTapi
                                   Navigator.pushNamed(
-                                      context, "/orderDetailPage",
-                                      arguments: base64Doc,
-                                      // base64Doc listesi sipariş detay sayfasına gönderiliyor
+                                    context, "/orderDetailPage",
+                                    arguments: <List<String>>[base64Doc,base64Doc2]
+                                    // base64Doc listesi sipariş detay sayfasına gönderiliyor
                                   );
                                 },
                                 fillOnTap: () {
                                   setState(() {
-                                    uploadSelectedImage(ImageSource.camera);
+                                    uploadSelectedImage(
+                                        ImageSource.camera, base64Doc);
                                   });
                                 },
                                 emptyOnTap: () {
                                   setState(() {
-                                    uploadSelectedImage(ImageSource.camera);
+                                    uploadSelectedImage(
+                                        ImageSource.camera, base64Doc2);
                                   });
                                 },
                               )

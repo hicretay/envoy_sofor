@@ -11,16 +11,14 @@ class OrderDetailPage extends StatefulWidget {
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
   List<Image> documents = [];
-  // image türünde image tutacak liste
-  //int counter;
-  // toplam imageları tutacak liste
+  // image türünde image tutacak liste(yükleme)
+
+  List<Image> documents2 = [];
+  // image türünde image tutacak liste(boşaltma)
 
   @override
   Widget build(BuildContext context) {
-    List<String> base64Doc = ModalRoute.of(context).settings.arguments;
-    // homePage'den gelen base64 listeyi base64Doc adlı listeye atama
-    //counter = base64Doc.length; //+ documents.length;
-    //toplam imagelar base64Doc listesi ve document listesinin uzunluğu
+    List<List<String>> base64Doc = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: AppBar(
@@ -278,7 +276,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: maxSpace),
                               child: GridView.builder(
-                                  itemCount: base64Doc.length,
+                                  itemCount: base64Doc[0].length,
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 4,
@@ -286,7 +284,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   ),
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    for (var item in base64Doc) {
+
+                                    for (var item in base64Doc[0]) {
                                       documents.add(base64ToImage(item));
                                     }
                                     return GestureDetector(
@@ -326,7 +325,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: maxSpace),
                               child: GridView.builder(
-                                  itemCount: base64Doc.length,
+                                  itemCount: base64Doc[1].length,
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 4,
@@ -334,18 +333,18 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   ),
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    for (var item in base64Doc) {
-                                      documents.add(base64ToImage(item));
+                                    for (var item in base64Doc[1]) {
+                                      documents2.add(base64ToImage(item));
                                     }
                                     return GestureDetector(
                                       onTap: () {
                                         Navigator.pushNamed(
                                           context,
                                           "/updateDocumentPage",
-                                          arguments: documents[index],
+                                          arguments: documents2[index],
                                         );
                                       },
-                                      child: documents[index],
+                                      child: documents2[index],
                                     );
                                   }),
                             ),
