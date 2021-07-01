@@ -11,12 +11,17 @@ class OrderDetailPage extends StatefulWidget {
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
   List<Image> documents = [];
-  int counter;
+  // image türünde image tutacak liste
+  //int counter;
+  // toplam imageları tutacak liste
 
   @override
   Widget build(BuildContext context) {
     List<String> base64Doc = ModalRoute.of(context).settings.arguments;
-    counter = base64Doc.length + documents.length;
+    // homePage'den gelen base64 listeyi base64Doc adlı listeye atama
+    //counter = base64Doc.length; //+ documents.length;
+    //toplam imagelar base64Doc listesi ve document listesinin uzunluğu
+
     return Scaffold(
       appBar: AppBar(
         title: Text("sipariş detay", style: leadingStyle),
@@ -47,15 +52,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                             child: Row(
                               children: [
                                 Container(
-                                  width: deviceWidth(context) * 0.35,
-                                  // şirket yazısı genişliği
-                                  child: Text("şirket", style: cardTextStyle),
-                                ),
+                                    width: deviceWidth(context) * 0.35,
+                                    // şirket yazısı genişliği
+                                    child:
+                                        Text("şirket", style: cardTextStyle)),
                                 Container(
-                                  child: Text(
-                                    " : ",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
+                                  child: Text(" : ",
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                                 Container(
                                   width: deviceWidth(context) * 0.55,
@@ -186,7 +189,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           //------------depo içeriği başlık containerı------------------
                           Container(
                             width: deviceWidth(context),
-                            height: 22,
+                            height: deviceHeight(context) * 0.05,
                             color: btnColor,
                             child: Center(
                               child: Align(
@@ -232,7 +235,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           //------------şöför onay tarihi container'ı-------------------
                           Container(
                             width: deviceWidth(context),
-                            height: 22,
+                            height: deviceHeight(context) * 0.05,
                             color: checkDateColor,
                             child: Center(
                               child: Align(
@@ -241,7 +244,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(" şöför onay tarihi",
+                                    Text(" şoför onay tarihi",
                                         style: cardTextStyle),
                                     Text("23.06.2021 17:00 ",
                                         style: contentTextStyle),
@@ -256,7 +259,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           //-------------yükleme belgeleri container'ı------------------
                           Container(
                             width: deviceWidth(context),
-                            height: 22,
+                            height: deviceHeight(context) * 0.05,
                             color: btnColor,
                             child: Center(
                               child: Align(
@@ -269,17 +272,16 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           //------------------------------------------------------------
                           //----------------yükleme belgeleri içeriği-------------------
                           Container(
-                            height: 150,
+                            height: deviceHeight(context) * 0.3,
                             color: lightCardColor,
                             width: deviceWidth(context),
                             child: Padding(
                               padding: const EdgeInsets.only(top: maxSpace),
                               child: GridView.builder(
-                                  itemCount: counter,
+                                  itemCount: base64Doc.length,
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: maxSpace,
+                                    crossAxisCount: 4,
                                     mainAxisSpacing: maxSpace,
                                   ),
                                   itemBuilder:
@@ -295,11 +297,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                           arguments: documents[index],
                                         );
                                       },
-                                      child: Container(
-                                        width: deviceWidth(context),
-                                        height: 130,
-                                        child: documents[index],
-                                      ),
+                                      child: documents[index],
                                     );
                                   }),
                             ),
@@ -309,7 +307,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           //-------------boşaltma belgeleri container'ı------------------
                           Container(
                             width: deviceWidth(context),
-                            height: 22,
+                            height: deviceHeight(context) * 0.05,
                             color: btnColor,
                             child: Center(
                               child: Align(
@@ -322,13 +320,34 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           //------------------------------------------------------------
                           //----------------boşaltma belgeleri içeriği-------------------
                           Container(
+                            height: deviceHeight(context) * 0.3,
                             color: lightCardColor,
                             width: deviceWidth(context),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [],
-                              ),
+                              padding: const EdgeInsets.only(top: maxSpace),
+                              child: GridView.builder(
+                                  itemCount: base64Doc.length,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 4,
+                                    mainAxisSpacing: maxSpace,
+                                  ),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    for (var item in base64Doc) {
+                                      documents.add(base64ToImage(item));
+                                    }
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          "/updateDocumentPage",
+                                          arguments: documents[index],
+                                        );
+                                      },
+                                      child: documents[index],
+                                    );
+                                  }),
                             ),
                           ),
                           //-----------------------------------------------------------
