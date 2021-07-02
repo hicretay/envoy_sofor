@@ -19,10 +19,10 @@ class _HomePageState extends State<HomePage> {
   bool selected = false;
   List<FillEmptyCardWidget> orders = [];
 
-  List<String> base64Doc = [];
+  List<String> base64DocFill = [];
   // base64 images listesi yükleme
 
-  List<String> base64Doc2 = [];
+  List<String> base64DocEmpty = [];
   // base64 images listesi boşaltma
 
 //--------------------seçilen resmi yükleme fonksiyonu--------------------------
@@ -91,20 +91,20 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () { // slidable onTapi
                                   Navigator.pushNamed(
                                     context, "/orderDetailPage",
-                                    arguments: <List<String>>[base64Doc,base64Doc2]
+                                    arguments: <List<String>>[base64DocFill,base64DocEmpty]
                                     // base64Doc listesi sipariş detay sayfasına gönderiliyor
                                   );
                                 },
                                 fillOnTap: () {
                                   setState(() {
                                     uploadSelectedImage(
-                                        ImageSource.camera, base64Doc);
+                                        ImageSource.camera, base64DocFill);
                                   });
                                 },
                                 emptyOnTap: () {
                                   setState(() {
                                     uploadSelectedImage(
-                                        ImageSource.camera, base64Doc2);
+                                        ImageSource.camera, base64DocEmpty);
                                   });
                                 },
                               )

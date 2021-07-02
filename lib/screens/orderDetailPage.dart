@@ -1,5 +1,7 @@
 import 'package:envoy/consts.dart';
+import 'package:envoy/widgets/leadingContainerWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
+import 'package:envoy/widgets/orderRowWidget.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetailPage extends StatefulWidget {
@@ -10,10 +12,10 @@ class OrderDetailPage extends StatefulWidget {
 }
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
-  List<Image> documents = [];
+  List<Image> imagesFill = [];
   // image türünde image tutacak liste(yükleme)
 
-  List<Image> documents2 = [];
+  List<Image> imagesEmpty = [];
   // image türünde image tutacak liste(boşaltma)
 
   @override
@@ -45,119 +47,28 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           SizedBox(height: maxSpace),
                           // card - içerik arası boşluk
                           //-------------------şirket bilgisi satırı--------------------
-                          Padding(
-                            padding: const EdgeInsets.all(minSpace),
-                            child: Row(
-                              children: [
-                                Container(
-                                    width: deviceWidth(context) * 0.35,
-                                    // şirket yazısı genişliği
-                                    child:
-                                        Text("şirket", style: cardTextStyle)),
-                                Container(
-                                  child: Text(" : ",
-                                      style: TextStyle(color: Colors.white)),
-                                ),
-                                Container(
-                                  width: deviceWidth(context) * 0.55,
-                                  // açıklama yazısı genişliği
-                                  child: Text(
-                                    "AYHANLAR MADENCİLİK MÜHENDİSLİK OTOMOTİV NAKLİYAT İNŞAAT SANAYİ VE TİCARET LTD.ŞTİ.",
-                                    style: contentTextStyle,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          OrderRowWidget(
+                              leading: "şirket",
+                              content:
+                                  "AYHANLAR MADENCİLİK MÜHENDİSLİK OTOMOTİV NAKLİYAT İNŞAAT SANAYİ VE TİCARET LTD.ŞTİ."),
                           //------------------------------------------------------------
                           //------------------teslim tarihi satırı----------------------
-                          Padding(
-                            padding: const EdgeInsets.all(minSpace),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: deviceWidth(context) * 0.35,
-                                  child: Text(
-                                    "teslim tarihi",
-                                    style: cardTextStyle,
-                                  ),
-                                ),
-                                Text(
-                                  " : 23.06.2021 17:00",
-                                  style: contentTextStyle,
-                                ),
-                              ],
-                            ),
-                          ),
+                          OrderRowWidget(
+                              leading: "teslim tarihi",
+                              content: "23.06.2021 17:00"),
                           //------------------------------------------------------------
                           //-------------------dolum yeri satırı------------------------
-                          Padding(
-                            padding: const EdgeInsets.all(minSpace),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: deviceWidth(context) * 0.35,
-                                  child: Text(
-                                    "dolum yeri",
-                                    style: cardTextStyle,
-                                  ),
-                                ),
-                                Text(
-                                  " : mersin aytemiz",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
-                            ),
-                          ),
+                          OrderRowWidget(
+                             leading: "dolum yeri", content: "mersin aytemiz"),
                           //------------------------------------------------------------
                           //----------------teslimat istasyonu satırı-------------------
-                          Padding(
-                            padding: const EdgeInsets.all(minSpace),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: deviceWidth(context) * 0.35,
-                                  child: Text(
-                                    "teslimat istasyonu",
-                                    style: cardTextStyle,
-                                  ),
-                                ),
-                                Container(
-                                  child: Text(
-                                    " : ",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                                Container(
-                                  width: deviceWidth(context) * 0.5,
-                                  child: Text(
-                                    "MERSİN - AYHANLAR MADENCİLİK",
-                                    style: contentTextStyle,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          OrderRowWidget(
+                              leading: "teslimat istasyonu",
+                              content: "MERSİN - AYHANLAR MADENCİLİK"),
                           //------------------------------------------------------------
                           //------------------teslimat adresi satırı--------------------
-                          Padding(
-                            padding: const EdgeInsets.all(minSpace),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: deviceWidth(context) * 0.35,
-                                  child: Text(
-                                    "teslimat adresi",
-                                    style: cardTextStyle,
-                                  ),
-                                ),
-                                Text(
-                                  " : Mersin",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
-                            ),
-                          ),
+                          OrderRowWidget(
+                              leading: "teslimat adresi", content: "Mersin"),
                           //------------------------------------------------------------
                           //-------------------toplam litre satırı----------------------
                           Padding(
@@ -185,18 +96,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           // satırlar - depo içeriği arası çizgi
 
                           //------------depo içeriği başlık containerı------------------
-                          Container(
-                            width: deviceWidth(context),
-                            height: deviceHeight(context) * 0.05,
-                            color: btnColor,
-                            child: Center(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child:
-                                    Text(" depo içeriği", style: cardTextStyle),
-                              ),
-                            ),
-                          ),
+                          LeadingContainerWidget(leading: "depo içeriği"),
                           //------------------------------------------------------------
                           //--------------depo içeriği içerik containerı----------------
                           Container(
@@ -254,19 +154,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           //------------------------------------------------------------
                           SizedBox(height: maxSpace),
                           // şöför onay tarihi - yükleme belgeleri arası boşluk
-                          //-------------yükleme belgeleri container'ı------------------
-                          Container(
-                            width: deviceWidth(context),
-                            height: deviceHeight(context) * 0.05,
-                            color: btnColor,
-                            child: Center(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(" yükleme belgeleri",
-                                    style: cardTextStyle),
-                              ),
-                            ),
-                          ),
+                          //-------------yükleme belgeleri başlık container'ı------------------
+                          LeadingContainerWidget(leading: "yükleme belgeleri"),
                           //------------------------------------------------------------
                           //----------------yükleme belgeleri içeriği-------------------
                           Container(
@@ -284,40 +173,28 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   ),
                                   itemBuilder:
                                       (BuildContext context, int index) {
-
                                     for (var item in base64Doc[0]) {
-                                      documents.add(base64ToImage(item));
+                                      imagesFill.add(base64ToImage(item));
                                     }
                                     return GestureDetector(
                                       onTap: () {
                                         Navigator.pushNamed(
                                           context,
                                           "/updateDocumentPage",
-                                          arguments: documents[index],
+                                          arguments: imagesFill[index],
                                         );
                                       },
-                                      child: documents[index],
+                                      child: imagesFill[index],
                                     );
                                   }),
                             ),
                           ),
                           //------------------------------------------------------------
                           SizedBox(height: maxSpace),
-                          //-------------boşaltma belgeleri container'ı------------------
-                          Container(
-                            width: deviceWidth(context),
-                            height: deviceHeight(context) * 0.05,
-                            color: btnColor,
-                            child: Center(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(" boşaltma belgeleri",
-                                    style: cardTextStyle),
-                              ),
-                            ),
-                          ),
+                          //-------------boşaltma belgeleri başlık container'ı---------
+                          LeadingContainerWidget(leading: "boşaltma belgeleri"),
                           //------------------------------------------------------------
-                          //----------------boşaltma belgeleri içeriği-------------------
+                          //----------------boşaltma belgeleri içeriği------------------
                           Container(
                             height: deviceHeight(context) * 0.3,
                             color: lightCardColor,
@@ -334,17 +211,17 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     for (var item in base64Doc[1]) {
-                                      documents2.add(base64ToImage(item));
+                                      imagesEmpty.add(base64ToImage(item));
                                     }
                                     return GestureDetector(
                                       onTap: () {
                                         Navigator.pushNamed(
                                           context,
                                           "/updateDocumentPage",
-                                          arguments: documents2[index],
+                                          arguments: imagesEmpty[index],
                                         );
                                       },
-                                      child: documents2[index],
+                                      child: imagesEmpty[index],
                                     );
                                   }),
                             ),
@@ -364,6 +241,23 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         ),
       ),
       bottomNavigationBar: LogoWidget(),
+    );
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+class ImageGridWidget extends StatefulWidget {
+  ImageGridWidget({Key key}) : super(key: key);
+
+  @override
+  _ImageGridWidgetState createState() => _ImageGridWidgetState();
+}
+
+class _ImageGridWidgetState extends State<ImageGridWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: null,
     );
   }
 }
