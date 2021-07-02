@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../consts.dart';
+import '../settings/consts.dart';
 
 // uygulamada sayfa altında yer alan logo görünmünün tanımlaması
 class LogoWidget extends StatelessWidget {

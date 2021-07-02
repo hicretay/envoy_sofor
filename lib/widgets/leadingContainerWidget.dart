@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../consts.dart';
+import '../settings/consts.dart';
 
 class LeadingContainerWidget extends StatelessWidget {
   final String leading;

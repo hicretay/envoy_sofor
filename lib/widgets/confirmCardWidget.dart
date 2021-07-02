@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../consts.dart';
+import '../settings/consts.dart';
 import 'buttonWidget.dart';
 
 class ConfirmCardWidget extends StatefulWidget {

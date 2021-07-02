@@ -1,5 +1,5 @@
-import 'package:envoy/consts.dart';
-import 'package:envoy/roots.dart';
+import 'package:envoy/settings/consts.dart';
+import 'package:envoy/settings/roots.dart';
 import 'package:flutter/material.dart';
 
 void main() {

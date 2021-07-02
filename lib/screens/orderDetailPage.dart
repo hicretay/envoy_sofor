@@ -1,4 +1,4 @@
-import 'package:envoy/consts.dart';
+import 'package:envoy/settings/consts.dart';
 import 'package:envoy/widgets/leadingContainerWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:envoy/widgets/orderRowWidget.dart';
@@ -59,7 +59,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           //------------------------------------------------------------
                           //-------------------dolum yeri satırı------------------------
                           OrderRowWidget(
-                             leading: "dolum yeri", content: "mersin aytemiz"),
+                              leading: "dolum yeri", content: "mersin aytemiz"),
                           //------------------------------------------------------------
                           //----------------teslimat istasyonu satırı-------------------
                           OrderRowWidget(

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:envoy/consts.dart';
+import 'package:envoy/settings/consts.dart';
 import 'package:envoy/widgets/fillEmptyCardWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:envoy/widgets/confirmCardWidget.dart';

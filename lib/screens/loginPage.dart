@@ -1,4 +1,4 @@
-import 'package:envoy/consts.dart';
+import 'package:envoy/settings/consts.dart';
 import 'package:envoy/widgets/bgWidget.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/textFieldWidget.dart';

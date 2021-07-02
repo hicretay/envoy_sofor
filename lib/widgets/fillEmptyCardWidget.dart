@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../consts.dart';
+import '../settings/consts.dart';
 import 'buttonWidget.dart';
 
 class FillEmptyCardWidget extends StatefulWidget {

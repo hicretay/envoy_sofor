@@ -5,7 +5,7 @@ import 'package:envoy/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import '../consts.dart';
+import '../settings/consts.dart';
 
 class UpdateDocumentPage extends StatefulWidget {
   UpdateDocumentPage({Key key}) : super(key: key);
