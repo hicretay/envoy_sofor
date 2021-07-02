@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../settings/consts.dart';
-import 'buttonWidget.dart';
 
-class FillEmptyCardWidget extends StatefulWidget {
+class OrdersCardWidget extends StatefulWidget {
   final VoidCallback onTap, fillOnTap, emptyOnTap;
   final String deliveryDate, fillingPoint, deliveryStation, status;
-  final double totalLT;
+  final String totalLT;
+  final Widget child;
+  final Color statusColor;
   //
-  FillEmptyCardWidget({
+  OrdersCardWidget({
     Key key,
     this.onTap,
     this.deliveryDate,
@@ -19,13 +20,14 @@ class FillEmptyCardWidget extends StatefulWidget {
     this.deliveryStation,
     this.status,
     this.totalLT,
+    this.child, this.statusColor,
   }) : super(key: key);
 
   @override
-  _FillEmptyCardWidgetState createState() => _FillEmptyCardWidgetState();
+  _OrdersCardWidgetState createState() => _OrdersCardWidgetState();
 }
 
-class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
+class _OrdersCardWidgetState extends State<OrdersCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -133,7 +135,7 @@ class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
                     style: TextStyle(color: Colors.white),
                   ),
                   Text(
-                    " ${widget.totalLT} LT",
+                    " ${widget.totalLT}",
                     style: TextStyle(color: totalLtTxtColor),
                     // litre yazı tipi
                   ),
@@ -155,8 +157,8 @@ class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
                     style: TextStyle(color: Colors.white),
                   ),
                   Text(
-                    " Onaylandı",
-                    style: TextStyle(color: checkedTxtColor),
+                    widget.status,
+                    style: TextStyle(color: widget.statusColor),
                     //durum card oluşturulurken alınacak
                   ),
                 ],
@@ -167,27 +169,7 @@ class _FillEmptyCardWidgetState extends State<FillEmptyCardWidget> {
             //butonlar - card arası üst boşluk
             Padding(
               padding: const EdgeInsets.all(minSpace),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  //------------------doldur butonu---------------------
-                  ButtonWidget(
-                    buttonText : "doldur",
-                    buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
-                    buttonColor: btnColor,
-                    onPressed  : widget.fillOnTap,
-                  ),
-                  //----------------------------------------------------
-                  //------------------boşalt butonu---------------------
-                  ButtonWidget(
-                    buttonText : "boşalt",
-                    buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
-                    buttonColor: checkDateColor,
-                    onPressed  : widget.emptyOnTap,
-                  ),
-                  //----------------------------------------------------
-                ],
-              ),
+              child: widget.child,
               //carda eklenecek butonlar child ile tanımlanacak
             ),
             SizedBox(height: maxSpace),

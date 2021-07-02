@@ -1,23 +1,34 @@
 import 'dart:io';
 
+import 'package:envoy/models.dart/orderJsonModel.dart';
+import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/settings/consts.dart';
-import 'package:envoy/widgets/fillEmptyCardWidget.dart';
+import 'package:envoy/widgets/buttonWidget.dart';
+
+import 'package:envoy/widgets/ordersCardWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
-import 'package:envoy/widgets/confirmCardWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  final UserJsonModel userData;
+  final OrderJsonModel orderData;
+
+  const HomePage({Key key, this.userData, this.orderData}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() =>
+      _HomePageState(userData: userData, orderData: orderData);
 }
 
 class _HomePageState extends State<HomePage> {
+  UserJsonModel userData;
+  OrderJsonModel orderData;
+  _HomePageState({this.userData, this.orderData});
+
   bool selected = false;
-  List<FillEmptyCardWidget> orders = [];
+  List<OrdersCardWidget> orders = [];
 
   List<String> base64DocFill = [];
   // base64 images listesi yükleme
@@ -77,47 +88,68 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: maxSpace),
               Flexible(
                 child: ListView.builder(
-                  itemCount: 1,
+                  itemCount: orderData.siparisList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        selected == true
-                            ? FillEmptyCardWidget(
-                                deliveryDate: "23.06.2021 17:00",
-                                fillingPoint: "mersin aytemiz",
-                                deliveryStation:
-                                    " MERSİN - AYHANLAR MADENCİLİK",
-                                totalLT: 100.00,
-                                onTap: () { // slidable onTapi
-                                  Navigator.pushNamed(
-                                    context, "/orderDetailPage",
-                                    arguments: <List<String>>[base64DocFill,base64DocEmpty]
-                                    // base64Doc listesi sipariş detay sayfasına gönderiliyor
-                                  );
-                                },
-                                fillOnTap: () {
-                                  setState(() {
-                                    uploadSelectedImage(
-                                        ImageSource.camera, base64DocFill);
-                                  });
-                                },
-                                emptyOnTap: () {
-                                  setState(() {
-                                    uploadSelectedImage(
-                                        ImageSource.camera, base64DocEmpty);
-                                  });
-                                },
-                              )
-                            : ConfirmCardWidget(
-                                onPressed: () {
-                                  setState(
-                                    () {
-                                      selected = true;
-                                    },
-                                  );
-                                },
-                              ),
-                      ],
+                    return OrdersCardWidget(
+                      deliveryDate   : orderData.siparisList[index].teslimTarihi,
+                      fillingPoint   : orderData.siparisList[index].dolumyeri,
+                      deliveryStation: orderData.siparisList[index].teslimatIstasyonu,
+                      totalLT        : orderData.siparisList[index].toplamLitre,
+                      status         : selected ? "Onaylandı" : "Yeni Sipariş",
+                      statusColor    : selected ? checkedTxtColor : Colors.white,
+                      onTap: () {
+                        // slidable onTapi
+                        Navigator.pushNamed(context, "/orderDetailPage",
+                            arguments: <List<String>>[
+                              base64DocFill,
+                              base64DocEmpty
+                            ]
+                            // base64Doc listesi sipariş detay sayfasına gönderiliyor
+                            );
+                      },
+                      child: selected
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                //------------------doldur butonu---------------------
+                                ButtonWidget(
+                                  buttonText: "doldur",
+                                  buttonWidth: deviceWidth(context) *
+                                      0.46, // buton genişliği
+                                  buttonColor: btnColor,
+                                  onPressed: () {
+                                    setState(() {
+                                      uploadSelectedImage(
+                                          ImageSource.camera, base64DocFill);
+                                    });
+                                  },
+                                ),
+                                //----------------------------------------------------
+                                //------------------boşalt butonu---------------------
+                                ButtonWidget(
+                                  buttonText: "boşalt",
+                                  buttonWidth: deviceWidth(context) *
+                                      0.46, // buton genişliği
+                                  buttonColor: checkDateColor,
+                                  onPressed: () {
+                                    setState(() {
+                                      uploadSelectedImage(
+                                          ImageSource.camera, base64DocEmpty);
+                                    });
+                                  },
+                                ),
+                                //----------------------------------------------------
+                              ],
+                            )
+                          : ButtonWidget(
+                              buttonText: "onayla",
+                              buttonWidth: deviceWidth(context),
+                              buttonColor: btnColor,
+                              onPressed: () {
+                                setState(() {
+                                  selected = true;
+                                });
+                              }),
                     );
                   },
                 ),

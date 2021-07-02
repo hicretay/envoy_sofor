@@ -1,7 +1,7 @@
 name: envoy
 description: A new Flutter project.
 
-publish_to: 'none' 
+publish_to: 'none'
 
 version: 1.0.0+1
 
@@ -11,7 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  connectivity: ^3.0.6
   cupertino_icons: ^1.0.2
+  flutter_progress_hud: ^2.0.0
   flutter_slidable: ^0.6.0
   flutter_svg: ^0.22.0
   flutter_svg_provider: ^0.1.9

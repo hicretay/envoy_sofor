@@ -1,4 +1,8 @@
+import 'package:envoy/models.dart/orderJsonModel.dart';
+import 'package:envoy/models.dart/userJsonModel.dart';
+import 'package:envoy/screens/homePage.dart';
 import 'package:envoy/settings/consts.dart';
+import 'package:envoy/settings/functions.dart';
 import 'package:envoy/widgets/bgWidget.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/textFieldWidget.dart';
@@ -80,9 +84,24 @@ class _LoginPageState extends State<LoginPage> {
               buttonText: "giriş",
               buttonWidth: deviceWidth(context) * 0.52,
               // buton genişliği
-              onPressed: () {                
-                Navigator.pushNamedAndRemoveUntil(
-                    context, "/homePage", (route) => false);
+              onPressed: () async {
+                //--------------------------login verisi------------------------
+                final String uSERNAME = "sselman";
+                final String pASSWORD = "0";
+                final UserJsonModel userData = await userJsonFunc(uSERNAME, pASSWORD);
+                //--------------------------------------------------------------
+
+                //------------------------order data----------------------------
+                final int durumId = 1;
+                final OrderJsonModel orderData = await orderJsonFunc(durumId, userData.user.id);
+                //--------------------------------------------------------------
+
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomePage(
+                              userData: userData, orderData: orderData,
+                            )));
                 //tıklandığında anasayfaya yönlendirilecek
               },
             ),
