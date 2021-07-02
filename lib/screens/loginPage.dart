@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
               buttonText: "giriş",
               buttonWidth: deviceWidth(context) * 0.52,
               // buton genişliği
-              onPressed: () {
+              onPressed: () {                
                 Navigator.pushNamedAndRemoveUntil(
                     context, "/homePage", (route) => false);
                 //tıklandığında anasayfaya yönlendirilecek

@@ -5,7 +5,7 @@ import 'package:envoy/settings/consts.dart';
 import 'package:http/http.dart' as http;
 
 //------------------------Login Fonksiyonu--------------------------------------
-Future<UserJsonModel> userDataFunc(String userName, password) async {
+Future<UserJsonModel> userFunc(String userName, password) async {
   final response = await http.post(
     Uri.parse(loginUrl),
     body: '{"userName":' + userName + "," + '"password":' + password +'}',
@@ -22,7 +22,7 @@ Future<UserJsonModel> userDataFunc(String userName, password) async {
 //------------------------------------------------------------------------------
 
 //-----------------------------Sipariş Fonksiyonu-------------------------------
-Future<OrderJsonModel> orderDataFunc(int durumId, companyId) async {
+Future<OrderJsonModel> orderFunc(int durumId, companyId) async {
   final response = await http.post(
     Uri.parse(orderUrl),
     body: '{"durumId":' + durumId.toString() + "," + '"companyId":' + companyId.toString() +'}',
@@ -39,9 +39,9 @@ Future<OrderJsonModel> orderDataFunc(int durumId, companyId) async {
 //------------------------------------------------------------------------------
 
 //--------------------------Sipariş Detay Fonksiyonu----------------------------
-Future<OrderDetailJsonModel> orderDetailDataFunc(int id) async {
+Future<OrderDetailJsonModel> orderDetailFunc(int id) async {
   final response = await http.post(
-    Uri.parse(orderUrl),
+    Uri.parse(orderDetailUrl),
     body: '{"id":' + id.toString() + '}',
     headers: {'Content-type': 'application/json'},
   );
