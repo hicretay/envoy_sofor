@@ -1,25 +1,25 @@
 // To parse this JSON data, do
 //
-//     final orderJsonModel = orderJsonModelFromJson(jsonString);
+//     final orderDetailJsonModel = orderDetailJsonModelFromJson(jsonString);
 
 import 'dart:convert';
 
-OrderJsonModel orderJsonModelFromJson(String str) => OrderJsonModel.fromJson(json.decode(str));
+OrderDetailJsonModel orderDetailJsonModelFromJson(String str) => OrderDetailJsonModel.fromJson(json.decode(str));
 
-String orderJsonModelToJson(OrderJsonModel data) => json.encode(data.toJson());
+String orderDetailJsonModelToJson(OrderDetailJsonModel data) => json.encode(data.toJson());
 
-class OrderJsonModel {
-    OrderJsonModel({
+class OrderDetailJsonModel {
+    OrderDetailJsonModel({
         this.success,
         this.siparisDetay,
     });
 
     bool success;
-    OrderJsonModelSiparisDetay siparisDetay;
+    OrderDetailJsonModelSiparisDetay siparisDetay;
 
-    factory OrderJsonModel.fromJson(Map<String, dynamic> json) => OrderJsonModel(
+    factory OrderDetailJsonModel.fromJson(Map<String, dynamic> json) => OrderDetailJsonModel(
         success: json["success"],
-        siparisDetay: OrderJsonModelSiparisDetay.fromJson(json["siparisDetay"]),
+        siparisDetay: OrderDetailJsonModelSiparisDetay.fromJson(json["siparisDetay"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -28,8 +28,8 @@ class OrderJsonModel {
     };
 }
 
-class OrderJsonModelSiparisDetay {
-    OrderJsonModelSiparisDetay({
+class OrderDetailJsonModelSiparisDetay {
+    OrderDetailJsonModelSiparisDetay({
         this.siparisDetay,
         this.soforonayTarihi,
         this.depoIcerigi,
@@ -43,7 +43,7 @@ class OrderJsonModelSiparisDetay {
     List<Belgeleri> yuklemeBelgeleri;
     List<Belgeleri> bosaltmaBelgeleri;
 
-    factory OrderJsonModelSiparisDetay.fromJson(Map<String, dynamic> json) => OrderJsonModelSiparisDetay(
+    factory OrderDetailJsonModelSiparisDetay.fromJson(Map<String, dynamic> json) => OrderDetailJsonModelSiparisDetay(
         siparisDetay: SiparisDetaySiparisDetay.fromJson(json["siparisDetay"]),
         soforonayTarihi: json["soforonayTarihi"],
         depoIcerigi: List<DepoIcerigi>.from(json["depoIcerigi"].map((x) => DepoIcerigi.fromJson(x))),
