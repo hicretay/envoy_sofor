@@ -89,8 +89,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(left: maxSpace),
-                                              child  : Text(orderDetailData.siparisDetay.depoIcerigi[index].yakitTipi,style: cardTextStyle),
-                                            ),
+                                              child  : Text(orderDetailData.siparisDetay.depoIcerigi[index].yakitTipi,style: cardTextStyle)),
                                             SizedBox(width: deviceWidth(context)*0.3),
                                             Text(orderDetailData.siparisDetay.depoIcerigi[index].litre,style: contentTextStyle)
                                           ],
@@ -105,8 +104,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               width : deviceWidth(context),
                               height: deviceHeight(context) * 0.05,
                               color : checkDateColor,
-                              child : Center(child: Align(
-                                  alignment: Alignment.centerLeft,
+                              child : Center(child: Align(alignment: Alignment.centerLeft,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
@@ -154,8 +152,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                             //------------------------------------------------------------
                             SizedBox(height: maxSpace),
                             //-------------boşaltma belgeleri başlık container'ı---------
-                            LeadingContainerWidget(
-                                leading: "boşaltma belgeleri"),
+                            LeadingContainerWidget(leading: "boşaltma belgeleri"),
                             //------------------------------------------------------------
                             //----------------boşaltma belgeleri içeriği------------------
                             Container(
