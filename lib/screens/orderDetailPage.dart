@@ -31,9 +31,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("sipariş detay", style: leadingStyle),
-      ),
+      appBar: AppBar(title: Text("sipariş detay", style: leadingStyle)),
       body: Container(
         color: bgColor,
         child: Column(
@@ -43,16 +41,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 child: Column(
                   children: [
                     SizedBox(height: maxSpace), // card - üst ekran arası boşluk
-                    Padding(
-                      padding: const EdgeInsets.all(minSpace),
+                    Padding(padding: const EdgeInsets.all(minSpace),
                       child: Card(
-                        shape: RoundedRectangleBorder(
-                          // card kenarlarının yuvarlatılması
-                          borderRadius: BorderRadius.circular(maxSpace),
-                        ),
-                        color: darkCardColor,
-                        elevation: 30.0,
-                        child: Column(
+                        shape    : RoundedRectangleBorder(borderRadius: BorderRadius.circular(maxSpace)),
+                        // card kenarlarının yuvarlatılması
+                        color     : darkCardColor,
+                        elevation : 30.0,
+                          child   : Column(
                           children: [
                             SizedBox(height: maxSpace), // card - içerik arası boşluk
                             OrderDetailCardWidget(
