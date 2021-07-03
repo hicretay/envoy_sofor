@@ -12,7 +12,7 @@ class LogoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50.0,
+      height: 45.0,
       color: bgColor,
       child: Padding(
         padding: const EdgeInsets.only(bottom: maxSpace, top: maxSpace),

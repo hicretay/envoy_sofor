@@ -45,13 +45,13 @@ const contentTextStyle = TextStyle(color: Colors.white, fontSize: 12);
 
 //URLs
 //Fotoğraflar
-const imagesUrl = "http://portalservice.kirbag.com/api/Image/imageId"; 
+const imagesUrl = "http://portalservice.kirbag.com/api/Image/imageId";
 //Kullanıcı
-const loginUrl = "http://portalservice.kirbag.com/api/User"; 
+const loginUrl = "http://portalservice.kirbag.com/api/User";
 //Sipariş
-const orderUrl = "http://portalservice.kirbag.com/api/Order"; 
+const orderUrl = "http://portalservice.kirbag.com/api/Order";
 //Sipariş Detay
-const orderDetailUrl = "http://portalservice.kirbag.com/api/OrderDetail"; 
+const orderDetailUrl = "http://portalservice.kirbag.com/api/OrderDetail";
 
 File selectedImage; // cihazdan çekilen resim
 
