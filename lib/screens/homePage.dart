@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
+import 'package:envoy/screens/orderDetailPage.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
 
@@ -10,6 +11,7 @@ import 'package:envoy/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:envoy/settings/functions.dart';
 
 class HomePage extends StatefulWidget {
   final UserJsonModel userData;
@@ -18,12 +20,11 @@ class HomePage extends StatefulWidget {
   const HomePage({Key key, this.userData, this.orderData}) : super(key: key);
 
   @override
-  _HomePageState createState() =>
-      _HomePageState(userData: userData, orderData: orderData);
+  _HomePageState createState() => _HomePageState(userData: userData, orderData: orderData);
 }
 
 class _HomePageState extends State<HomePage> {
-  UserJsonModel userData;
+  UserJsonModel  userData;
   OrderJsonModel orderData;
   _HomePageState({this.userData, this.orderData});
 
@@ -39,7 +40,7 @@ class _HomePageState extends State<HomePage> {
 //--------------------seçilen resmi yükleme fonksiyonu--------------------------
   void uploadSelectedImage(ImageSource source, List<String> base) async {
     final imagePicker = ImagePicker();
-    final selected = await imagePicker.getImage(source: source);
+    final selected    = await imagePicker.getImage(source: source);
 
     setState(() {
       if (selected != null) {
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage> {
 //-----------------------image kırpma fonksiyonu--------------------------------
   void imageCrop(File image, List<String> base) async {
     File croppedImage = await ImageCropper.cropImage(
-        sourcePath: image.path,
+        sourcePath        : image.path,
         aspectRatioPresets: [
           CropAspectRatioPreset.original,
           CropAspectRatioPreset.ratio3x2,
@@ -75,20 +76,16 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         //--------------------------Appbar Stili--------------------------------
         appBar: AppBar(
-          title: Text(
-            "siparişler",
-            style: leadingStyle, // text stili
-          ),
+        title: Text("siparişler", style: leadingStyle),
         ),
         //----------------------------------------------------------------------
-        body: Container(
+          body : Container(
           color: bgColor, // arkaplan rengi
           child: Column(
             children: [
               SizedBox(height: maxSpace),
-              Flexible(
-                child: ListView.builder(
-                  itemCount: orderData.siparisList.length,
+              Flexible(child : ListView.builder(
+                  itemCount  : orderData.siparisList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return OrdersCardWidget(
                       deliveryDate   : orderData.siparisList[index].teslimTarihi,
@@ -97,55 +94,50 @@ class _HomePageState extends State<HomePage> {
                       totalLT        : orderData.siparisList[index].toplamLitre,
                       status         : selected ? "Onaylandı" : "Yeni Sipariş",
                       statusColor    : selected ? checkedTxtColor : Colors.white,
-                      onTap: () {
+                      onTap: () async {
                         // slidable onTapi
-                        Navigator.pushNamed(context, "/orderDetailPage",
-                            arguments: <List<String>>[
-                              base64DocFill,
-                              base64DocEmpty
-                            ]
-                            // base64Doc listesi sipariş detay sayfasına gönderiliyor
-                            );
+                        final int id = 26;
+                        final orderDetailData = await orderDetailJsonFunc(id);
+                        Navigator.push(context,
+                            MaterialPageRoute( builder: (context) => OrderDetailPage(base64Doc: [base64DocFill,base64DocEmpty],orderDetailData: orderDetailData)));
                       },
-                      child: selected
+                      //sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
+                      child: selected  
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 //------------------doldur butonu---------------------
                                 ButtonWidget(
-                                  buttonText: "doldur",
-                                  buttonWidth: deviceWidth(context) *
-                                      0.46, // buton genişliği
+                                  buttonText : "doldur",
+                                  buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
                                   buttonColor: btnColor,
-                                  onPressed: () {
+                                  onPressed  : () {
                                     setState(() {
-                                      uploadSelectedImage(
-                                          ImageSource.camera, base64DocFill);
+                                      uploadSelectedImage(ImageSource.camera, base64DocFill);
                                     });
                                   },
                                 ),
                                 //----------------------------------------------------
                                 //------------------boşalt butonu---------------------
                                 ButtonWidget(
-                                  buttonText: "boşalt",
-                                  buttonWidth: deviceWidth(context) *
-                                      0.46, // buton genişliği
+                                  buttonText : "boşalt",
+                                  buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
                                   buttonColor: checkDateColor,
-                                  onPressed: () {
+                                  onPressed  : () {
                                     setState(() {
-                                      uploadSelectedImage(
-                                          ImageSource.camera, base64DocEmpty);
+                                      uploadSelectedImage(ImageSource.camera, base64DocEmpty);
                                     });
                                   },
                                 ),
                                 //----------------------------------------------------
                               ],
                             )
+                          // Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
                           : ButtonWidget(
-                              buttonText: "onayla",
+                              buttonText : "onayla",
                               buttonWidth: deviceWidth(context),
                               buttonColor: btnColor,
-                              onPressed: () {
+                              onPressed  : () {
                                 setState(() {
                                   selected = true;
                                 });

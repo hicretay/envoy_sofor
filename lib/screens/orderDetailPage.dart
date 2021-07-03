@@ -1,17 +1,26 @@
+import 'package:envoy/models.dart/orderDetailJsonModel.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/widgets/leadingContainerWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:envoy/widgets/orderRowWidget.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class OrderDetailPage extends StatefulWidget {
-  OrderDetailPage({Key key}) : super(key: key);
+  final OrderDetailJsonModel orderDetailData;
+  List<List<String>> base64Doc = [];
+  OrderDetailPage({Key key, this.orderDetailData, this.base64Doc}) : super(key: key);
 
   @override
-  _OrderDetailPageState createState() => _OrderDetailPageState();
+  _OrderDetailPageState createState() =>
+      _OrderDetailPageState(orderDetailData: orderDetailData,base64Doc: base64Doc);
 }
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
+  List<List<String>> base64Doc = [];
+  OrderDetailJsonModel orderDetailData;
+  _OrderDetailPageState({this.orderDetailData,this.base64Doc});
+
   List<Image> imagesFill = [];
   // image türünde image tutacak liste(yükleme)
 
@@ -20,8 +29,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<List<String>> base64Doc = ModalRoute.of(context).settings.arguments;
-
+    //List<List<String>> base64Doc = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("sipariş detay", style: leadingStyle),

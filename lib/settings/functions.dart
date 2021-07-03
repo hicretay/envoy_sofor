@@ -40,7 +40,7 @@ Future<OrderJsonModel> orderJsonFunc(int durumId, int companyId) async {
 //------------------------------------------------------------------------------
 
 //--------------------------Sipariş Detay Fonksiyonu----------------------------
-Future<OrderDetailJsonModel> orderDetailJson(int id) async {
+Future<OrderDetailJsonModel> orderDetailJsonFunc(int id) async {
   final response = await http.post(
     Uri.parse(orderDetailUrl),
     body: '{"id":' + id.toString() + '}',
