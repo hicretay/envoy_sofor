@@ -47,19 +47,10 @@ class OrderDetailCardWidget extends StatelessWidget {
             children: [
               Container(
                 width: deviceWidth(context) * 0.35,
-                child: Text(
-                  "toplam litre",
-                  style: cardTextStyle,
-                ),
+                child: Text("toplam litre",style: cardTextStyle,),
               ),
-              Text(" : ",
-                  style:
-                      TextStyle(color: Colors.white)),
-              Text(
-                totalLT,
-                style:
-                    TextStyle(color: totalLtTxtColor),
-              ),
+              Text(" : ",style:TextStyle(color: Colors.white)),
+              Text(totalLT,style:TextStyle(color: totalLtTxtColor)),
             ],
           ),
         ),
