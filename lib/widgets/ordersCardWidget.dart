@@ -6,7 +6,7 @@ import 'orderRowWidget.dart';
 
 class OrdersCardWidget extends StatefulWidget {
   final VoidCallback onTap, fillOnTap, emptyOnTap;
-  final String deliveryDate, fillingPoint, deliveryStation, status,totalLT;
+  final String deliveryDate, fillingPoint, deliveryStation, status, totalLT;
   final Widget child;
   final Color statusColor;
   //
@@ -20,7 +20,8 @@ class OrdersCardWidget extends StatefulWidget {
     this.deliveryStation,
     this.status,
     this.totalLT,
-    this.child, this.statusColor,
+    this.child,
+    this.statusColor,
   }) : super(key: key);
 
   @override
@@ -30,14 +31,12 @@ class OrdersCardWidget extends StatefulWidget {
 class _OrdersCardWidgetState extends State<OrdersCardWidget> {
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      actionPane: SlidableBehindActionPane(),
+    return Slidable(actionPane: SlidableBehindActionPane(),
       //--------------Slidable sağa kaydırılınca çıkacak görünüm----------------
       secondaryActions: [
         Container(
-          decoration  : BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(30.0))),
-          child       : IconSlideAction(
+            decoration: BoxDecoration( borderRadius: BorderRadius.all(Radius.circular(30.0))),
+            child     : IconSlideAction(
             iconWidget: Text("sipariş\ndetayı", style: cardTextStyle),
             color     : btnColor,
             onTap     : widget.onTap,
@@ -45,29 +44,21 @@ class _OrdersCardWidgetState extends State<OrdersCardWidget> {
         ),
       ],
       //------------------------------------------------------------------------
-      child: Card(
+        child: Card(
         color: darkCardColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(maxSpace),
-        ),
+        shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(maxSpace)),
         elevation: 20.0,
         child: Column(
           children: [
             SizedBox(height: maxSpace),
             //----------------------teslim tarihi satırı------------------------
-            OrderRowWidget(
-            leading: "teslim tarihi",
-            content: widget.deliveryDate),
+            OrderRowWidget(leading: "teslim tarihi", content: widget.deliveryDate),
             //------------------------------------------------------------------
             //------------------------dolum yeri satırı-------------------------
-            OrderRowWidget(
-            leading: "dolum yeri",
-            content: widget.fillingPoint),
+            OrderRowWidget(leading: "dolum yeri", content: widget.fillingPoint),
             //------------------------------------------------------------------
             //-------------------teslimat istasyonu satırı----------------------
-            OrderRowWidget(
-            leading: "teslimat istasyonu",
-            content: widget.deliveryStation),
+            OrderRowWidget( leading: "teslimat istasyonu", content: widget.deliveryStation),
             //------------------------------------------------------------------
             //-----------------------toplam litre satırı------------------------
             Padding(
@@ -75,11 +66,11 @@ class _OrdersCardWidgetState extends State<OrdersCardWidget> {
               child: Row(
                 children: [
                   Container(
-                    width: deviceWidth(context) * 0.35,
+                    width: deviceWidth(context) * 0.30,
                     //toplam litre yazısının genişliği
                     child: Text("toplam litre", style: cardTextStyle),
                   ),
-                  Text(" :",style: TextStyle(color: Colors.white)),
+                  Text(" :", style: TextStyle(color: Colors.white)),
                   Text(" ${widget.totalLT}",style: TextStyle(color: totalLtTxtColor)),
                 ],
               ),
@@ -87,16 +78,16 @@ class _OrdersCardWidgetState extends State<OrdersCardWidget> {
             //------------------------------------------------------------------
             //---------------------------durum satırı---------------------------
             Padding(
-              padding : const EdgeInsets.all(minSpace),
-              child   : Row(
-              children: [
+              padding: const EdgeInsets.all(minSpace),
+              child: Row(
+                children: [
                   Container(
-                    width: deviceWidth(context) * 0.35,
+                    width: deviceWidth(context) * 0.30,
                     child: Text("durum", style: cardTextStyle),
                   ),
-                  Text(" :",style: TextStyle(color: Colors.white)),
-                  Text( widget.status,style: TextStyle(color: widget.statusColor),)
-                    //durum card oluşturulurken alınacak                
+                  Text(" :", style: TextStyle(color: Colors.white)),
+                  Text( " ${widget.status}", style: TextStyle(color: widget.statusColor))
+                  //durum card oluşturulurken alınacak
                 ],
               ),
             ),
@@ -104,7 +95,7 @@ class _OrdersCardWidgetState extends State<OrdersCardWidget> {
             SizedBox(height: defaultPadding),
             //butonlar - card arası üst boşluk
             Padding(padding: const EdgeInsets.all(minSpace), child: widget.child),
-              //carda eklenecek butonlar child ile tanımlanacak          
+            //carda eklenecek butonlar child ile tanımlanacak
             SizedBox(height: maxSpace),
             //butonlar - card arası alt boşluk
           ],
