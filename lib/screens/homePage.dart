@@ -28,14 +28,14 @@ class _HomePageState extends State<HomePage> {
   OrderJsonModel orderData;
   _HomePageState({this.userData, this.orderData});
 
-  bool selected = false;
-  List<OrdersCardWidget> orders = [];
+  bool selected = false; 
+  // sipariş onaylandı mı kontrolü
 
   List<String> base64DocFill = [];
-  // base64 images listesi yükleme
+  // base64 images listesi (yükleme)
 
   List<String> base64DocEmpty = [];
-  // base64 images listesi boşaltma
+  // base64 images listesi (boşaltma)
 
 //--------------------seçilen resmi yükleme fonksiyonu--------------------------
   void uploadSelectedImage(ImageSource source, List<String> base) async {
@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                       status         : selected ? "Onaylandı" : "Yeni Sipariş",
                       statusColor    : selected ? checkedTxtColor : Colors.white,
                       onTap: () async {
-                        // slidable onTapi
+                        // slidable onTap'i
                         final int id = 26;
                         final orderDetailData = await orderDetailJsonFunc(id);
                         Navigator.push(context,

@@ -18,23 +18,14 @@ class OrderRowWidget extends StatelessWidget {
         children: [
           Container(
             width: deviceWidth(context) * 0.35,
-            child: Text(
-              leading,
-              style: cardTextStyle,
-            ),
+            child: Text(leading,style: cardTextStyle),
           ),
           Container(
-            child: Text(
-              " : ",
-              style: TextStyle(color: Colors.white),
-            ),
+            child: Text(" : ",style: TextStyle(color: Colors.white)),
           ),
           Container(
             width: deviceWidth(context) * 0.55,
-            child: Text(
-              " $content",
-              style: contentTextStyle,
-            ),
+            child: Text( "$content",style: contentTextStyle),
           ),
         ],
       ),

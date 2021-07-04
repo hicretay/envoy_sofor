@@ -28,8 +28,14 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   List<Image> imagesEmpty = [];
   // image türünde image tutacak liste(boşaltma)
 
+  List<Belgeleri> docEmpty = []; //servisten gelen boşaltma belgeleri listesi
+  List<Belgeleri> docFill = []; // servisten gelen doldurma belgeleri listesi
+
   @override
   Widget build(BuildContext context) {
+    // Listeleri servis verileri ile doldurma
+    docEmpty= orderDetailData.siparisDetay.bosaltmaBelgeleri;
+    docEmpty= orderDetailData.siparisDetay.yuklemeBelgeleri;
     return Scaffold(
       appBar: AppBar(title: Text("sipariş detay", style: leadingStyle)),
       body: Container(
