@@ -8,19 +8,27 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class OrderDetailPage extends StatefulWidget {
   final OrderDetailJsonModel orderDetailData;
-  List<List<String>> base64Doc = [];
-  OrderDetailPage({Key key, this.orderDetailData, this.base64Doc})
-      : super(key: key);
+
+   List<String> base64DocFill = [];
+  // base64 images listesi (yükleme)
+
+  List<String> base64DocEmpty = [];
+  // base64 images listesi (boşaltma)
+  OrderDetailPage({Key key, this.orderDetailData,this.base64DocEmpty,this.base64DocFill}) : super(key: key);
 
   @override
-  _OrderDetailPageState createState() => _OrderDetailPageState(
-      orderDetailData: orderDetailData, base64Doc: base64Doc);
+  _OrderDetailPageState createState() => _OrderDetailPageState(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill);
 }
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
-  List<List<String>> base64Doc = [];
+   List<String> base64DocFill = [];
+  // base64 images listesi (yükleme)
+
+  List<String> base64DocEmpty = [];
+  // base64 images listesi (boşaltma)
+
   OrderDetailJsonModel orderDetailData;
-  _OrderDetailPageState({this.orderDetailData, this.base64Doc});
+  _OrderDetailPageState({this.orderDetailData, this.base64DocEmpty, this.base64DocFill});
 
   List<Image> imagesFill = [];
   // image türünde image tutacak liste(yükleme)
@@ -28,14 +36,14 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   List<Image> imagesEmpty = [];
   // image türünde image tutacak liste(boşaltma)
 
-  List<Belgeleri> docEmpty = []; //servisten gelen boşaltma belgeleri listesi
-  List<Belgeleri> docFill = []; // servisten gelen doldurma belgeleri listesi
+  //List<Belgeleri> docEmpty = []; //servisten gelen boşaltma belgeleri listesi
+  //List<Belgeleri> docFill = []; // servisten gelen doldurma belgeleri listesi
 
   @override
   Widget build(BuildContext context) {
     // Listeleri servis verileri ile doldurma
-    docEmpty= orderDetailData.siparisDetay.bosaltmaBelgeleri;
-    docEmpty= orderDetailData.siparisDetay.yuklemeBelgeleri;
+    //docEmpty= orderDetailData.siparisDetay.bosaltmaBelgeleri;
+    //docEmpty= orderDetailData.siparisDetay.yuklemeBelgeleri;
     return Scaffold(
       appBar: AppBar(title: Text("sipariş detay", style: leadingStyle)),
       body: Container(
@@ -132,13 +140,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               width : deviceWidth(context),
                               child : Padding(padding: const EdgeInsets.only(top: maxSpace),
                                     child       : GridView.builder(
-                                    itemCount   : base64Doc[0].length,
+                                    itemCount   : base64DocFill.length,
                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 4,
                                       mainAxisSpacing: maxSpace,
                                     ),
                                     itemBuilder: (BuildContext context, int index) {
-                                      for (var item in base64Doc[0]) {
+                                      for (var item in base64DocFill) {
                                         imagesFill.add(base64ToImage(item));
                                       }
                                       return GestureDetector(
@@ -162,12 +170,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               width : deviceWidth(context),
                               child : Padding(padding: const EdgeInsets.only(top: maxSpace),
                               child : GridView.builder(
-                                    itemCount: base64Doc[1].length,
+                                    itemCount: base64DocEmpty.length,
                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 4,
                                       mainAxisSpacing: maxSpace),
                                     itemBuilder:(BuildContext context, int index){
-                                      for (var item in base64Doc[1]) {
+                                      for (var item in base64DocEmpty) {
                                         imagesEmpty.add(base64ToImage(item));
                                       }
                                       return GestureDetector(

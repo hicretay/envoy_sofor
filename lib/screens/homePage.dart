@@ -98,8 +98,8 @@ class _HomePageState extends State<HomePage> {
                         // slidable onTap'i
                         final int id = 26;
                         final orderDetailData = await orderDetailJsonFunc(id);
-                        Navigator.push(context,
-                            MaterialPageRoute( builder: (context) => OrderDetailPage(base64Doc: [base64DocFill,base64DocEmpty],orderDetailData: orderDetailData)));
+                        Navigator.push(context, 
+                        MaterialPageRoute( builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill)));
                       },
                       //sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
                       child: selected  
