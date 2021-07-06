@@ -13,7 +13,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 3), () { // Sayfanın görünme süresi
+    Future.delayed(Duration(seconds: 2), () { // Sayfanın görünme süresi
     //----Önceki sayfayı silerek LoginPage'e geçiş--------
       Navigator.pushNamedAndRemoveUntil(
           context, "/loginPage", (route) => false);
@@ -24,12 +24,12 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: deviceWidth(context),
+      width: deviceWidth(context), 
       height: deviceHeight(context),
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/images/splash.jpg"),
-          fit: BoxFit.cover,
+          image: AssetImage("assets/images/splash.jpg"), // arkaplan resmi
+          fit: BoxFit.cover, // ekranı kaplasın
         ),
       ),
     );

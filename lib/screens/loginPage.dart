@@ -21,30 +21,34 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController txtUsername = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
 
-  SharedPreferences loginData;
-  bool newUser;
+  SharedPreferences loginData; // SharedPreferences nesnesi
+  bool newUser; // Kullanıcı aktif ise false değilse true verilecek
 
+//--------------------Kullanıcı Giriş Kontrolü Fonksiyonu-----------------------
   void checkLogin() async {
+    //---------------kullanıcı ve sipariş verilerinin çekilmesi-----------------
     final String uSERNAME = "sselman";
     final String pASSWORD = "0";
-    final UserJsonModel userData = await userJsonFunc(uSERNAME, pASSWORD);
     final int durumId = 1;
-    final OrderJsonModel orderData = await orderJsonFunc(durumId, userData.user.id);
+    final UserJsonModel  userData  = await userJsonFunc(uSERNAME, pASSWORD); // kullanıcı verileri
+    final OrderJsonModel orderData = await orderJsonFunc(durumId, userData.user.id); // sipariş verileri
+    //--------------------------------------------------------------------------
 
     loginData = await SharedPreferences.getInstance();
-    newUser = (loginData.getBool('login') ?? true);
-    print(newUser);
-    if (newUser == false) {
-      Navigator.pushReplacement(
-          context, new MaterialPageRoute(builder: (context) => HomePage(orderData: orderData,userData: userData)));
+    newUser = loginData.getBool('login') ?? true; // login olunmamışsa true 
+    if (newUser == false) { // daha önceden login olunmuşsa false
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => 
+      HomePage(orderData: orderData,userData: userData)));
+      // kullanıcı giriş yapmışsa direkt HomePage 'e gidecek
     }
   }
- 
+//------------------------------------------------------------------------------
+
   @override
   void initState() { 
     super.initState();
     setState(() {
-      checkLogin(); 
+      checkLogin(); // Sayfa yüklenirken kullanıcı giriş kontrolü yapılacak      
     });
   }
 
@@ -55,7 +59,6 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,8 +66,7 @@ class _LoginPageState extends State<LoginPage> {
       body: BgWidget(
         child: Column(
           children: [
-            SizedBox(height: deviceHeight(context) * 0.2),
-            //giriş ikonu - cihaz üstü boşluk
+            SizedBox(height: deviceHeight(context) * 0.2), // giriş ikonu - cihaz üstü boşluk          
             //--------------giriş ikonunun yer alacağı container----------------
             Container(
               width : 127, //ikon genişliğine göre verildi
@@ -72,19 +74,15 @@ class _LoginPageState extends State<LoginPage> {
               decoration: BoxDecoration(
                   image : DecorationImage(
                   image : AssetImage("assets/images/girisikon.png"),//logo resmi                 
-                  fit   : BoxFit.cover,
-                  // resim erkanı kaplayacak
+                  fit   : BoxFit.cover, // resim erkanı kaplayacak                 
                 ),
               ),
             ),
             //------------------------------------------------------------------
-            SizedBox(height: defaultPadding),
-            //logo - giriş ikonu arası boşluk
-            //-------------------logo svg'sinin gösterilmesi--------------------
-            SvgPicture.asset("assets/images/logo.svg", color: logoColor),
-            //------------------------------------------------------------------
-            SizedBox(height: deviceHeight(context) * 0.2),
-            //logo - textFieldlar arası boşluk
+            SizedBox(height: defaultPadding), // logo - giriş ikonu arası boşluk          
+            SvgPicture.asset("assets/images/logo.svg", color: logoColor),  // logo svg'sinin gösterilmesi           
+            SizedBox(height: deviceHeight(context) * 0.2),  //logo - textFieldlar arası boşluk   
+
             //--------------------Kullanıcı adı textField'ı---------------------
             Padding(padding: const EdgeInsets.all(maxSpace),
                 child       : TextFieldWidget(textEditingController: txtUsername,
@@ -104,17 +102,13 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             //------------------------------------------------------------------
-            SizedBox(height: deviceHeight(context) * 0.1),
-            // textField'lar - giriş butonu arası boşluk
-
+            SizedBox(height: deviceHeight(context) * 0.1), // textField'lar - giriş butonu arası boşluk           
             //------------------------giriş butonu------------------------------
             ButtonWidget(
               buttonColor: btnColor,
               buttonText : "giriş",
               buttonWidth: deviceWidth(context) * 0.52,// buton genişliği             
-              onPressed  : () async {
-               
-                
+              onPressed  : () async {               
                 //------------------login verisinin çekilmesi-------------------
                 final String uSERNAME = "sselman";
                 final String pASSWORD = "0";
@@ -126,19 +120,21 @@ class _LoginPageState extends State<LoginPage> {
                 final OrderJsonModel orderData = await orderJsonFunc(durumId, userData.user.id);
                 //--------------------------------------------------------------
 
-                String username = txtUsername.text;
-                String password = txtPassword.text;
+                String username = txtUsername.text; // Kullanıcı Adı TextField'ının texti = username
+                String password = txtPassword.text; // Şifre TextField'ının texti = password
 
-                if (username != '' && password != '') {
-                  loginData.setBool('login', false);
-                  loginData.setString('username', username);
+                if (username != "" && password != "") { // kullanıcı adı ve şifre boş değilse
+                  loginData.setBool("login", false); // login işlemi yapıldı
+                  loginData.setString("username", username);
                 
-                if(orderData.siparisList.length != 0){
+                if(orderData.siparisList.length != 0){ // siparişler boş değilse anasayfaya yönlendir
                 Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) => 
                 HomePage(userData: userData, orderData: orderData)));
-                //tıklandığında anasayfaya yönlendirilecek    
-                          
-                }}
+                //tıklandığında anasayfaya yönlendirilecek                             
+                }
+                // Boş ise beklet
+                else Center(child: CircularProgressIndicator());
+                }
               },
             ),
             //------------------------------------------------------------------

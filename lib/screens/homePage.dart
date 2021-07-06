@@ -17,7 +17,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HomePage extends StatefulWidget {
   final UserJsonModel userData;
   final OrderJsonModel orderData;
-
   const HomePage({Key key, this.userData, this.orderData}) : super(key: key);
 
   @override
@@ -32,11 +31,11 @@ class _HomePageState extends State<HomePage> {
   SharedPreferences logindata;
   String username;
 
-    @override
+  @override
   void initState() {
-    super.initState();
+  super.initState();
     setState(() {
-    refreshList(1, 6);
+    refreshList(1, userData.user.id);
     initial();
    });
   }
