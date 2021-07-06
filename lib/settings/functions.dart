@@ -56,3 +56,6 @@ Future<OrderDetailJsonModel> orderDetailJsonFunc(int id) async {
 }
 //------------------------------------------------------------------------------
 
+// Future<> documentAddJsnFunc() async{
+
+// }

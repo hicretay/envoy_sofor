@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
+import 'package:envoy/screens/loginPage.dart';
 import 'package:envoy/screens/orderDetailPage.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:envoy/settings/functions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   final UserJsonModel userData;
@@ -28,6 +29,24 @@ class _HomePageState extends State<HomePage> {
   OrderJsonModel orderData;
   _HomePageState({this.userData, this.orderData});
 
+  SharedPreferences logindata;
+  String username;
+
+    @override
+  void initState() {
+    super.initState();
+    setState(() {
+    refreshList(1, 6);
+    initial();
+   });
+  }
+    void initial() async {
+    logindata = await SharedPreferences.getInstance();
+    setState(() {
+      username = logindata.getString('username');
+    });
+  }
+
   bool selected = false; 
   // sipariş onaylandı mı kontrolü
 
@@ -36,6 +55,15 @@ class _HomePageState extends State<HomePage> {
 
   List<String> base64DocEmpty = [];
   // base64 images listesi (boşaltma)
+
+//--------------------Sipariş Listesi Yenileme Fonksiyonu-----------------------
+  Future refreshList(int durumId, int companyId) async {
+    final OrderJsonModel orderList = await orderJsonFunc(durumId,companyId); 
+    setState(() {
+      orderData = orderList;
+    });
+  }
+//------------------------------------------------------------------------------
 
 //--------------------seçilen resmi yükleme fonksiyonu--------------------------
   void uploadSelectedImage(ImageSource source, List<String> base) async {
@@ -77,6 +105,12 @@ class _HomePageState extends State<HomePage> {
         //--------------------------Appbar Stili--------------------------------
         appBar: AppBar(
         title: Text("siparişler", style: leadingStyle),
+        actions: [
+          IconButton(icon: Icon(Icons.exit_to_app),onPressed: (){
+            logindata.setBool('login', true);
+                Navigator.pushReplacement(context, new MaterialPageRoute(builder: (context) => LoginPage()));
+          })
+        ],
         ),
         //----------------------------------------------------------------------
           body : Container(
@@ -86,7 +120,12 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: maxSpace),
               Flexible(child : ListView.builder(
                   itemCount  : orderData.siparisList.length,
-                  itemBuilder: (BuildContext context, int index) {
+                  itemBuilder: (BuildContext context, int index){
+                    
+                    if(orderData.siparisList.length == 0 && orderData.siparisList == null){
+                      return CircularProgressIndicator();
+                    }
+                    else
                     return OrdersCardWidget(
                       deliveryDate   : orderData.siparisList[index].teslimTarihi,
                       fillingPoint   : orderData.siparisList[index].dolumyeri,
@@ -143,6 +182,7 @@ class _HomePageState extends State<HomePage> {
                                 });
                               }),
                     );
+                   
                   },
                 ),
               ),

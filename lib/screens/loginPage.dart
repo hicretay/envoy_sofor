@@ -8,6 +8,7 @@ import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/textFieldWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -19,6 +20,41 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController txtUsername = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
+
+  SharedPreferences loginData;
+  bool newUser;
+
+  void checkLogin() async {
+    final String uSERNAME = "sselman";
+    final String pASSWORD = "0";
+    final UserJsonModel userData = await userJsonFunc(uSERNAME, pASSWORD);
+    final int durumId = 1;
+    final OrderJsonModel orderData = await orderJsonFunc(durumId, userData.user.id);
+
+    loginData = await SharedPreferences.getInstance();
+    newUser = (loginData.getBool('login') ?? true);
+    print(newUser);
+    if (newUser == false) {
+      Navigator.pushReplacement(
+          context, new MaterialPageRoute(builder: (context) => HomePage(orderData: orderData,userData: userData)));
+    }
+  }
+ 
+  @override
+  void initState() { 
+    super.initState();
+    setState(() {
+      checkLogin(); 
+    });
+  }
+
+  @override
+  void dispose() {
+    txtUsername.dispose();
+    txtPassword.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +86,8 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: deviceHeight(context) * 0.2),
             //logo - textFieldlar arası boşluk
             //--------------------Kullanıcı adı textField'ı---------------------
-            Padding(
-               padding: const EdgeInsets.all(maxSpace),
-                 child: TextFieldWidget(
-                textEditingController: txtUsername,
+            Padding(padding: const EdgeInsets.all(maxSpace),
+                child       : TextFieldWidget(textEditingController: txtUsername,
                 keyboardType: TextInputType.name,
                 hintText    : "Kullanıcı Adı", //ipucu metni
                 obscureText : false, // yazılanlar gizlenmesin
@@ -61,8 +95,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             //------------------------------------------------------------------
             //-------------------------Şifre textField'ı------------------------
-            Padding(
-              padding: const EdgeInsets.all(maxSpace),
+            Padding(padding: const EdgeInsets.all(maxSpace),
                 child: TextFieldWidget(
                 textEditingController: txtPassword,
                 keyboardType: TextInputType.visiblePassword,
@@ -79,21 +112,33 @@ class _LoginPageState extends State<LoginPage> {
               buttonColor: btnColor,
               buttonText : "giriş",
               buttonWidth: deviceWidth(context) * 0.52,// buton genişliği             
-              onPressed: () async {
-                //--------------------------login verisi------------------------
+              onPressed  : () async {
+               
+                
+                //------------------login verisinin çekilmesi-------------------
                 final String uSERNAME = "sselman";
                 final String pASSWORD = "0";
                 final UserJsonModel userData = await userJsonFunc(uSERNAME, pASSWORD);
                 //--------------------------------------------------------------
 
-                //------------------------order data----------------------------
+                //----------------sipariş verisinin çekilmesi-------------------
                 final int durumId = 1;
                 final OrderJsonModel orderData = await orderJsonFunc(durumId, userData.user.id);
                 //--------------------------------------------------------------
 
+                String username = txtUsername.text;
+                String password = txtPassword.text;
+
+                if (username != '' && password != '') {
+                  loginData.setBool('login', false);
+                  loginData.setString('username', username);
+                
+                if(orderData.siparisList.length != 0){
                 Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) => 
                 HomePage(userData: userData, orderData: orderData)));
-                //tıklandığında anasayfaya yönlendirilecek
+                //tıklandığında anasayfaya yönlendirilecek    
+                          
+                }}
               },
             ),
             //------------------------------------------------------------------

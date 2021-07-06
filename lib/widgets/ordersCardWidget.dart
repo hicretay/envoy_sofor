@@ -66,7 +66,7 @@ class _OrdersCardWidgetState extends State<OrdersCardWidget> {
               child: Row(
                 children: [
                   Container(
-                    width: deviceWidth(context) * 0.30,
+                    width: deviceWidth(context) * 0.35,
                     //toplam litre yazısının genişliği
                     child: Text("toplam litre", style: cardTextStyle),
                   ),
@@ -82,7 +82,7 @@ class _OrdersCardWidgetState extends State<OrdersCardWidget> {
               child: Row(
                 children: [
                   Container(
-                    width: deviceWidth(context) * 0.30,
+                    width: deviceWidth(context) * 0.35,
                     child: Text("durum", style: cardTextStyle),
                   ),
                   Text(" :", style: TextStyle(color: Colors.white)),
