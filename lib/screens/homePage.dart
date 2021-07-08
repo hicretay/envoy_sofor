@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(icon: Icon(Icons.exit_to_app),onPressed: (){
             logindata.setBool('login', true);
-                Navigator.pushReplacement(context, new MaterialPageRoute(builder: (context) => LoginPage()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
           })
         ],
         ),
@@ -117,73 +117,77 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               SizedBox(height: maxSpace),
-              Flexible(child : ListView.builder(
-                  itemCount  : orderData.siparisList.length,
-                  itemBuilder: (BuildContext context, int index){
-                    
-                    if(orderData.siparisList.length == 0 && orderData.siparisList == null){
-                      return CircularProgressIndicator();
-                    }
-                    else
-                    return OrdersCardWidget(
-                      deliveryDate   : orderData.siparisList[index].teslimTarihi,
-                      fillingPoint   : orderData.siparisList[index].dolumyeri,
-                      deliveryStation: orderData.siparisList[index].teslimatIstasyonu,
-                      totalLT        : orderData.siparisList[index].toplamLitre,
-                      status         : selected ? "Onaylandı" : "Yeni Sipariş",
-                      statusColor    : selected ? checkedTxtColor : Colors.white,
-                      onTap: () async {
-                        // slidable onTap'i
-                        final int id = 26;
-                        final orderDetailData = await orderDetailJsonFunc(id);
-                        Navigator.push(context, 
-                        MaterialPageRoute( builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill)));
-                      },
-                      //sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
-                      child: selected  
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                //------------------doldur butonu---------------------
-                                ButtonWidget(
-                                  buttonText : "doldur",
-                                  buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
-                                  buttonColor: btnColor,
-                                  onPressed  : () {
-                                    setState(() {
-                                      uploadSelectedImage(ImageSource.camera, base64DocFill);
-                                    });
-                                  },
-                                ),
-                                //----------------------------------------------------
-                                //------------------boşalt butonu---------------------
-                                ButtonWidget(
-                                  buttonText : "boşalt",
-                                  buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
-                                  buttonColor: checkDateColor,
-                                  onPressed  : () {
-                                    setState(() {
-                                      uploadSelectedImage(ImageSource.camera, base64DocEmpty);
-                                    });
-                                  },
-                                ),
-                                //----------------------------------------------------
-                              ],
-                            )
-                          // Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
-                          : ButtonWidget(
-                              buttonText : "onayla",
-                              buttonWidth: deviceWidth(context),
-                              buttonColor: btnColor,
-                              onPressed  : () {
-                                setState(() {
-                                  selected = true;
-                                });
-                              }),
-                    );
-                   
-                  },
-                ),
+              Flexible(child : RefreshIndicator(
+                onRefresh: ()=> refreshList(1, userData.user.id),
+                child: ListView.builder(
+                    itemCount  : orderData.siparisList.length,
+                    itemBuilder: (BuildContext context, int index){
+                      
+                      if(orderData.siparisList.length == 0 && orderData.siparisList == null){
+                        return CircularProgressIndicator();
+                      }
+                      else
+                      return OrdersCardWidget(
+                        deliveryDate   : orderData.siparisList[index].teslimTarihi,
+                        fillingPoint   : orderData.siparisList[index].dolumyeri,
+                        deliveryStation: orderData.siparisList[index].teslimatIstasyonu,
+                        totalLT        : orderData.siparisList[index].toplamLitre,
+                        status         : orderData.siparisList[index].durumId == 1 ? "Onaylandı" : "Yeni Sipariş",
+                        statusColor    : selected ? checkedTxtColor : Colors.white,
+                        onTap: () async {
+                          // slidable onTap'i
+                          final int id = 26;
+                          final orderDetailData = await orderDetailJsonFunc(id);
+                          Navigator.push(context, 
+                          MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill)));
+                        },
+                        //sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
+                        child: selected  
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  //------------------doldur butonu---------------------
+                                  ButtonWidget(
+                                    buttonText : "doldur",
+                                    buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
+                                    buttonColor: btnColor,
+                                    onPressed  : () {
+                                      setState(() {
+                                        uploadSelectedImage(ImageSource.camera, base64DocFill);
+                                      });
+                                    },
+                                  ),
+                                  //----------------------------------------------------
+                                  //------------------boşalt butonu---------------------
+                                  ButtonWidget(
+                                    buttonText : "boşalt",
+                                    buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
+                                    buttonColor: checkDateColor,
+                                    onPressed  : () {
+                                      setState(() {
+                                        uploadSelectedImage(ImageSource.camera, base64DocEmpty);
+                                      });
+                                    },
+                                  ),
+                                  //----------------------------------------------------
+                                ],
+                              )
+                            // Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
+                            : ButtonWidget(
+                                buttonText : "onayla",
+                                buttonWidth: deviceWidth(context),
+                                buttonColor: btnColor,
+                                onPressed  : () {
+                                  setState(() {
+                                    selected= true;
+                                  });
+                                }),
+                      );
+                     
+                    },
+
+                  ),
+              ),
               ),
               // alttaki logo görünümü
             ],

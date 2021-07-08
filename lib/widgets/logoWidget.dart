@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+//import 'package:flutter_svg/svg.dart';
 
 import '../settings/consts.dart';
 
@@ -16,10 +17,7 @@ class LogoWidget extends StatelessWidget {
       color: bgColor,
       child: Padding(
         padding: const EdgeInsets.only(bottom: maxSpace, top: maxSpace),
-        child: SvgPicture.asset(
-          "assets/images/logo.svg",
-          color: logoColor,
-        ),
+        child:  SvgPicture.asset("assets/images/logo.svg",color: logoColor),
       ),
     );
   }
