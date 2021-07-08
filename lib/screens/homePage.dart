@@ -182,17 +182,14 @@ class _HomePageState extends State<HomePage> {
                                     selected= true;
                                   });
                                 }),
-                      );
-                     
+                      );  
                     },
-
                   ),
-              ),
-              ),
-              // alttaki logo görünümü
+               ),
+             ),
             ],
           ),
         ),
-        bottomNavigationBar: LogoWidget());
+        bottomNavigationBar: LogoWidget()); // alttaki logo görünümü
   }
 }
