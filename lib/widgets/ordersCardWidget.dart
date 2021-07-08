@@ -9,6 +9,7 @@ class OrdersCardWidget extends StatefulWidget {
   final String deliveryDate, fillingPoint, deliveryStation, status, totalLT;
   final Widget child;
   final Color statusColor;
+  final bool selected;
   //
   OrdersCardWidget({
     Key key,
@@ -21,7 +22,7 @@ class OrdersCardWidget extends StatefulWidget {
     this.status,
     this.totalLT,
     this.child,
-    this.statusColor,
+    this.statusColor, this.selected,
   }) : super(key: key);
 
   @override

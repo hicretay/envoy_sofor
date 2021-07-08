@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:envoy/models.dart/documentJsonModel.dart';
 import 'package:envoy/models.dart/orderDetailJsonModel.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
@@ -63,6 +66,27 @@ Future<OrderDetailJsonModel> orderDetailJsonFunc(int id) async {
 }
 //------------------------------------------------------------------------------
 
-// Future<> documentAddJsnFunc() async{
+//--------------------------------Döküman Fonksiyonu---------------------------------------
+Future<DocumentJsonModel> documentJsnAddFunc(int siparisId, int soforId, int durum, String belge) async{
+  var bodys ={};
+  bodys["siparisId"] = siparisId;
+  bodys["soforId"]   = soforId;
+  bodys["durum"]     = durum;
+  bodys["belge"]     = belge;
 
-// }
+  String body = json.encode(bodys);
+
+  final response = await http.post(
+    Uri.parse(documentUrl),
+    body: body,
+    headers: header
+  );
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+    return documentJsonModelFromJson(responseString);
+  } else {
+    return null;
+  }
+}
+//-----------------------------------------------------------------------------------------

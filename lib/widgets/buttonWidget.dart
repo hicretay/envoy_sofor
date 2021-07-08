@@ -23,6 +23,7 @@ class ButtonWidget extends StatelessWidget {
       height: deviceHeight(context) * 0.14, // buton yüksekliği sabit
       elevation: 20.0,
       color: buttonColor,
+      
       child: Text(
         buttonText,
         //------------------------buton yazı stili------------------------------

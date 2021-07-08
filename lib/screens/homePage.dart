@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
 //------------------------------------------------------------------------------
 
 //--------------------seçilen resmi yükleme fonksiyonu--------------------------
-  void uploadSelectedImage(ImageSource source, List<String> base) async {
+  Future uploadSelectedImage(ImageSource source, List<String> base) async {
     final imagePicker = ImagePicker();
     final selected    = await imagePicker.getImage(source: source);
 
@@ -122,7 +122,6 @@ class _HomePageState extends State<HomePage> {
                 child: ListView.builder(
                     itemCount  : orderData.siparisList.length,
                     itemBuilder: (BuildContext context, int index){
-                      
                       if(orderData.siparisList.length == 0 && orderData.siparisList == null){
                         return CircularProgressIndicator();
                       }
@@ -142,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                           MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill)));
                         },
                         //sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
-                        child: selected  
+                        child: orderData.siparisList[index].durumId == 2 
                             ? Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -152,9 +151,10 @@ class _HomePageState extends State<HomePage> {
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
                                     buttonColor: btnColor,
                                     onPressed  : () {
-                                      setState(() {
-                                        uploadSelectedImage(ImageSource.camera, base64DocFill);
+                                      setState(() async{
+                                        await uploadSelectedImage(ImageSource.camera, base64DocFill);
                                       });
+                                      //show message
                                     },
                                   ),
                                   //----------------------------------------------------
@@ -177,10 +177,10 @@ class _HomePageState extends State<HomePage> {
                                 buttonText : "onayla",
                                 buttonWidth: deviceWidth(context),
                                 buttonColor: btnColor,
-                                onPressed  : () {
-                                  setState(() {
-                                    selected= true;
-                                  });
+                                onPressed  : () async{                                                                
+                                   documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null);
+                                   await refreshList(orderData.siparisList[index].durumId, userData.user.id);                                 
+                                                                
                                 }),
                       );  
                     },

@@ -52,6 +52,8 @@ const loginUrl = "http://portalservice.kirbag.com/api/User";
 const orderUrl = "http://portalservice.kirbag.com/api/Order";
 //Sipariş Detay
 const orderDetailUrl = "http://portalservice.kirbag.com/api/OrderDetail";
+// Döküman
+const documentUrl = "http://portalservice.kirbag.com/api/Document";
 
 File selectedImage; // cihazdan çekilen resim
 

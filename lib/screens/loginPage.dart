@@ -124,6 +124,10 @@ class _LoginPageState extends State<LoginPage> {
                     final OrderJsonModel orderData = await orderJsonFunc(durumId, userData.user.id);
                     //--------------------------------------------------------------
 
+                    //------------------döküman verisinin çekilmesi-----------------
+                    //final DocumentJsonModel documentData = await documentJsnFunc()
+                    //--------------------------------------------------------------
+
                     String username = txtUsername.text; // Kullanıcı Adı TextField'ının texti = username
                     String password = txtPassword.text; // Şifre TextField'ının texti = password
 
