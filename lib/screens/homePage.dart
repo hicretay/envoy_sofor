@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                                 Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  //------------------doldur butonu---------------------
+                                  //--------------------------------------doldur butonu------------------------------------
                                   ButtonWidget(
                                     buttonText : "doldur",
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
@@ -144,11 +144,14 @@ class _HomePageState extends State<HomePage> {
                                     onPressed  : orderData.siparisList[index].durumId == 2 ?
                                     () async{
                                         await uploadSelectedImage(ImageSource.camera, base64DocFill);
-                                        await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 3, null);
+                                        if(base64DocFill.isNotEmpty)
+                                        {
+                                        await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 3, null);}
                                         await refreshList(orderData.siparisList[index].durumId, userData.user.id);                                       
                                         //show message
                                         showMessage(context, base64DocFill);
-                                    } : (){}
+                                    } 
+                                    :  (){}
                                   ),
                                   //----------------------------------------------------------------------------------------
                                   //-------------------------------------boşalt butonu---------------------------------------
@@ -159,11 +162,14 @@ class _HomePageState extends State<HomePage> {
                                     onPressed  : orderData.siparisList[index].durumId == 3 ? 
                                     () async{
                                         await uploadSelectedImage(ImageSource.camera, base64DocEmpty);
-                                        await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 4, null);
+                                        if(base64DocEmpty.isNotEmpty)
+                                        {
+                                        await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 4, null);}
                                         await refreshList(orderData.siparisList[index].durumId, userData.user.id);  
                                         //show message
                                         showMessage(context, base64DocEmpty);
-                                    } : (){}
+                                    } 
+                                    : (){}
                                   ),
                                   //-------------------------------------------------------------------------------------------
                                 ],
@@ -203,6 +209,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () async{
               // Toast message çekilen döküman sayısını gösterecek                                      
               for (var i = 0; i <= document.length -1; i++){
+                if(document.isNotEmpty)
                 await documentJsnAddFunc(126, userData.user.id, 3, document[i]);}
               refreshList(1, userData.user.id);              
               Navigator.of(context).pop();
