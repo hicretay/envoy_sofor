@@ -35,10 +35,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
   List<Image> imagesEmpty = [];
   // image türünde image tutacak liste(boşaltma)
-
-  //List<Belgeleri> docEmpty = []; //servisten gelen boşaltma belgeleri listesi
-  //List<Belgeleri> docFill = []; // servisten gelen doldurma belgeleri listesi
-
+  
   @override
   Widget build(BuildContext context) {
     // Listeleri servis verileri ile doldurma
@@ -145,6 +142,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       mainAxisSpacing: maxSpace,
                                     ),
                                     itemBuilder: (BuildContext context, int index) {
+                                      // fotoğrafları listeye doldurma
                                       for (var item in base64DocFill) {
                                         imagesFill.add(base64ToImage(item));
                                       }
@@ -174,6 +172,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       crossAxisCount: 4,
                                       mainAxisSpacing: maxSpace),
                                     itemBuilder:(BuildContext context, int index){
+                                      // fotoğrafları listeye doldurma
                                       for (var item in base64DocEmpty) {
                                         imagesEmpty.add(base64ToImage(item));
                                       }

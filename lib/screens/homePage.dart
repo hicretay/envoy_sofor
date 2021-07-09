@@ -9,7 +9,6 @@ import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/ordersCardWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,6 +30,9 @@ class _HomePageState extends State<HomePage> {
   SharedPreferences logindata;
   String username;
 
+  bool fillIsActive = true;
+  bool emptyIsActive = true;
+
   @override
   void initState() {
   super.initState();
@@ -45,9 +47,6 @@ class _HomePageState extends State<HomePage> {
       username = logindata.getString('username');
     });
   }
-
-  bool selected = false; 
-  // sipariş onaylandı mı kontrolü
 
   List<String> base64DocFill = [];
   // base64 images listesi (yükleme)
@@ -65,39 +64,20 @@ class _HomePageState extends State<HomePage> {
 //------------------------------------------------------------------------------
 
 //--------------------seçilen resmi yükleme fonksiyonu--------------------------
-  Future uploadSelectedImage(ImageSource source, List<String> base) async {
+  Future uploadSelectedImage(ImageSource source,List<String> base) async {
     final imagePicker = ImagePicker();
     final selected    = await imagePicker.getImage(source: source);
-
-    setState(() {
+   
       if (selected != null) {
-        imageCrop(File(selected.path), base);
-      }
-    });
+        setState(() {
+          selectedImage = File(selected.path);
+        });
+         base.add(imageToBase64(selectedImage));
+        //çekilen resim base64 e dönüştürülüp, listeye eklendi
+      }  
   }
 //------------------------------------------------------------------------------
 
-//-----------------------image kırpma fonksiyonu--------------------------------
-  void imageCrop(File image, List<String> base) async {
-    File croppedImage = await ImageCropper.cropImage(
-        sourcePath        : image.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.ratio5x3,
-          CropAspectRatioPreset.ratio7x5
-        ]);
-
-    if (croppedImage != null) {
-      setState(() {
-        selectedImage = croppedImage;
-      });
-    }
-    base.add(imageToBase64(selectedImage));
-    //çekilip kesilen resmi base64' dönüştürüp, listeye ekleme
-  }
-
-//------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,7 +98,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               SizedBox(height: maxSpace),
               Flexible(child : RefreshIndicator(
-                onRefresh: ()=> refreshList(1, userData.user.id),
+                onRefresh: ()=> refreshList(1, userData.user.id), // yukarıdan aşağı kaydırılınca listeyi yenileme
                 child: ListView.builder(
                     itemCount  : orderData.siparisList.length,
                     itemBuilder: (BuildContext context, int index){
@@ -131,8 +111,8 @@ class _HomePageState extends State<HomePage> {
                         fillingPoint   : orderData.siparisList[index].dolumyeri,
                         deliveryStation: orderData.siparisList[index].teslimatIstasyonu,
                         totalLT        : orderData.siparisList[index].toplamLitre,
-                        status         : orderData.siparisList[index].durumId == 1 ? "Onaylandı" : "Yeni Sipariş",
-                        statusColor    : selected ? checkedTxtColor : Colors.white,
+                        status         : orderData.siparisList[index].durumId == 1 ? "Yeni Sipariş" : "Onaylandı" ,
+                        statusColor    : orderData.siparisList[index].durumId == 1 ? Colors.white : checkedTxtColor,
                         onTap: () async {
                           // slidable onTap'i
                           final int id = 26;
@@ -142,17 +122,14 @@ class _HomePageState extends State<HomePage> {
                         },
                         //sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
                         
-                        child: 
-                        (orderData.siparisList[index].durumId == 1) //&&(orderData.siparisList[index].durumId == 3)&&(orderData.siparisList[index].durumId == 4)
+                        child: (orderData.siparisList[index].durumId == 1) 
                             ?  ButtonWidget(
                                 buttonText : "onayla",
                                 buttonWidth: deviceWidth(context),
                                 buttonColor: btnColor,
-                                onPressed  : () async{                                                                
-                                  setState(() async{
+                                onPressed  : () async{                                                                                                 
                                     await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null);
-                                    await refreshList(orderData.siparisList[index].durumId, userData.user.id);    
-                                  });                                                                                             
+                                    await refreshList(orderData.siparisList[index].durumId, userData.user.id);                                                                                                                               
                                 })
 
                                 :// Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
@@ -164,31 +141,31 @@ class _HomePageState extends State<HomePage> {
                                     buttonText : "doldur",
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
                                     buttonColor: btnColor,
-                                    onPressed  : //orderData.siparisList[index].durumId == 4 ?
+                                    onPressed  : orderData.siparisList[index].durumId == 2 ?
                                     () async{
                                         await uploadSelectedImage(ImageSource.camera, base64DocFill);
-                                        await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null);
+                                        await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 3, null);
                                         await refreshList(orderData.siparisList[index].durumId, userData.user.id);                                       
                                         //show message
-                                        showMessage(context);
-                                    } //: (){}
+                                        showMessage(context, base64DocFill);
+                                    } : (){}
                                   ),
-                                  //----------------------------------------------------
-                                  //------------------boşalt butonu---------------------
+                                  //----------------------------------------------------------------------------------------
+                                  //-------------------------------------boşalt butonu---------------------------------------
                                   ButtonWidget(
                                     buttonText : "boşalt",
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
                                     buttonColor: checkDateColor,
-                                    onPressed  : // orderData.siparisList[index].durumId == 3 ? 
+                                    onPressed  : orderData.siparisList[index].durumId == 3 ? 
                                     () async{
                                         await uploadSelectedImage(ImageSource.camera, base64DocEmpty);
-                                        await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null);
+                                        await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 4, null);
                                         await refreshList(orderData.siparisList[index].durumId, userData.user.id);  
                                         //show message
-                                        showMessage(context);
-                                    } //: (){}
+                                        showMessage(context, base64DocEmpty);
+                                    } : (){}
                                   ),
-                                  //----------------------------------------------------
+                                  //-------------------------------------------------------------------------------------------
                                 ],
                               )
                       );  
@@ -199,31 +176,43 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        bottomNavigationBar: LogoWidget()); // alttaki logo görünümü
+        bottomNavigationBar: LogoWidget()); // en alttaki logo görünümü
   }
-}
 
-showMessage(BuildContext context) {
+  showMessage(BuildContext context, List<String> document) { 
   return showDialog(context: context, builder: (BuildContext context){
     return AlertDialog(
       content: Text("Tekrar belge fotoğrafı çekmek ister misiniz ?",style: TextStyle(fontFamily: contentFont)),
       actions: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [          
+          children: [   
+          //-----------------------------------Evet Butonu-----------------------------------------     
           MaterialButton(
             color: btnColor,
-            child: Text("Evet",style: TextStyle(fontFamily: leadingFont)),
-            onPressed: (){}),
-          SizedBox(width: maxSpace),
+            child: Text("Evet",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
+            onPressed: () async{
+            await uploadSelectedImage(ImageSource.camera, document);
+            }),
+          //---------------------------------------------------------------------------------------
+          SizedBox(width: maxSpace), // iki buton arası boşluk
+          //-----------------------------------Hayır Butonu----------------------------------------
           MaterialButton(
-            color: btnColor,
-            child: Text("Hayır",style: TextStyle(fontFamily: leadingFont)),
-            onPressed: (){}),
-        ],),
-        
+            color    : btnColor,
+            child    : Text("Hayır",style: TextStyle(fontFamily: leadingFont)),
+            onPressed: () async{
+              // Toast message çekilen döküman sayısını gösterecek                                      
+              for (var i = 0; i <= document.length -1; i++){
+                await documentJsnAddFunc(126, userData.user.id, 3, document[i]);}
+              refreshList(1, userData.user.id);              
+              Navigator.of(context).pop();
+            }),
+          //---------------------------------------------------------------------------------------
+        ]),        
       ],
     );
-  });
-    
+  });    
 }
+}
+
+
