@@ -141,8 +141,22 @@ class _HomePageState extends State<HomePage> {
                           MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill)));
                         },
                         //sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
-                        child: orderData.siparisList[index].durumId == 2 
-                            ? Row(
+                        
+                        child: 
+                        (orderData.siparisList[index].durumId == 1) //&&(orderData.siparisList[index].durumId == 3)&&(orderData.siparisList[index].durumId == 4)
+                            ?  ButtonWidget(
+                                buttonText : "onayla",
+                                buttonWidth: deviceWidth(context),
+                                buttonColor: btnColor,
+                                onPressed  : () async{                                                                
+                                  setState(() async{
+                                    await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null);
+                                    await refreshList(orderData.siparisList[index].durumId, userData.user.id);    
+                                  });                                                                                             
+                                })
+
+                                :// Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
+                                Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   //------------------doldur butonu---------------------
@@ -150,12 +164,14 @@ class _HomePageState extends State<HomePage> {
                                     buttonText : "doldur",
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
                                     buttonColor: btnColor,
-                                    onPressed  : () {
-                                      setState(() async{
+                                    onPressed  : //orderData.siparisList[index].durumId == 4 ?
+                                    () async{
                                         await uploadSelectedImage(ImageSource.camera, base64DocFill);
-                                      });
-                                      //show message
-                                    },
+                                        await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null);
+                                        await refreshList(orderData.siparisList[index].durumId, userData.user.id);                                       
+                                        //show message
+                                        showMessage(context);
+                                    } //: (){}
                                   ),
                                   //----------------------------------------------------
                                   //------------------boşalt butonu---------------------
@@ -163,25 +179,18 @@ class _HomePageState extends State<HomePage> {
                                     buttonText : "boşalt",
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
                                     buttonColor: checkDateColor,
-                                    onPressed  : () {
-                                      setState(() {
-                                        uploadSelectedImage(ImageSource.camera, base64DocEmpty);
-                                      });
-                                    },
+                                    onPressed  : // orderData.siparisList[index].durumId == 3 ? 
+                                    () async{
+                                        await uploadSelectedImage(ImageSource.camera, base64DocEmpty);
+                                        await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null);
+                                        await refreshList(orderData.siparisList[index].durumId, userData.user.id);  
+                                        //show message
+                                        showMessage(context);
+                                    } //: (){}
                                   ),
                                   //----------------------------------------------------
                                 ],
                               )
-                            // Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
-                            : ButtonWidget(
-                                buttonText : "onayla",
-                                buttonWidth: deviceWidth(context),
-                                buttonColor: btnColor,
-                                onPressed  : () async{                                                                
-                                   documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null);
-                                   await refreshList(orderData.siparisList[index].durumId, userData.user.id);                                 
-                                                                
-                                }),
                       );  
                     },
                   ),
@@ -192,4 +201,29 @@ class _HomePageState extends State<HomePage> {
         ),
         bottomNavigationBar: LogoWidget()); // alttaki logo görünümü
   }
+}
+
+showMessage(BuildContext context) {
+  return showDialog(context: context, builder: (BuildContext context){
+    return AlertDialog(
+      content: Text("Tekrar belge fotoğrafı çekmek ister misiniz ?",style: TextStyle(fontFamily: contentFont)),
+      actions: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [          
+          MaterialButton(
+            color: btnColor,
+            child: Text("Evet",style: TextStyle(fontFamily: leadingFont)),
+            onPressed: (){}),
+          SizedBox(width: maxSpace),
+          MaterialButton(
+            color: btnColor,
+            child: Text("Hayır",style: TextStyle(fontFamily: leadingFont)),
+            onPressed: (){}),
+        ],),
+        
+      ],
+    );
+  });
+    
 }

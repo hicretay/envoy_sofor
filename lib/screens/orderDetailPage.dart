@@ -48,8 +48,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       appBar: AppBar(title: Text("sipariş detay", style: leadingStyle)),
       body: Container(
         color: bgColor,
-        child: Column(
-          children: [
+        child: Column(children: [
             Flexible(
               child: SingleChildScrollView(
                 child: Column(

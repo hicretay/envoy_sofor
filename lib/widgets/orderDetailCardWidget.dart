@@ -46,7 +46,7 @@ class OrderDetailCardWidget extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: deviceWidth(context) * 0.30,
+                width: deviceWidth(context) * 0.35,
                 child: Text(
                   "toplam litre",
                   style: cardTextStyle,
