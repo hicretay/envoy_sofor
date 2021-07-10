@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class HomePage extends StatefulWidget {
   final UserJsonModel userData;
@@ -206,11 +207,12 @@ class _HomePageState extends State<HomePage> {
           MaterialButton(
             color    : btnColor,
             child    : Text("Hayır",style: TextStyle(fontFamily: leadingFont)),
-            onPressed: () async{
-              // Toast message çekilen döküman sayısını gösterecek                                      
+            onPressed: () async{                                    
               for (var i = 0; i <= document.length -1; i++){
                 if(document.isNotEmpty)
                 await documentJsnAddFunc(126, userData.user.id, 3, document[i]);}
+              // Toast message çekilen döküman sayısını gösterecek  
+              Toast.show("${document.length} belge kaydedildi !", context, backgroundColor: Colors.grey,duration: 2, textColor: Colors.black);
               refreshList(1, userData.user.id);              
               Navigator.of(context).pop();
             }),
