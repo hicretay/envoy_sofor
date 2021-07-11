@@ -2,7 +2,8 @@ import 'package:envoy/settings/consts.dart';
 import 'package:envoy/settings/roots.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+ //WidgetsFlutterBinding.ensureInitialized();
   ThemeData theme = ThemeData(
     fontFamily: contentFont, // uygulama yazı tipi
     //------------------------------AppBar teması-------------------------------
@@ -17,11 +18,15 @@ void main() {
     ),
     //--------------------------------------------------------------------------
   );
+  // await precachePicture(
+  //     ExactAssetPicture(SvgPicture.svgStringDecoder, 'assets/images/bg.svg'),
+  //     null);
+
   runApp(
     MaterialApp(
       theme: theme,
       onGenerateRoute: Roots.generateRoute, // isimlendirilmiş sayfa yönlendirme
-      debugShowCheckedModeBanner: false, 
+      debugShowCheckedModeBanner: false,
       initialRoute: splashRoute, // uygulama başlangıcı
     ),
   );

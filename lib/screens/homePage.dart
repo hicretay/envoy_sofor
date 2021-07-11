@@ -55,6 +55,9 @@ class _HomePageState extends State<HomePage> {
   List<String> base64DocEmpty = [];
   // base64 images listesi (boşaltma)
 
+  int id=26;
+
+
 //--------------------Sipariş Listesi Yenileme Fonksiyonu-----------------------
   Future refreshList(int durumId, int companyId) async {
     final OrderJsonModel orderList = await orderJsonFunc(durumId,companyId); 
@@ -103,6 +106,7 @@ class _HomePageState extends State<HomePage> {
                 child: ListView.builder(
                     itemCount  : orderData.siparisList.length,
                     itemBuilder: (BuildContext context, int index){
+                      //this.id = orderData.siparisList[index].id;
                       if(orderData.siparisList.length == 0 && orderData.siparisList == null){
                         return CircularProgressIndicator();
                       }
@@ -115,9 +119,10 @@ class _HomePageState extends State<HomePage> {
                         status         : orderData.siparisList[index].durumId == 1 ? "Yeni Sipariş" : "Onaylandı" ,
                         statusColor    : orderData.siparisList[index].durumId == 1 ? Colors.white : checkedTxtColor,
                         onTap: () async {
+
                           // slidable onTap'i
-                          final int id = 26;
-                          final orderDetailData = await orderDetailJsonFunc(id);
+                          
+                          final orderDetailData = await orderDetailJsonFunc(id);                          
                           Navigator.push(context, 
                           MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill)));
                         },
@@ -210,7 +215,8 @@ class _HomePageState extends State<HomePage> {
             onPressed: () async{                                    
               for (var i = 0; i <= document.length -1; i++){
                 if(document.isNotEmpty)
-                await documentJsnAddFunc(126, userData.user.id, 3, document[i]);}
+                await documentJsnAddFunc(id, userData.user.id, 3, document[i]);}
+
               // Toast message çekilen döküman sayısını gösterecek  
               Toast.show("${document.length} belge kaydedildi !", context, backgroundColor: Colors.grey,duration: 2, textColor: Colors.black);
               refreshList(1, userData.user.id);              

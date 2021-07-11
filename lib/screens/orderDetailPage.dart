@@ -30,17 +30,20 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   OrderDetailJsonModel orderDetailData;
   _OrderDetailPageState({this.orderDetailData, this.base64DocEmpty, this.base64DocFill});
 
-  List<Image> imagesFill = [];
+  List<String> imagesFill = [];
   // image türünde image tutacak liste(yükleme)
 
   List<Image> imagesEmpty = [];
   // image türünde image tutacak liste(boşaltma)
-  
+
+  List<Belgeleri> docEmpty = [];
+  List<Belgeleri> docFill = [];
+
   @override
   Widget build(BuildContext context) {
     // Listeleri servis verileri ile doldurma
-    //docEmpty= orderDetailData.siparisDetay.bosaltmaBelgeleri;
-    //docEmpty= orderDetailData.siparisDetay.yuklemeBelgeleri;
+    docEmpty= orderDetailData.siparisDetay.bosaltmaBelgeleri;
+    docFill= orderDetailData.siparisDetay.yuklemeBelgeleri;
     return Scaffold(
       appBar: AppBar(title: Text("sipariş detay", style: leadingStyle)),
       body: Container(
@@ -136,21 +139,18 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               width : deviceWidth(context),
                               child : Padding(padding: const EdgeInsets.only(top: maxSpace),
                                     child       : GridView.builder(
-                                    itemCount   : base64DocFill.length,
+                                    itemCount   : docFill.length,
                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 4,
                                       mainAxisSpacing: maxSpace,
                                     ),
                                     itemBuilder: (BuildContext context, int index) {
                                       // fotoğrafları listeye doldurma
-                                      for (var item in base64DocFill) {
-                                        imagesFill.add(base64ToImage(item));
-                                      }
-                                      return GestureDetector(
+                                      return GestureDetector( 
+                                        child: Container(decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(docFill[index].belgeLink)))),
                                         onTap: () {
                                           Navigator.pushNamed(context,"/updateDocumentPage", arguments: imagesFill[index]);
                                         },
-                                        child: imagesFill[index],
                                       );
                                     }),
                               ),
@@ -177,10 +177,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                         imagesEmpty.add(base64ToImage(item));
                                       }
                                       return GestureDetector(
-                                        onTap: () {
+                                        child: imagesEmpty[index],
+                                         onTap: () {
                                           Navigator.pushNamed( context,"/updateDocumentPage",arguments: imagesEmpty[index]);
                                         },
-                                        child: imagesEmpty[index],
                                       );
                                     }),
                               ),

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/homePage.dart';
@@ -13,12 +15,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
+  
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+ 
   TextEditingController txtUsername = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
 
@@ -49,8 +53,17 @@ class _LoginPageState extends State<LoginPage> {
   void initState() { 
     super.initState();
     setState(() {
-      checkLogin(); // Sayfa yüklenirken kullanıcı giriş kontrolü yapılacak      
+      checkLogin(); // Sayfa yüklenirken kullanıcı giriş kontrolü yapılacak     
+
     });
+    
+  }
+
+  @override
+  void didChangeDependencies() {
+    
+    super.didChangeDependencies();
+    
   }
 
   @override
@@ -76,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                   height: 71, //ikon yüksekliğine göre verildi
                   decoration: BoxDecoration(
                       image : DecorationImage(
-                      image : AssetImage("assets/images/girisikon.png"),//logo resmi                 
+                      image : AssetImage("assets/images/girisikon.png"), //logo resmi                 
                       fit   : BoxFit.cover, // resim erkanı kaplayacak                 
                     ),
                   ),

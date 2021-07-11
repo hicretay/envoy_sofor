@@ -86,6 +86,7 @@ Future<DocumentJsonModel> documentJsnAddFunc(int siparisId, int soforId, int dur
     final String responseString = response.body;
     return documentJsonModelFromJson(responseString);
   } else {
+    print(response.statusCode);
     return null;
   }
 }

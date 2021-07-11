@@ -49,20 +49,11 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
 //------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    Image img = ModalRoute.of(context).settings.arguments;
-    
+    Image img = ModalRoute.of(context).settings.arguments;   
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            "belge güncelle",
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: leadingFont,
-              fontSize: 28,
-            ),
-          ),
-        ),
+          title: Text("belge güncelle",style: TextStyle(color: Colors.white,fontFamily: leadingFont,fontSize: 28))),
         body: Container(
           color: bgColor,
           child: Column(
@@ -81,9 +72,8 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                               SizedBox(height: maxSpace),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "dolum belgesi güncelle",
-                                  style: TextStyle(
+                                child: Text("dolum belgesi güncelle",
+                                    style: TextStyle(
                                     color: Colors.white,
                                     fontFamily: leadingFont,
                                     fontSize: 18,
@@ -96,9 +86,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                 height: deviceHeight(context),
                                 child: img,
                               ),
-                              SizedBox(
-                                height: maxSpace,
-                              ),
+                              SizedBox( height: maxSpace),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ButtonWidget(
@@ -117,16 +105,14 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                           ),
                         ),
                       ),
-                      // LogoWidget(),
                     ],
                   ),
                 ),
               ),
             ],
           ),
-        ),
-        //alttaki Logo görünümü
-        bottomNavigationBar: LogoWidget(),
+        ),       
+        bottomNavigationBar: LogoWidget(), // alttaki Logo görünümü
       ),
     );
   }
