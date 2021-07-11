@@ -167,17 +167,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               width : deviceWidth(context),
                               child : Padding(padding: const EdgeInsets.only(top: maxSpace),
                               child : GridView.builder(
-                                    itemCount: base64DocEmpty.length,
+                                    itemCount: docEmpty.length,
                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 4,
                                       mainAxisSpacing: maxSpace),
-                                    itemBuilder:(BuildContext context, int index){
-                                      // fotoğrafları listeye doldurma
-                                      for (var item in base64DocEmpty) {
-                                        imagesEmpty.add(base64ToImage(item));
-                                      }
+                                    itemBuilder:(BuildContext context, int index){                                    
                                       return GestureDetector(
-                                        child: imagesEmpty[index],
+                                        child: Container(decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(docEmpty[index].belgeLink)))),
                                          onTap: () {
                                           Navigator.pushNamed( context,"/updateDocumentPage",arguments: imagesEmpty[index]);
                                         },

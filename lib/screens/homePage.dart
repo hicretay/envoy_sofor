@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                                         await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 3, null);}
                                         await refreshList(orderData.siparisList[index].durumId, userData.user.id);                                       
                                         //show message
-                                        showMessage(context, base64DocFill);
+                                        showMessage(context, base64DocFill,3);
                                     } 
                                     :  (){}
                                   ),
@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                                         await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 4, null);}
                                         await refreshList(orderData.siparisList[index].durumId, userData.user.id);  
                                         //show message
-                                        showMessage(context, base64DocEmpty);
+                                        showMessage(context, base64DocEmpty,4);
                                     } 
                                     : (){}
                                   ),
@@ -191,7 +191,7 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: LogoWidget()); // en alttaki logo görünümü
   }
 
-  showMessage(BuildContext context, List<String> document) { 
+  showMessage(BuildContext context, List<String> document,int stateID) { 
   return showDialog(context: context, builder: (BuildContext context){
     return AlertDialog(
       content: Text("Tekrar belge fotoğrafı çekmek ister misiniz ?",style: TextStyle(fontFamily: contentFont)),
@@ -215,7 +215,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () async{                                    
               for (var i = 0; i <= document.length -1; i++){
                 if(document.isNotEmpty)
-                await documentJsnAddFunc(id, userData.user.id, 3, document[i]);}
+                await documentJsnAddFunc(id, userData.user.id, stateID, document[i]);}
 
               // Toast message çekilen döküman sayısını gösterecek  
               Toast.show("${document.length} belge kaydedildi !", context, backgroundColor: Colors.grey,duration: 2, textColor: Colors.black);
