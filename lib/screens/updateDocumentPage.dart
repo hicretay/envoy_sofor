@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:envoy/models.dart/orderDetailJsonModel.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
 //------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    Image img = ModalRoute.of(context).settings.arguments;   
+    Belgeleri img = ModalRoute.of(context).settings.arguments;   
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -84,7 +85,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                               Container(
                                 width: deviceWidth(context),
                                 height: deviceHeight(context),
-                                child: img,
+                                child: Container(decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(img.belgeLink)))),
                               ),
                               SizedBox( height: maxSpace),
                               Padding(

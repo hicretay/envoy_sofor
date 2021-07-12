@@ -149,7 +149,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       return GestureDetector( 
                                         child: Container(decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(docFill[index].belgeLink)))),
                                         onTap: () {
-                                          Navigator.pushNamed(context,"/updateDocumentPage", arguments: imagesFill[index]);
+                                          Navigator.pushNamed(context,"/updateDocumentPage", arguments: docFill[index]);
                                         },
                                       );
                                     }),
@@ -175,7 +175,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       return GestureDetector(
                                         child: Container(decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(docEmpty[index].belgeLink)))),
                                          onTap: () {
-                                          Navigator.pushNamed( context,"/updateDocumentPage",arguments: imagesEmpty[index]);
+                                          Navigator.pushNamed( context,"/updateDocumentPage",arguments: docEmpty[index]);
                                         },
                                       );
                                     }),
