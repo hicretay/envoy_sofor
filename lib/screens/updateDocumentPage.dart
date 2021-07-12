@@ -4,7 +4,6 @@ import 'package:envoy/models.dart/orderDetailJsonModel.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import '../settings/consts.dart';
 
@@ -16,35 +15,22 @@ class UpdateDocumentPage extends StatefulWidget {
 }
 
 class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
+
+  List<String> base =[];
+  bool isUpdate = false;
+
   //-----------------fotograf çekme - kırpma fonksiyonları----------------------
-  void uploadSelectedImage(ImageSource source) async {
+  Future uploadSelectedImage(ImageSource source,List<String> base) async {
     final imagePicker = ImagePicker();
-    final selected = await imagePicker.getImage(source: source);
-
-    setState(() {
+    final selected    = await imagePicker.getImage(source: source);
+   
       if (selected != null) {
-        imageCrop(File(selected.path));
-      }
-      
-    });
-  }
-
-  void imageCrop(File image) async {
-    File croppedImage = await ImageCropper.cropImage(
-        sourcePath: image.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.ratio5x3,
-          CropAspectRatioPreset.ratio7x5
-        ]);
-
-    if (croppedImage != null) {
-      setState(() {
-        selectedImage = croppedImage;
-      });
-    }
-    //çekilip kesilen resmi base64'e dönüştürüp, listeye ekleme
+        setState(() {
+          selectedImage = File(selected.path);
+        });
+         base.add(imageToBase64(selectedImage));
+        //çekilen resim base64 e dönüştürüldü
+      }  
   }
 
 //------------------------------------------------------------------------------
@@ -55,21 +41,17 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text("belge güncelle",style: TextStyle(color: Colors.white,fontFamily: leadingFont,fontSize: 28))),
-        body: Container(
-          color: bgColor,
-          child: Column(
-            children: [
+        body: Container(color: bgColor,
+          child: Column(children: [
               Flexible(
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
+                  child: Column(children: [
                       Padding(
                         padding: const EdgeInsets.all(maxSpace),
                         child: Card(
                           elevation: 20.0,
                           color: darkCardColor,
-                          child: Column(
-                            children: [
+                          child: Column(children: [
                               SizedBox(height: maxSpace),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -94,10 +76,10 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                   buttonColor: btnColor,
                                   buttonText: "güncelle",
                                   buttonWidth: deviceWidth(context),
-                                  onPressed: () {
-                                    setState(() {
-                                      uploadSelectedImage(ImageSource.camera);
-                                    });
+                                  onPressed: () async{
+                                      isUpdate = true;                                    
+                                      uploadSelectedImage(ImageSource.camera,base);
+                                      //await documentJsnAddFunc(26, 1, 4, img.belgeLink);                                
                                   },
                                 ),
                               ),

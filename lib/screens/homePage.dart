@@ -31,9 +31,6 @@ class _HomePageState extends State<HomePage> {
   SharedPreferences logindata;
   String username;
 
-  bool fillIsActive = true;
-  bool emptyIsActive = true;
-
   @override
   void initState() {
   super.initState();
@@ -67,7 +64,7 @@ class _HomePageState extends State<HomePage> {
   }
 //------------------------------------------------------------------------------
 
-//--------------------seçilen resmi yükleme fonksiyonu--------------------------
+//--------------------fotoğraf çekme fonksiyonu--------------------------
   Future uploadSelectedImage(ImageSource source,List<String> base) async {
     final imagePicker = ImagePicker();
     final selected    = await imagePicker.getImage(source: source);
@@ -123,8 +120,8 @@ class _HomePageState extends State<HomePage> {
                           // slidable onTap'i
                           
                           final orderDetailData = await orderDetailJsonFunc(id);                          
-                          Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => 
+                          OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill)));
                         },
                         //sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
                         

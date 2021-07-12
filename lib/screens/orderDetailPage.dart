@@ -30,12 +30,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   OrderDetailJsonModel orderDetailData;
   _OrderDetailPageState({this.orderDetailData, this.base64DocEmpty, this.base64DocFill});
 
-  List<String> imagesFill = [];
-  // image türünde image tutacak liste(yükleme)
-
-  List<Image> imagesEmpty = [];
-  // image türünde image tutacak liste(boşaltma)
-
   List<Belgeleri> docEmpty = [];
   List<Belgeleri> docFill = [];
 
