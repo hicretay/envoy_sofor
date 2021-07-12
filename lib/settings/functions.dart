@@ -15,7 +15,7 @@ Map<String, String> header = {
   "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
   "Access-Control-Allow-Methods": "POST, OPTIONS"
 };
-//------------------------Login Fonksiyonu--------------------------------------
+//-----------------------------------------Login Fonksiyonu---------------------------------------------------
 
 Future<UserJsonModel> userJsonFunc(String userName, String password) async {
   final response = await http.post(Uri.parse(loginUrl),
@@ -30,9 +30,9 @@ Future<UserJsonModel> userJsonFunc(String userName, String password) async {
     return null;
   }
 }
-//------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
 
-//-----------------------------Sipariş Fonksiyonu-------------------------------
+//-----------------------------Sipariş Fonksiyonu--------------------------------------------------------------
 Future<OrderJsonModel> orderJsonFunc(int durumId, int companyId) async {
   final response = await http.post(
     Uri.parse(orderUrl),
@@ -47,9 +47,9 @@ Future<OrderJsonModel> orderJsonFunc(int durumId, int companyId) async {
     return null;
   }
 }
-//------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
 
-//--------------------------Sipariş Detay Fonksiyonu----------------------------
+//----------------------------------------Sipariş Detay Fonksiyonu---------------------------------------------
 Future<OrderDetailJsonModel> orderDetailJsonFunc(int id) async {
   final response = await http.post(
     Uri.parse(orderDetailUrl),
@@ -64,9 +64,9 @@ Future<OrderDetailJsonModel> orderDetailJsonFunc(int id) async {
     return null;
   }
 }
-//------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 
-//--------------------------------Döküman Fonksiyonu---------------------------------------
+//-----------------------------------------Döküman Fonksiyonu----------------------------------------------------
 Future<DocumentJsonModel> documentJsnAddFunc(int siparisId, int soforId, int durum, String belge) async{
   var bodys ={};
   bodys["siparisId"] = siparisId;
@@ -90,5 +90,4 @@ Future<DocumentJsonModel> documentJsnAddFunc(int siparisId, int soforId, int dur
     return null;
   }
 }
-//-----------------------------------------------------------------------------------------
-
+//--------------------------------------------------------------------------------------------------------------

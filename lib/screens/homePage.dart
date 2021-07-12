@@ -52,9 +52,6 @@ class _HomePageState extends State<HomePage> {
   List<String> base64DocEmpty = [];
   // base64 images listesi (boşaltma)
 
-  int id=26;
-
-
 //--------------------Sipariş Listesi Yenileme Fonksiyonu-----------------------
   Future refreshList(int durumId, int companyId) async {
     final OrderJsonModel orderList = await orderJsonFunc(durumId,companyId); 
@@ -64,17 +61,15 @@ class _HomePageState extends State<HomePage> {
   }
 //------------------------------------------------------------------------------
 
-//--------------------fotoğraf çekme fonksiyonu--------------------------
+//--------------------seçilen resmi yükleme fonksiyonu--------------------------
   Future uploadSelectedImage(ImageSource source,List<String> base) async {
     final imagePicker = ImagePicker();
     final selected    = await imagePicker.getImage(source: source);
    
       if (selected != null) {
-        setState(() {
-          selectedImage = File(selected.path);
-        });
-         base.add(imageToBase64(selectedImage));
-        //çekilen resim base64 e dönüştürülüp, listeye eklendi
+          selectedImage = File(selected.path);  
+          base.add(imageToBase64(selectedImage));
+          //çekilen resim base64 e dönüştürülüp, listeye eklendi
       }  
   }
 //------------------------------------------------------------------------------
@@ -87,7 +82,7 @@ class _HomePageState extends State<HomePage> {
         title: Text("siparişler", style: leadingStyle),
         actions: [
           IconButton(icon: Icon(Icons.exit_to_app),onPressed: (){
-            logindata.setBool('login', true);
+                logindata.setBool('login', true);
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
           })
         ],
@@ -116,12 +111,11 @@ class _HomePageState extends State<HomePage> {
                         status         : orderData.siparisList[index].durumId == 1 ? "Yeni Sipariş" : "Onaylandı" ,
                         statusColor    : orderData.siparisList[index].durumId == 1 ? Colors.white : checkedTxtColor,
                         onTap: () async {
-
                           // slidable onTap'i
                           
-                          final orderDetailData = await orderDetailJsonFunc(id);                          
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => 
-                          OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill)));
+                          final orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);                          
+                          Navigator.push(context, 
+                          MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill)));
                         },
                         //sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
                         
@@ -135,8 +129,8 @@ class _HomePageState extends State<HomePage> {
                                     await refreshList(orderData.siparisList[index].durumId, userData.user.id);                                                                                                                               
                                 })
 
-                                :// Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
-                                Row(
+                                // Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
+                                :Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   //--------------------------------------doldur butonu------------------------------------
@@ -149,10 +143,10 @@ class _HomePageState extends State<HomePage> {
                                         await uploadSelectedImage(ImageSource.camera, base64DocFill);
                                         if(base64DocFill.isNotEmpty)
                                         {
-                                        await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 3, null);}
+                                        showMessage(context, base64DocFill,3,orderData.siparisList[index].id);}
                                         await refreshList(orderData.siparisList[index].durumId, userData.user.id);                                       
                                         //show message
-                                        showMessage(context, base64DocFill,3);
+                                        
                                     } 
                                     :  (){}
                                   ),
@@ -167,10 +161,10 @@ class _HomePageState extends State<HomePage> {
                                         await uploadSelectedImage(ImageSource.camera, base64DocEmpty);
                                         if(base64DocEmpty.isNotEmpty)
                                         {
-                                        await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 4, null);}
+                                        showMessage(context, base64DocEmpty,4,orderData.siparisList[index].id);}
                                         await refreshList(orderData.siparisList[index].durumId, userData.user.id);  
                                         //show message
-                                        showMessage(context, base64DocEmpty,4);
+                                        
                                     } 
                                     : (){}
                                   ),
@@ -188,7 +182,7 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: LogoWidget()); // en alttaki logo görünümü
   }
 
-  showMessage(BuildContext context, List<String> document,int stateID) { 
+  showMessage(BuildContext context, List<String> document,int stateID, int orderID) { 
   return showDialog(context: context, builder: (BuildContext context){
     return AlertDialog(
       content: Text("Tekrar belge fotoğrafı çekmek ister misiniz ?",style: TextStyle(fontFamily: contentFont)),
@@ -206,18 +200,20 @@ class _HomePageState extends State<HomePage> {
           //---------------------------------------------------------------------------------------
           SizedBox(width: maxSpace), // iki buton arası boşluk
           //-----------------------------------Hayır Butonu----------------------------------------
-          MaterialButton(
+          MaterialButton( 
             color    : btnColor,
             child    : Text("Hayır",style: TextStyle(fontFamily: leadingFont)),
             onPressed: () async{                                    
               for (var i = 0; i <= document.length -1; i++){
-                if(document.isNotEmpty)
-                await documentJsnAddFunc(id, userData.user.id, stateID, document[i]);}
+               
+                await documentJsnAddFunc(orderID, userData.user.id, stateID, document[i]);}
 
               // Toast message çekilen döküman sayısını gösterecek  
               Toast.show("${document.length} belge kaydedildi !", context, backgroundColor: Colors.grey,duration: 2, textColor: Colors.black);
               refreshList(1, userData.user.id);              
               Navigator.of(context).pop();
+              document.clear();
+
             }),
           //---------------------------------------------------------------------------------------
         ]),        
