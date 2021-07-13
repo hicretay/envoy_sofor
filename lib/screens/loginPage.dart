@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/homePage.dart';
@@ -129,6 +130,9 @@ class _LoginPageState extends State<LoginPage> {
                     //------------------login verisinin çekilmesi-------------------
                     final String uSERNAME = "sselman";
                     final String pASSWORD = "0";
+                    
+                    var connectivityResult = Connectivity().checkConnectivity();
+                    if(await connectivityResult != ConnectivityResult.none){
                     final UserJsonModel userData = await userJsonFunc(uSERNAME, pASSWORD);
                     //--------------------------------------------------------------
 
@@ -150,10 +154,24 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) => 
                     HomePage(userData: userData, orderData: orderData)));
                     //tıklandığında anasayfaya yönlendirilecek 
-                    progressUHD.dismiss();                            
-                    }
-                    // Boş ise beklet
-                    else progressUHD.dismiss();
+                    progressUHD.dismiss();}}}
+
+                    else {
+                    progressUHD.dismiss();
+                    showDialog(context: context, builder: (BuildContext context){
+                      return AlertDialog(
+                        content: Text("İnternet bağlantınızı kontrol ediniz.", style: TextStyle(fontFamily: contentFont)),
+                        actions: <Widget>[
+                           MaterialButton(
+                           color: btnColor,
+                           child: Text("Kapat",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
+                           onPressed: () async{
+                             Navigator.of(context).pop();
+                          }),
+                          
+                        ],
+                      );
+                    });
                     }
                   },
                 ),

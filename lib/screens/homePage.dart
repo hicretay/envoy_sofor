@@ -205,7 +205,7 @@ class _HomePageState extends State<HomePage> {
             child    : Text("Hayır",style: TextStyle(fontFamily: leadingFont)),
             onPressed: () async{                                    
               for (var i = 0; i <= document.length -1; i++){
-               
+              
                 await documentJsnAddFunc(orderID, userData.user.id, stateID, document[i]);}
 
               // Toast message çekilen döküman sayısını gösterecek  

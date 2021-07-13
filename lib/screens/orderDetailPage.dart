@@ -119,14 +119,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                 ),
                               ),
                             ),
-                            //------------------------------------------------------------
-                            SizedBox(height: maxSpace),
-                            // şöför onay tarihi - yükleme belgeleri arası boşluk
-                            //-------------yükleme belgeleri başlık container'ı------------------
+                            //----------------------------------------------------------------------------
+                            SizedBox(height: maxSpace), // şöför onay tarihi - yükleme belgeleri arası boşluk
+                            //-------------yükleme belgeleri başlık container'ı---------------------------
                             LeadingContainerWidget(
                                 leading: "yükleme belgeleri"),
-                            //------------------------------------------------------------
-                            //----------------yükleme belgeleri içeriği-------------------
+                            //--------------------------------------------------------------------------------
+                            //--------------------------yükleme belgeleri içeriği-----------------------------
                             Container(
                               height: deviceHeight(context) * 0.3,
                               color : lightCardColor,
@@ -141,7 +140,17 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     itemBuilder: (BuildContext context, int index) {
                                       // fotoğrafları listeye doldurma
                                       return GestureDetector( 
-                                        child: Container(decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(docFill[index].belgeLink)))),
+                                        child: Image.network(docFill[index].belgeLink,
+                                        loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
+                                        if (loadingProgress == null) return child;
+                                           return Center(
+                                           child: CircularProgressIndicator(
+                                           value: loadingProgress.expectedTotalBytes != null ? 
+                                          loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                                          : null,
+                                          ));
+                                        }),
+
                                         onTap: () {
                                           Navigator.pushNamed(context,"/updateDocumentPage", arguments: docFill[index]);
                                         },
@@ -167,8 +176,18 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       mainAxisSpacing: maxSpace),
                                     itemBuilder:(BuildContext context, int index){                                    
                                       return GestureDetector(
-                                        child: Container(decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(docEmpty[index].belgeLink)))),
-                                         onTap: () {
+                                        child: Image.network(docEmpty[index].belgeLink,
+                                        loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
+                                        if (loadingProgress == null) return child;
+                                           return Center(
+                                           child: CircularProgressIndicator(
+                                           value: loadingProgress.expectedTotalBytes != null ? 
+                                          loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                                          : null,
+                                          ));
+                                        }),
+                              
+                                        onTap: () {
                                           Navigator.pushNamed( context,"/updateDocumentPage",arguments: docEmpty[index]);
                                         },
                                       );
