@@ -62,19 +62,23 @@ class OrderDetailJsonModelSiparisDetay {
 
 class Belgeleri {
     Belgeleri({
+        this.id,
         this.tarih,
         this.belgeLink,
     });
 
+    int id;
     String tarih;
     String belgeLink;
 
     factory Belgeleri.fromJson(Map<String, dynamic> json) => Belgeleri(
+        id: json["id"],
         tarih: json["tarih"],
         belgeLink: json["belgeLink"],
     );
 
     Map<String, dynamic> toJson() => {
+        "id": id,
         "tarih": tarih,
         "belgeLink": belgeLink,
     };

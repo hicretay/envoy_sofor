@@ -1,62 +1,75 @@
 import 'dart:io';
-
 import 'package:envoy/models.dart/orderDetailJsonModel.dart';
+import 'package:envoy/settings/functions.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../settings/consts.dart';
 
+// ignore: must_be_immutable
 class UpdateDocumentPage extends StatefulWidget {
-  UpdateDocumentPage({Key key}) : super(key: key);
+  Belgeleri img;
+
+  UpdateDocumentPage({Key key, this.img}) : super(key: key);
 
   @override
-  _UpdateDocumentPageState createState() => _UpdateDocumentPageState();
+  _UpdateDocumentPageState createState() =>  _UpdateDocumentPageState(img: img);
+
 }
 
 class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
+  List<String> base = []; // liste adı
 
-  List<String> base =[];
-  bool isUpdate = false;
+    Belgeleri img;
+  _UpdateDocumentPageState({this.img});
 
   //-----------------fotograf çekme - kırpma fonksiyonları----------------------
-  Future uploadSelectedImage(ImageSource source,List<String> base) async {
+  Future uploadSelectedImage(ImageSource source, List<String> base) async {
     final imagePicker = ImagePicker();
-    final selected    = await imagePicker.getImage(source: source);
-   
-      if (selected != null) {
-        setState(() {
-          selectedImage = File(selected.path);
-        });
-         base.add(imageToBase64(selectedImage));
-        //çekilen resim base64 e dönüştürüldü
-      }  
+    final selected = await imagePicker.getImage(source: source);
+
+    if (selected != null) {
+      setState(() {
+        selectedImage = File(selected.path);
+      });
+      base.add(imageToBase64(selectedImage));
+      //çekilen resim base64 e dönüştürüldü
+    }
   }
 
 //------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    Belgeleri img = ModalRoute.of(context).settings.arguments;   
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("belge güncelle",style: TextStyle(color: Colors.white,fontFamily: leadingFont,fontSize: 28))),
-        body: Container(color: bgColor,
-          child: Column(children: [
+            title: Text("belge güncelle",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: leadingFont,
+                    fontSize: 28))),
+        body: Container(
+          color: bgColor,
+          child: Column(
+            children: [
               Flexible(
                 child: SingleChildScrollView(
-                  child: Column(children: [
+                  child: Column(
+                    children: [
                       Padding(
                         padding: const EdgeInsets.all(maxSpace),
                         child: Card(
                           elevation: 20.0,
                           color: darkCardColor,
-                          child: Column(children: [
+                          child: Column(
+                            children: [
                               SizedBox(height: maxSpace),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text("dolum belgesi güncelle",
-                                    style: TextStyle(
+                                child: Text(
+                                  "dolum belgesi güncelle",
+                                  style: TextStyle(
                                     color: Colors.white,
                                     fontFamily: leadingFont,
                                     fontSize: 18,
@@ -64,22 +77,34 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                 ),
                               ),
                               Divider(color: Colors.grey),
+                              
                               Container(
                                 width: deviceWidth(context),
                                 height: deviceHeight(context),
-                                child: Container(decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(img.belgeLink)))),
+                                child: Image.network(img.belgeLink,
+                                loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                    return Center(
+                                     child: CircularProgressIndicator(
+                                     value: loadingProgress.expectedTotalBytes != null 
+                                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                                    : null,
+                                    ));
+                                  }),
                               ),
-                              SizedBox( height: maxSpace),
+
+                              SizedBox(height: maxSpace),
+
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ButtonWidget(
                                   buttonColor: btnColor,
                                   buttonText: "güncelle",
                                   buttonWidth: deviceWidth(context),
-                                  onPressed: () async{
-                                      isUpdate = true;                                    
-                                      uploadSelectedImage(ImageSource.camera,base);
-                                      //await documentJsnAddFunc(26, 1, 4, img.belgeLink);                                
+                                  onPressed: () async {
+                                    uploadSelectedImage(
+                                        ImageSource.camera, base);
+                                        //documentJsnAddFunc(siparisId, soforId, durum, img.id, img.belgeLink);
                                   },
                                 ),
                               ),
@@ -94,7 +119,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
               ),
             ],
           ),
-        ),       
+        ),
         bottomNavigationBar: LogoWidget(), // alttaki Logo görünümü
       ),
     );

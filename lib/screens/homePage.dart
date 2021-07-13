@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                                 buttonWidth: deviceWidth(context),
                                 buttonColor: btnColor,
                                 onPressed  : () async{                                                                                                 
-                                    await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null);
+                                    await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null,null); // belgeId = null, belge = null
                                     await refreshList(orderData.siparisList[index].durumId, userData.user.id);                                                                                                                               
                                 })
 
@@ -206,7 +206,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () async{                                    
               for (var i = 0; i <= document.length -1; i++){
               
-                await documentJsnAddFunc(orderID, userData.user.id, stateID, document[i]);}
+                await documentJsnAddFunc(orderID, userData.user.id, stateID, 0,document[i]);}
 
               // Toast message çekilen döküman sayısını gösterecek  
               Toast.show("${document.length} belge kaydedildi !", context, backgroundColor: Colors.grey,duration: 2, textColor: Colors.black);

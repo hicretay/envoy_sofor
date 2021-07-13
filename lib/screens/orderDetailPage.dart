@@ -1,4 +1,5 @@
 import 'package:envoy/models.dart/orderDetailJsonModel.dart';
+import 'package:envoy/screens/updateDocumentPage.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/widgets/leadingContainerWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
@@ -99,8 +100,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       }),
                                 )),
                             //------------------------------------------------------------
-                            SizedBox(height: maxSpace),
-                            //depo içeriği açıklması - şöför onay tarihi arası boşluk
+                            SizedBox(height: maxSpace), // depo içeriği açıklması - şöför onay tarihi arası boşluk
                             //------------şöför onay tarihi container'ı-------------------
                             Container(
                               width : deviceWidth(context),
@@ -122,8 +122,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                             //----------------------------------------------------------------------------
                             SizedBox(height: maxSpace), // şöför onay tarihi - yükleme belgeleri arası boşluk
                             //-------------yükleme belgeleri başlık container'ı---------------------------
-                            LeadingContainerWidget(
-                                leading: "yükleme belgeleri"),
+                            LeadingContainerWidget( leading: "yükleme belgeleri"),
                             //--------------------------------------------------------------------------------
                             //--------------------------yükleme belgeleri içeriği-----------------------------
                             Container(
@@ -145,14 +144,14 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                         if (loadingProgress == null) return child;
                                            return Center(
                                            child: CircularProgressIndicator(
-                                           value: loadingProgress.expectedTotalBytes != null ? 
-                                          loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                          : null,
+                                           value: loadingProgress.expectedTotalBytes != null 
+                                           ?  loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                                           : null,
                                           ));
                                         }),
 
                                         onTap: () {
-                                          Navigator.pushNamed(context,"/updateDocumentPage", arguments: docFill[index]);
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> UpdateDocumentPage(img: docFill[index])));
                                         },
                                       );
                                     }),
@@ -181,14 +180,15 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                         if (loadingProgress == null) return child;
                                            return Center(
                                            child: CircularProgressIndicator(
-                                           value: loadingProgress.expectedTotalBytes != null ? 
-                                          loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                          : null,
+                                           value: loadingProgress.expectedTotalBytes != null 
+                                           ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                                           : null,
                                           ));
                                         }),
                               
                                         onTap: () {
-                                          Navigator.pushNamed( context,"/updateDocumentPage",arguments: docEmpty[index]);
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> UpdateDocumentPage(img: docEmpty[index])));
+                                          //Navigator.pushNamed( context,"/updateDocumentPage",arguments: docEmpty[index]);
                                         },
                                       );
                                     }),

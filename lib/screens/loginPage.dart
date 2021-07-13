@@ -55,7 +55,6 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     setState(() {
       checkLogin(); // Sayfa yüklenirken kullanıcı giriş kontrolü yapılacak     
-
     });
     
   }

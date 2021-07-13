@@ -64,13 +64,13 @@ Future<OrderDetailJsonModel> orderDetailJsonFunc(int id) async {
   }
 }
 //--------------------------------------------------------------------------------------------------------------
-
 //-----------------------------------------Döküman Fonksiyonu----------------------------------------------------
-Future<DocumentJsonModel> documentJsnAddFunc(int siparisId, int soforId, int durum, String belge) async{
+Future<DocumentJsonModel> documentJsnAddFunc(int siparisId, int soforId, int durum, int id, String belge) async{
   var bodys ={};
   bodys["siparisId"] = siparisId;
   bodys["soforId"]   = soforId;
   bodys["durum"]     = durum;
+  bodys["id"]        = id;
   bodys["belge"]     = belge;
 
   String body = json.encode(bodys);
@@ -89,4 +89,38 @@ Future<DocumentJsonModel> documentJsnAddFunc(int siparisId, int soforId, int dur
     return null;
   }
 }
+//--------------------------------------------------------------------------------------------------------------
+//-----------------------------------------Döküman Fonksiyonu----------------------------------------------------
+// Future<DocumentJsonModel> documentJsnAddFunc(int siparisId, int soforId, int durum, int id, String belge) async{ // id = belge id'si
+//   var bodys ={};
+//   bodys["siparisId"] = siparisId;
+//   bodys["soforId"]   = soforId;
+//   bodys["durum"]     = durum;
+//   bodys["belge"]     = belge;
+
+//   var bodyId ={};
+//   bodyId["siparisId"] = siparisId;
+//   bodyId["soforId"]   = soforId;
+//   bodyId["durum"]     = durum;
+//   bodyId["id"]        = id;
+//   bodyId["belge"]     = belge;
+
+//   String body = json.encode(bodys);
+//   String body2 = json.encode(bodyId);
+
+
+//   final response = await http.post(
+//     Uri.parse(documentUrl),
+//     body: id==0 ? body2 : body, // id = 0 ise ekleme yapar (id'li olmalı) 
+//     headers: header
+//   );
+
+//   if (response.statusCode == 200) {
+//     final String responseString = response.body;
+//     return documentJsonModelFromJson(responseString);
+//   } else {
+//     print(response.statusCode);
+//     return null;
+//   }
+// }
 //--------------------------------------------------------------------------------------------------------------
