@@ -195,6 +195,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                         }),
                               
                                         onTap: () async{
+                                          
                                           final orderData = await orderJsonFunc(globalOrderId, userData.user.id);
                                           final orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);
                                           Navigator.push(context, MaterialPageRoute(builder: (context)=> 

@@ -60,7 +60,6 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
 
   @override
   Widget build(BuildContext context) {
-    String link = img.belgeLink;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -73,66 +72,70 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
           color: bgColor,
           child: Column(children: [
               Flexible(
-                child: SingleChildScrollView(
-                  child: Column(children: [
-                      Padding(
-                        padding: const EdgeInsets.all(maxSpace),
-                        child: Card(
-                          elevation: 20.0,
-                          color: darkCardColor,
-                          child: Column(children: [
-                              SizedBox(height: maxSpace),
-                              Padding( padding: const EdgeInsets.all(8.0),
-                                child: Text("dolum belgesi güncelle",
-                                    style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: leadingFont,
-                                    fontSize: 18,
+                child: ListView.builder(
+                  itemCount: 1,
+                  itemBuilder: (BuildContext context, int index){
+                  return Column(children: [
+                        Padding(
+                          padding: const EdgeInsets.all(maxSpace),
+                          child: Card(
+                            elevation: 20.0,
+                            color: darkCardColor,
+                            child: Column(children: [
+                                SizedBox(height: maxSpace),
+                                Padding( padding: const EdgeInsets.all(8.0),
+                                  child: Text("dolum belgesi güncelle",
+                                      style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: leadingFont,
+                                      fontSize: 18,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Divider(color: Colors.grey),
-                              Container(
-                                width : deviceWidth(context),
-                                height: deviceHeight(context),
-                                child : Image.network(link,
-                                loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                      value: loadingProgress.expectedTotalBytes != null 
-                                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                      : null,
-                                    ));
-                                  }),
-                              ),
-                              SizedBox(height: maxSpace),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ButtonWidget(
-                                  buttonColor: btnColor,
-                                  buttonText : "güncelle",
-                                  buttonWidth: deviceWidth(context),
-                                  onPressed  : () async {
-                                      var orderDetailData = await orderDetailJsonFunc(globalOrderId);
-                                      await uploadSelectedImage(ImageSource.camera,base);
-                                      await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, img.id, base.first);
-                                      orderDetailData = await orderDetailJsonFunc(globalOrderId);                          
-                                      Navigator.push(context,MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: this.orderDetailData, userData: userData)));
-                                      setState(() {
-                                        link=img.belgeLink;
-                                      });
-                                  },
+                                Divider(color: Colors.grey),
+                                Container(
+                                  width : deviceWidth(context),
+                                  height: deviceHeight(context),
+                                  child : Image.network(img.belgeLink,
+                                  loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                        value: loadingProgress.expectedTotalBytes != null 
+                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                                        : null,
+                                      ));
+                                    }),
                                 ),
-                              ),
-                              SizedBox(height: defaultPadding),
-                            ],
+                                SizedBox(height: maxSpace),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ButtonWidget(
+                                    buttonColor: btnColor,
+                                    buttonText : "güncelle",
+                                    buttonWidth: deviceWidth(context),
+                                    onPressed  : () async {
+                                      
+                                        var orderDetailData = await orderDetailJsonFunc(globalOrderId);
+                                        await uploadSelectedImage(ImageSource.camera,base);
+                                        await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, img.id, base.first);
+                                        setState(() {
+                                           globalOrderId = orderData.siparisList[index].id;
+                                        });  
+                                        orderDetailData = await orderDetailJsonFunc(globalOrderId);      
+                                        Navigator.push(context,MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: this.orderDetailData, userData: userData))); 
+                                         
+                                    },
+                                  ),
+                                ),
+                                SizedBox(height: defaultPadding),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
+                      ],
+                    );
+                })
               ),
             ],
           ),
