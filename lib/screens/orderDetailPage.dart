@@ -2,6 +2,7 @@ import 'package:envoy/models.dart/orderDetailJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/updateDocumentPage.dart';
 import 'package:envoy/settings/consts.dart';
+import 'package:envoy/settings/functions.dart';
 import 'package:envoy/widgets/leadingContainerWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:envoy/widgets/orderDetailCardWidget.dart';
@@ -36,6 +37,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
   List<Belgeleri> docEmpty = [];
   List<Belgeleri> docFill = [];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -153,9 +155,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                           ));
                                         }),
 
-                                        onTap: () {
+                                        onTap: () async{
+                                          final orderData = await orderJsonFunc(globalOrderId, userData.user.id);
+                                          final orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);
                                           Navigator.push(context, MaterialPageRoute(builder: (context)=> 
-                                          UpdateDocumentPage(img: docFill[index],orderDetailData: orderDetailData,userData: userData)));
+                                          UpdateDocumentPage(img: docFill[index],orderDetailData: orderDetailData,userData: userData, orderData: orderData)));
                                         },
                                       );
                                     }),
@@ -190,9 +194,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                           ));
                                         }),
                               
-                                        onTap: () {
+                                        onTap: () async{
+                                          final orderData = await orderJsonFunc(globalOrderId, userData.user.id);
+                                          final orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);
                                           Navigator.push(context, MaterialPageRoute(builder: (context)=> 
-                                          UpdateDocumentPage(img: docEmpty[index],userData: userData, orderDetailData: orderDetailData))); 
+                                          UpdateDocumentPage(img: docEmpty[index],userData: userData, orderDetailData: orderDetailData, orderData: orderData,))); 
                                         },
                                       );
                                     }),

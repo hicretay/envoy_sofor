@@ -110,11 +110,11 @@ class _HomePageState extends State<HomePage> {
                         statusColor    : orderData.siparisList[index].durumId == 1 ? Colors.white : checkedTxtColor,
                         onTap: () async {
 
-                          // slidable onTap'i                         
-                          final orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);
+                          // slidable onTap'i  
                           setState(() {
                               globalOrderId = orderData.siparisList[index].id;
-                          });                          
+                          });                        
+                          final orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);                           
                           Navigator.push(context, 
                           MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill,userData: userData)));
                         },

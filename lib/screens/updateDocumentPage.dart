@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:envoy/models.dart/orderDetailJsonModel.dart';
+import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
+import 'package:envoy/screens/orderDetailPage.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
@@ -13,24 +15,26 @@ class UpdateDocumentPage extends StatefulWidget {
   Belgeleri img;
   final UserJsonModel userData;
   final OrderDetailJsonModel orderDetailData;
+  final OrderJsonModel orderData;
 
-
-  UpdateDocumentPage({Key key, this.img, this.userData, this.orderDetailData}) : super(key: key);
+  UpdateDocumentPage({Key key, this.img, this.userData, this.orderDetailData, this.orderData}) : super(key: key);
 
   @override
   _UpdateDocumentPageState createState() =>  
-  _UpdateDocumentPageState(img: img,userData: userData, orderDetailData: orderDetailData);
+  _UpdateDocumentPageState(img: img,userData: userData, orderDetailData: orderDetailData, orderData: orderData);
 
 }
 
 class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
 
-
   UserJsonModel userData;
+  OrderJsonModel orderData;
   OrderDetailJsonModel orderDetailData;
   Belgeleri img;
 
-  _UpdateDocumentPageState({this.img,this.userData, this.orderDetailData});
+  List<String> base = [];
+
+  _UpdateDocumentPageState({this.img,this.userData, this.orderDetailData, this.orderData});
 
   //-----------------fotograf çekme - kırpma fonksiyonları----------------------
   Future uploadSelectedImage(ImageSource source, List<String> base) async {
@@ -46,7 +50,14 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
     }
   }
 //------------------------------------------------------------------------------
-  List<String> base = [];
+
+    Future refreshList(int durumId, int companyId) async {
+    final OrderJsonModel orderList = await orderJsonFunc(durumId,companyId); 
+    setState(() {
+      orderData = orderList;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     String link = img.belgeLink;
@@ -103,9 +114,11 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                   buttonText : "güncelle",
                                   buttonWidth: deviceWidth(context),
                                   onPressed  : () async {
-                                      await uploadSelectedImage(
-                                      ImageSource.camera,base);
+                                      var orderDetailData = await orderDetailJsonFunc(globalOrderId);
+                                      await uploadSelectedImage(ImageSource.camera,base);
                                       await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, img.id, base.first);
+                                      orderDetailData = await orderDetailJsonFunc(globalOrderId);                          
+                                      Navigator.push(context,MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: this.orderDetailData, userData: userData)));
                                       setState(() {
                                         link=img.belgeLink;
                                       });
