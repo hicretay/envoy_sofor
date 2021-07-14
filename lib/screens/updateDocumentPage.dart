@@ -14,18 +14,22 @@ class UpdateDocumentPage extends StatefulWidget {
   final UserJsonModel userData;
   final OrderDetailJsonModel orderDetailData;
 
+
   UpdateDocumentPage({Key key, this.img, this.userData, this.orderDetailData}) : super(key: key);
 
   @override
-  _UpdateDocumentPageState createState() =>  _UpdateDocumentPageState(img: img,userData: userData, orderDetailData: orderDetailData);
+  _UpdateDocumentPageState createState() =>  
+  _UpdateDocumentPageState(img: img,userData: userData, orderDetailData: orderDetailData);
 
 }
 
 class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
-  List<String> base = []; // liste adı
+
+
   UserJsonModel userData;
   OrderDetailJsonModel orderDetailData;
-    Belgeleri img;
+  Belgeleri img;
+
   _UpdateDocumentPageState({this.img,this.userData, this.orderDetailData});
 
   //-----------------fotograf çekme - kırpma fonksiyonları----------------------
@@ -41,10 +45,11 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
       //çekilen resim base64 e dönüştürüldü
     }
   }
-
 //------------------------------------------------------------------------------
+  List<String> base = [];
   @override
   Widget build(BuildContext context) {
+    String link = img.belgeLink;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -52,7 +57,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
         style : TextStyle(
         color : Colors.white,
         fontFamily: leadingFont,
-         fontSize : 28))),
+        fontSize  : 28))),
           body : Container(
           color: bgColor,
           child: Column(children: [
@@ -76,11 +81,10 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                 ),
                               ),
                               Divider(color: Colors.grey),
-
                               Container(
-                                width: deviceWidth(context),
+                                width : deviceWidth(context),
                                 height: deviceHeight(context),
-                                child: Image.network(img.belgeLink,
+                                child : Image.network(link,
                                 loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
                                   if (loadingProgress == null) return child;
                                     return Center(
@@ -91,19 +95,20 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                     ));
                                   }),
                               ),
-
                               SizedBox(height: maxSpace),
-
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ButtonWidget(
                                   buttonColor: btnColor,
-                                  buttonText: "güncelle",
+                                  buttonText : "güncelle",
                                   buttonWidth: deviceWidth(context),
-                                  onPressed: () async {
-                                    uploadSelectedImage(
-                                        ImageSource.camera, base);
-                                        documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, img.id, img.belgeLink);
+                                  onPressed  : () async {
+                                      await uploadSelectedImage(
+                                      ImageSource.camera,base);
+                                      await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, img.id, base.first);
+                                      setState(() {
+                                        link=img.belgeLink;
+                                      });
                                   },
                                 ),
                               ),

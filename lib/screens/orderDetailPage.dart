@@ -154,7 +154,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                         }),
 
                                         onTap: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> UpdateDocumentPage(img: docFill[index],orderDetailData: orderDetailData,userData: userData)));
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> 
+                                          UpdateDocumentPage(img: docFill[index],orderDetailData: orderDetailData,userData: userData)));
                                         },
                                       );
                                     }),

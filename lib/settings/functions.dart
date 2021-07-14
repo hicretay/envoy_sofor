@@ -64,7 +64,7 @@ Future<OrderDetailJsonModel> orderDetailJsonFunc(int id) async {
   }
 }
 //--------------------------------------------------------------------------------------------------------------
-//-----------------------------------------Döküman Fonksiyonu----------------------------------------------------
+//---------------------------------------Döküman Ekleme Fonksiyonu----------------------------------------------
 Future<DocumentJsonModel> documentJsnAddFunc(int siparisId, int soforId, int durum, int id, String belge) async{
   var bodys ={};
   bodys["siparisId"] = siparisId;

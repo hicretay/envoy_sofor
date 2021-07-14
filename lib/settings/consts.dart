@@ -43,6 +43,8 @@ const cardTextStyle = TextStyle(
 
 const contentTextStyle = TextStyle(color: Colors.white, fontSize: 12);
 
+int globalOrderId = 0;
+
 //-----------------------------------URLs---------------------------------------
 //Fotoğraflar
 const imagesUrl = "http://portalservice.kirbag.com/api/Image/imageId";
