@@ -1,4 +1,5 @@
 import 'package:envoy/models.dart/orderDetailJsonModel.dart';
+import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/updateDocumentPage.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/widgets/leadingContainerWidget.dart';
@@ -9,16 +10,17 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class OrderDetailPage extends StatefulWidget {
   final OrderDetailJsonModel orderDetailData;
+  final UserJsonModel userData;
 
    List<String> base64DocFill = [];
   // base64 images listesi (yükleme)
 
   List<String> base64DocEmpty = [];
   // base64 images listesi (boşaltma)
-  OrderDetailPage({Key key, this.orderDetailData,this.base64DocEmpty,this.base64DocFill}) : super(key: key);
+  OrderDetailPage({Key key, this.orderDetailData,this.base64DocEmpty,this.base64DocFill, this.userData}) : super(key: key);
 
   @override
-  _OrderDetailPageState createState() => _OrderDetailPageState(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill);
+  _OrderDetailPageState createState() => _OrderDetailPageState(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill,userData: userData);
 }
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
@@ -29,7 +31,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   // base64 images listesi (boşaltma)
 
   OrderDetailJsonModel orderDetailData;
-  _OrderDetailPageState({this.orderDetailData, this.base64DocEmpty, this.base64DocFill});
+  UserJsonModel userData;
+  _OrderDetailPageState({this.orderDetailData, this.base64DocEmpty, this.base64DocFill, this.userData});
 
   List<Belgeleri> docEmpty = [];
   List<Belgeleri> docFill = [];
@@ -142,16 +145,16 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                         child: Image.network(docFill[index].belgeLink,
                                         loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
                                         if (loadingProgress == null) return child;
-                                           return Center(
-                                           child: CircularProgressIndicator(
-                                           value: loadingProgress.expectedTotalBytes != null 
-                                           ?  loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                           : null,
+                                            return Center(
+                                            child: CircularProgressIndicator(
+                                            value: loadingProgress.expectedTotalBytes != null 
+                                            ?  loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                                            : null,
                                           ));
                                         }),
 
                                         onTap: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> UpdateDocumentPage(img: docFill[index])));
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> UpdateDocumentPage(img: docFill[index],orderDetailData: orderDetailData,userData: userData)));
                                         },
                                       );
                                     }),
@@ -178,17 +181,17 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                         child: Image.network(docEmpty[index].belgeLink,
                                         loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
                                         if (loadingProgress == null) return child;
-                                           return Center(
-                                           child: CircularProgressIndicator(
-                                           value: loadingProgress.expectedTotalBytes != null 
-                                           ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                           : null,
+                                            return Center(
+                                            child: CircularProgressIndicator(
+                                            value: loadingProgress.expectedTotalBytes != null 
+                                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                                            : null,
                                           ));
                                         }),
                               
                                         onTap: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> UpdateDocumentPage(img: docEmpty[index])));
-                                          //Navigator.pushNamed( context,"/updateDocumentPage",arguments: docEmpty[index]);
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> 
+                                          UpdateDocumentPage(img: docEmpty[index],userData: userData, orderDetailData: orderDetailData))); 
                                         },
                                       );
                                     }),

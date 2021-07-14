@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
   super.initState();
     setState(() {
-    refreshList(1, userData.user.id);
+    refreshList(1, userData.user.id); // burayaaaa baaaak
     initial();
    });
   }
@@ -98,7 +98,6 @@ class _HomePageState extends State<HomePage> {
                 child: ListView.builder(
                     itemCount  : orderData.siparisList.length,
                     itemBuilder: (BuildContext context, int index){
-                      //this.id = orderData.siparisList[index].id;
                       if(orderData.siparisList.length == 0 && orderData.siparisList == null){
                         return CircularProgressIndicator();
                       }
@@ -111,11 +110,11 @@ class _HomePageState extends State<HomePage> {
                         status         : orderData.siparisList[index].durumId == 1 ? "Yeni Sipariş" : "Onaylandı" ,
                         statusColor    : orderData.siparisList[index].durumId == 1 ? Colors.white : checkedTxtColor,
                         onTap: () async {
-                          // slidable onTap'i
-                          
+
+                          // slidable onTap'i                         
                           final orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);                          
                           Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill)));
+                          MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill,userData: userData)));
                         },
                         //sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
                         
@@ -125,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                                 buttonWidth: deviceWidth(context),
                                 buttonColor: btnColor,
                                 onPressed  : () async{                                                                                                 
-                                    await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null,null); // belgeId = null, belge = null
+                                    await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null,null); // belgeId = null, belgeiçerik = null
                                     await refreshList(orderData.siparisList[index].durumId, userData.user.id);                                                                                                                               
                                 })
 
@@ -209,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                 await documentJsnAddFunc(orderID, userData.user.id, stateID, 0,document[i]);}
 
               // Toast message çekilen döküman sayısını gösterecek  
-              Toast.show("${document.length} belge kaydedildi !", context, backgroundColor: Colors.grey,duration: 2, textColor: Colors.black);
+              Toast.show("${document.length} belge kaydedildi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
               refreshList(1, userData.user.id);              
               Navigator.of(context).pop();
               document.clear();

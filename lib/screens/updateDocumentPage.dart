@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:envoy/models.dart/orderDetailJsonModel.dart';
+import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
@@ -10,19 +11,22 @@ import '../settings/consts.dart';
 // ignore: must_be_immutable
 class UpdateDocumentPage extends StatefulWidget {
   Belgeleri img;
+  final UserJsonModel userData;
+  final OrderDetailJsonModel orderDetailData;
 
-  UpdateDocumentPage({Key key, this.img}) : super(key: key);
+  UpdateDocumentPage({Key key, this.img, this.userData, this.orderDetailData}) : super(key: key);
 
   @override
-  _UpdateDocumentPageState createState() =>  _UpdateDocumentPageState(img: img);
+  _UpdateDocumentPageState createState() =>  _UpdateDocumentPageState(img: img,userData: userData, orderDetailData: orderDetailData);
 
 }
 
 class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
   List<String> base = []; // liste adı
-
+  UserJsonModel userData;
+  OrderDetailJsonModel orderDetailData;
     Belgeleri img;
-  _UpdateDocumentPageState({this.img});
+  _UpdateDocumentPageState({this.img,this.userData, this.orderDetailData});
 
   //-----------------fotograf çekme - kırpma fonksiyonları----------------------
   Future uploadSelectedImage(ImageSource source, List<String> base) async {
@@ -44,32 +48,27 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-            title: Text("belge güncelle",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: leadingFont,
-                    fontSize: 28))),
-        body: Container(
+        title : Text("belge güncelle", 
+        style : TextStyle(
+        color : Colors.white,
+        fontFamily: leadingFont,
+         fontSize : 28))),
+          body : Container(
           color: bgColor,
-          child: Column(
-            children: [
+          child: Column(children: [
               Flexible(
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
+                  child: Column(children: [
                       Padding(
                         padding: const EdgeInsets.all(maxSpace),
                         child: Card(
                           elevation: 20.0,
                           color: darkCardColor,
-                          child: Column(
-                            children: [
+                          child: Column(children: [
                               SizedBox(height: maxSpace),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "dolum belgesi güncelle",
-                                  style: TextStyle(
+                              Padding( padding: const EdgeInsets.all(8.0),
+                                child: Text("dolum belgesi güncelle",
+                                    style: TextStyle(
                                     color: Colors.white,
                                     fontFamily: leadingFont,
                                     fontSize: 18,
@@ -77,7 +76,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                 ),
                               ),
                               Divider(color: Colors.grey),
-                              
+
                               Container(
                                 width: deviceWidth(context),
                                 height: deviceHeight(context),
@@ -85,10 +84,10 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                 loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
                                   if (loadingProgress == null) return child;
                                     return Center(
-                                     child: CircularProgressIndicator(
-                                     value: loadingProgress.expectedTotalBytes != null 
-                                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                    : null,
+                                      child: CircularProgressIndicator(
+                                      value: loadingProgress.expectedTotalBytes != null 
+                                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                                      : null,
                                     ));
                                   }),
                               ),
@@ -104,7 +103,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                   onPressed: () async {
                                     uploadSelectedImage(
                                         ImageSource.camera, base);
-                                        //documentJsnAddFunc(siparisId, soforId, durum, img.id, img.belgeLink);
+                                        documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, img.id, img.belgeLink);
                                   },
                                 ),
                               ),
