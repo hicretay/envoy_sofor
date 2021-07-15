@@ -44,10 +44,9 @@ const cardTextStyle = TextStyle(
 const contentTextStyle = TextStyle(color: Colors.white, fontSize: 12);
 
 int globalOrderId = 1;
+int globalDurumId = 1; // ekledim
 
 //-----------------------------------URLs---------------------------------------
-//Fotoğraflar
-const imagesUrl = "http://portalservice.kirbag.com/api/Image/imageId";
 //Kullanıcı
 const loginUrl = "http://portalservice.kirbag.com/api/User";
 //Sipariş

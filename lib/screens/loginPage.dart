@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
@@ -60,10 +59,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  void didChangeDependencies() {
-    
-    super.didChangeDependencies();
-    
+  void didChangeDependencies() {   
+    super.didChangeDependencies();   
   }
 
   @override
@@ -98,17 +95,23 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: defaultPadding), // logo - giriş ikonu arası boşluk          
                 SvgPicture.asset("assets/images/logo.svg", color: logoColor),  // logo svg'sinin gösterilmesi           
                 SizedBox(height: deviceHeight(context) * 0.2),  //logo - textFieldlar arası boşluk   
+              
 
-                //--------------------Kullanıcı adı textField'ı---------------------
-                Padding(padding: const EdgeInsets.all(maxSpace),
-                    child       : TextFieldWidget(textEditingController: txtUsername,
-                    keyboardType: TextInputType.name,
-                    hintText    : "Kullanıcı Adı", //ipucu metni
-                    obscureText : false, // yazılanlar gizlenmesin
+                ListView.builder(
+                  itemCount: 1,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index){
+                  return Column(
+                    children:[
+                      //--------------------Kullanıcı adı textField'ı---------------------
+                      Padding(padding: const EdgeInsets.all(maxSpace),
+                        child       : TextFieldWidget(textEditingController: txtUsername,
+                        keyboardType: TextInputType.name,
+                        hintText    : "Kullanıcı Adı", //ipucu metni
+                        obscureText : false, // yazılanlar gizlenmesin
+                      ),
                   ),
-                ),
-                //------------------------------------------------------------------
-                //-------------------------Şifre textField'ı------------------------
+                  //-------------------------Şifre textField'ı------------------------
                 Padding(padding: const EdgeInsets.all(maxSpace),
                     child: TextFieldWidget(
                     textEditingController: txtPassword,
@@ -125,6 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                   buttonText : "giriş",
                   buttonWidth: deviceWidth(context) * 0.52,// buton genişliği             
                   onPressed  : () async { 
+                    
                     final progressUHD = ProgressHUD.of(context);              
                     //------------------login verisinin çekilmesi-------------------
                     final String uSERNAME = "sselman";
@@ -132,13 +136,23 @@ class _LoginPageState extends State<LoginPage> {
                     
                     var connectivityResult = Connectivity().checkConnectivity();
                     if(await connectivityResult != ConnectivityResult.none){
-                    final UserJsonModel userData = await userJsonFunc(uSERNAME, pASSWORD);
-                    //--------------------------------------------------------------
 
-                    //----------------sipariş verisinin çekilmesi-------------------
-                    final int durumId = 1;
-                    final OrderJsonModel orderData = await orderJsonFunc(durumId, userData.user.id);
-                    //--------------------------------------------------------------
+                    //----------------------USER DATASININ DOLDURULMASI-----------------------
+                    final UserJsonModel userData = await userJsonFunc(uSERNAME, pASSWORD);
+                    //------------------------------------------------------------------------
+                
+
+                     //--------------------SİPARİŞ DATASININ DOLDURULMASI-------------------------             
+                    OrderJsonModel orderData = await orderJsonFunc(globalDurumId,userData.user.id);
+                    setState(() {
+                      globalDurumId = orderData.siparisList[index].durumId;
+                    });
+                    orderData = await orderJsonFunc(globalDurumId,userData.user.id);
+                    //---------------------------------------------------------------------------
+
+                    //-----------------SİPARİŞ DETAY DATASI------------------------
+                    //final OrderDetailJsonModel orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);
+                    //----------------------------------------------------------------------------
 
                     String username = txtUsername.text; // Kullanıcı Adı TextField'ının texti = username
                     String password = txtPassword.text; // Şifre TextField'ının texti = password
@@ -174,6 +188,11 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   },
                 ),
+                ],
+                  );
+                }),
+                //------------------------------------------------------------------
+                
                 //------------------------------------------------------------------
                 //----------------------şifremi unuttum butonu----------------------
                 Flexible(

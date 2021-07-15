@@ -104,9 +104,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                         );
                                       }),
                                 )),
-                            //------------------------------------------------------------
+                            //-------------------------------------------------------------------------------------------
                             SizedBox(height: maxSpace), // depo içeriği açıklması - şöför onay tarihi arası boşluk
-                            //------------şöför onay tarihi container'ı-------------------
+                            //-----------------------------şöför onay tarihi container'ı---------------------------------
                             Container(
                               width : deviceWidth(context),
                               height: deviceHeight(context) * 0.05,
@@ -136,13 +136,29 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               width : deviceWidth(context),
                               child : Padding(padding: const EdgeInsets.only(top: maxSpace),
                                     child       : GridView.builder(
-                                    itemCount   : docFill.length,
+                                    itemCount   : docFill.length + 1,
                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 4,
                                       mainAxisSpacing: maxSpace,
                                     ),
                                     itemBuilder: (BuildContext context, int index) {
+                                      if(index == docFill.length){
+                                      //--------------------------------------FOTOĞRAF EKLE BUTONU (DOLDUR)-------------------------------------------
+                                        return GestureDetector(
+                                          child: Column(children: [
+                                            Container(height: deviceHeight(context)*0.238,width: deviceWidth(context)*0.2,color: bgColor,child: 
+                                            Column(children: [
+                                              SizedBox(height: deviceHeight(context)*0.05),
+                                              Icon(Icons.image,color: btnColor,size: 30),
+                                              Text("Ekle",style: contentTextStyle),
+                                               SizedBox(height: deviceHeight(context)*0.05)]))]),
+
+                                          onTap: (){},
+                                        );
+                                        //-----------------------------------------------------------------------------------------------------------
+                                      }
                                       // fotoğrafları listeye doldurma
+                                      //-------------------------------ÇEKİLEN FOTOĞRAFLAR (DOLDURMA FOTOĞRAFLARI)------------------------------------
                                       return GestureDetector( 
                                         child: Image.network(docFill[index].belgeLink,
                                         loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
@@ -156,12 +172,14 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                         }),
 
                                         onTap: () async{
+                                          
                                           final orderData = await orderJsonFunc(globalOrderId, userData.user.id);
                                           final orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);
                                           Navigator.push(context, MaterialPageRoute(builder: (context)=> 
                                           UpdateDocumentPage(img: docFill[index],orderDetailData: orderDetailData,userData: userData, orderData: orderData)));
                                         },
                                       );
+                                      //-----------------------------------------------------------------------------------------------------------------------
                                     }),
                               ),
                             ),
@@ -177,11 +195,28 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               width : deviceWidth(context),
                               child : Padding(padding: const EdgeInsets.only(top: maxSpace),
                               child : GridView.builder(
-                                    itemCount: docEmpty.length,
+                                    itemCount: docEmpty.length + 1,
                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 4,
                                       mainAxisSpacing: maxSpace),
-                                    itemBuilder:(BuildContext context, int index){                                    
+                                    itemBuilder:(BuildContext context, int index){
+
+                                      if(index == docEmpty.length){
+                                        //--------------------------------------FOTOĞRAF EKLE BUTONU (BOŞALT)-------------------------------------------
+                                        return GestureDetector(
+                                          child: Column(children: [
+                                            Container(height: deviceHeight(context)*0.238,width: deviceWidth(context)*0.2,color: bgColor,child: 
+                                            Column(children: [
+                                              SizedBox(height: deviceHeight(context)*0.05),
+                                              Icon(Icons.image,color: btnColor,size: 30),
+                                              Text("Ekle",style: contentTextStyle),
+                                              SizedBox(height: deviceHeight(context)*0.05)]))]),
+                                          
+                                           onTap: (){},
+                                        );
+                                        //-----------------------------------------------------------------------------------------------------------------    
+                                      }
+                                      //----------------------------------ÇEKİLEN FOTOĞRAFLAR (BOŞALTMA FOTOĞRAFLARI)---------------------------------------
                                       return GestureDetector(
                                         child: Image.network(docEmpty[index].belgeLink,
                                         loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
@@ -198,14 +233,16 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                           
                                           final orderData = await orderJsonFunc(globalOrderId, userData.user.id);
                                           final orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);
+                                         
                                           Navigator.push(context, MaterialPageRoute(builder: (context)=> 
-                                          UpdateDocumentPage(img: docEmpty[index],userData: userData, orderDetailData: orderDetailData, orderData: orderData,))); 
+                                          UpdateDocumentPage(img: docEmpty[index],userData: userData, orderDetailData: orderDetailData, orderData: orderData))); 
                                         },
                                       );
+                                      //----------------------------------------------------------------------------------------------------------------------
                                     }),
                               ),
                             ),
-                            //-----------------------------------------------------------
+                            //---------------------------------------------------------------------------------------------------------------------------
                           ],
                         ),
                       ),

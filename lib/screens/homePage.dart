@@ -127,14 +127,14 @@ class _HomePageState extends State<HomePage> {
                                 buttonColor: btnColor,
                                 onPressed  : () async{                                                                                                 
                                     await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null,null); // belgeId = null, belgeiçerik = null
-                                    await refreshList(orderData.siparisList[index].durumId, userData.user.id);                                                                                                                               
+                                    await refreshList(globalDurumId,userData.user.id);                                                                                                                               
                                 })
 
                                 // Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
                                 :Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  //--------------------------------------doldur butonu------------------------------------
+                                  //--------------------------------------DOLDUR BUTONU-----------------------------------
                                   ButtonWidget(
                                     buttonText : "doldur",
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
@@ -145,14 +145,14 @@ class _HomePageState extends State<HomePage> {
                                         if(base64DocFill.isNotEmpty)
                                         {
                                         showMessage(context, base64DocFill,3,orderData.siparisList[index].id);}
-                                        await refreshList(orderData.siparisList[index].durumId, userData.user.id);                                       
+                                        await refreshList(globalDurumId,userData.user.id);                                       
                                         //show message
                                         
                                     } 
                                     :  (){}
                                   ),
                                   //----------------------------------------------------------------------------------------
-                                  //-------------------------------------boşalt butonu---------------------------------------
+                                  //-------------------------------------BOŞALT BUTONU---------------------------------------
                                   ButtonWidget(
                                     buttonText : "boşalt",
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
@@ -191,7 +191,7 @@ class _HomePageState extends State<HomePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [   
-          //-----------------------------------Evet Butonu-----------------------------------------     
+          //-----------------------------------EVET BUTONU-----------------------------------------     
           MaterialButton(
             color: btnColor,
             child: Text("Evet",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
@@ -200,18 +200,17 @@ class _HomePageState extends State<HomePage> {
             }),
           //---------------------------------------------------------------------------------------
           SizedBox(width: maxSpace), // iki buton arası boşluk
-          //-----------------------------------Hayır Butonu----------------------------------------
+          //-----------------------------------HAYIR BUTONU----------------------------------------
           MaterialButton( 
             color    : btnColor,
             child    : Text("Hayır",style: TextStyle(fontFamily: leadingFont)),
             onPressed: () async{                                    
-              for (var i = 0; i <= document.length -1; i++){
-              
-                await documentJsnAddFunc(orderID, userData.user.id, stateID, 0,document[i]);}
+              for (var i = 0; i <= document.length -1; i++){            
+              await documentJsnAddFunc(orderID, userData.user.id, stateID, 0,document[i]);}
 
               // Toast message çekilen döküman sayısını gösterecek  
               Toast.show("${document.length} belge kaydedildi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
-              refreshList(1, userData.user.id);              
+              refreshList(globalDurumId,userData.user.id);              
               Navigator.of(context).pop();
               document.clear();
 

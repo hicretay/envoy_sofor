@@ -115,15 +115,14 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                     buttonText : "güncelle",
                                     buttonWidth: deviceWidth(context),
                                     onPressed  : () async {
-                                      
-                                        var orderDetailData = await orderDetailJsonFunc(globalOrderId);
+
                                         await uploadSelectedImage(ImageSource.camera,base);
                                         await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, img.id, base.first);
                                         setState(() {
                                            globalOrderId = orderData.siparisList[index].id;
                                         });  
-                                        orderDetailData = await orderDetailJsonFunc(globalOrderId);      
-                                        Navigator.push(context,MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: this.orderDetailData, userData: userData))); 
+                                        orderDetailData = await orderDetailJsonFunc(globalOrderId);     
+                                        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: this.orderDetailData, userData: userData))); 
                                          
                                     },
                                   ),
