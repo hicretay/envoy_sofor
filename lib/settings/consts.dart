@@ -48,13 +48,13 @@ int globalDurumId = 1; // ekledim
 
 //-----------------------------------URLs---------------------------------------
 //Kullanıcı
-const loginUrl = "http://portalservice.kirbag.com/api/User";
+const loginUrl = "https://portalservice.kirbag.com/api/User";
 //Sipariş
-const orderUrl = "http://portalservice.kirbag.com/api/Order";
+const orderUrl = "https://portalservice.kirbag.com/api/Order";
 //Sipariş Detay
-const orderDetailUrl = "http://portalservice.kirbag.com/api/OrderDetail";
+const orderDetailUrl = "https://portalservice.kirbag.com/api/OrderDetail";
 // Döküman
-const documentUrl = "http://portalservice.kirbag.com/api/Document";
+const documentUrl = "https://portalservice.kirbag.com/api/Document";
 
 File selectedImage; // cihazdan çekilen resim
 
