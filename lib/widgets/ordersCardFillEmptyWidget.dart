@@ -4,14 +4,14 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../settings/consts.dart';
 import 'orderRowWidget.dart';
 
-class OrdersCardWidget extends StatefulWidget {
+class OrdersCardFillEmptyWidget extends StatefulWidget {
   final VoidCallback onTap, fillOnTap, emptyOnTap;
   final String deliveryDate, fillingPoint, deliveryStation, status, totalLT;
   final Widget child;
   final Color statusColor;
   final bool selected;
-  //
-  OrdersCardWidget({
+
+  OrdersCardFillEmptyWidget({
     Key key,
     this.onTap,
     this.deliveryDate,
@@ -26,10 +26,10 @@ class OrdersCardWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _OrdersCardWidgetState createState() => _OrdersCardWidgetState();
+  _OrdersCardFillEmptyWidgetState createState() => _OrdersCardFillEmptyWidgetState();
 }
 
-class _OrdersCardWidgetState extends State<OrdersCardWidget> {
+class _OrdersCardFillEmptyWidgetState extends State<OrdersCardFillEmptyWidget> {
   @override
   Widget build(BuildContext context) {
     return Slidable(actionPane: SlidableBehindActionPane(),

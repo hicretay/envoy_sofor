@@ -121,10 +121,8 @@ class _LoginPageState extends State<LoginPage> {
 
                     String username = txtUsername.text; // Kullanıcı Adı TextField'ının texti = username
                     String password = txtPassword.text; // Şifre TextField'ının texti = password
-
-                    
-                    if (username != "" && password != "") { // kullanıcı adı ve şifre boş değilse
-                    
+                   
+                    if (username != "" && password != "") { // kullanıcı adı ve şifre boş değilse                   
                     if(orderData.siparisList.length != 0){ // siparişler boş değilse anasayfaya yönlendir
                     progressUHD.show();
                     Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) => 
