@@ -11,7 +11,6 @@ import 'package:envoy/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:envoy/settings/functions.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,21 +27,11 @@ class _HomePageState extends State<HomePage> {
   OrderJsonModel orderData;
   _HomePageState({this.userData, this.orderData});
 
-  SharedPreferences logindata;
-  String username;
-
   @override
   void initState() {
   super.initState();
-    setState(() {
-    initial();
+    setState(() {    
    });
-  }
-    void initial() async {
-    logindata = await SharedPreferences.getInstance();
-    setState(() {
-      username = logindata.getString('username');
-    });
   }
 
   List<String> base64DocFill = [];
@@ -81,7 +70,7 @@ class _HomePageState extends State<HomePage> {
         title: Text("siparişler", style: leadingStyle),
         actions: [
           IconButton(icon: Icon(Icons.exit_to_app),onPressed: (){
-                logindata.setBool('login', true);
+                
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
           })
         ],
