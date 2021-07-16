@@ -5,6 +5,7 @@ import 'package:envoy/screens/loginPage.dart';
 import 'package:envoy/screens/orderDetailPage.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
+import 'package:envoy/widgets/ordersCardApprove.dart';
 
 import 'package:envoy/widgets/ordersCardFillEmptyWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
@@ -91,15 +92,37 @@ class _HomePageState extends State<HomePage> {
                       }
                       else
                       //------------------------------Sipaişler Card İçeriği---------------------------------------
-                      return OrdersCardFillEmptyWidget(
+                      return orderData.siparisList[index].durumId == 1 ? 
+                      OrdersCardApproveWidget(
                         deliveryDate   : orderData.siparisList[index].teslimTarihi,
                         fillingPoint   : orderData.siparisList[index].dolumyeri,
                         deliveryStation: orderData.siparisList[index].teslimatIstasyonu,
                         totalLT        : orderData.siparisList[index].toplamLitre,
-                        status         : orderData.siparisList[index].durumId == 1 ? "Yeni Sipariş" : "Onaylandı" ,
-                        statusColor    : orderData.siparisList[index].durumId == 1 ? Colors.white : checkedTxtColor,
+                        status         : "Yeni Sipariş",
+                        statusColor    : Colors.white,
                       //--------------------------------------------------------------------------------------------
-                      //---------------SLİADABLE ON TAP'İ-------------------------
+                      // Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
+                      // durumId = 1 ise onayla görünümü gelecek tıklandığında durum id = 2 olacak
+                      
+                        child:  ButtonWidget(
+                                buttonText : "onayla",
+                                buttonWidth: deviceWidth(context),
+                                buttonColor: btnColor,
+                                onPressed  : () async{  // belge ve belge id'si gönderilmiyor, yalnızca durumId güncelleniyor                                                                                              
+                                    await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, 0,null); // belgeId = null, belgeiçerik = null
+                                    await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme                                                                                                                              
+                                }),
+                      )
+                      :
+                      OrdersCardFillEmptyWidget(
+                        deliveryDate   : orderData.siparisList[index].teslimTarihi,
+                        fillingPoint   : orderData.siparisList[index].dolumyeri,
+                        deliveryStation: orderData.siparisList[index].teslimatIstasyonu,
+                        totalLT        : orderData.siparisList[index].toplamLitre,
+                        status         : "Onaylandı" ,
+                        statusColor    : checkedTxtColor,
+                      //--------------------------------------------------------------------------------------------
+                      //--------------------------SLİADABLE ON TAP'İ----------------------------
                         onTap: () async {
                           setState(() {
                               globalOrderId = orderData.siparisList[index].id;
@@ -109,21 +132,10 @@ class _HomePageState extends State<HomePage> {
                           MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill,userData: userData)));
                         },                       
                       //-------------------------------------------------------------------------
-                      // Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
-                      // durumId = 1 ise onayla görünümü gelecek tıklandığında durum id = 2 olacak
-                        child: (orderData.siparisList[index].durumId == 1) 
-                            ?  ButtonWidget(
-                                buttonText : "onayla",
-                                buttonWidth: deviceWidth(context),
-                                buttonColor: btnColor,
-                                onPressed  : () async{  // belge ve belge id'si gönderilmiyor, yalnızca durumId güncelleniyor                                                                                              
-                                    await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, 0,null); // belgeId = null, belgeiçerik = null
-                                    await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme                                                                                                                              
-                                })
-
-                                : // sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
-                                  // durumId 1 değilse 2 veya 3 ise oluşacak durumlar
-                                Row(
+                      child: 
+                      // sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
+                      // durumId 1 değilse 2 veya 3 ise oluşacak durumlar
+                            Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   //--------------------------------------DOLDUR BUTONU-----------------------------------
