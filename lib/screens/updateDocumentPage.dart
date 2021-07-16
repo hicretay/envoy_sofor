@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:envoy/models.dart/orderDetailJsonModel.dart';
-import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
-import 'package:envoy/screens/orderDetailPage.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
@@ -15,29 +13,23 @@ class UpdateDocumentPage extends StatefulWidget {
   Belgeleri img;
   final UserJsonModel userData;
   final OrderDetailJsonModel orderDetailData;
-  final OrderJsonModel orderData;
-
-  UpdateDocumentPage({Key key, this.img, this.userData, this.orderDetailData, this.orderData}) : super(key: key);
+  UpdateDocumentPage({Key key, this.img, this.userData, this.orderDetailData}) : super(key: key);
 
   @override
-  _UpdateDocumentPageState createState() =>  
-  _UpdateDocumentPageState(img: img,userData: userData, orderDetailData: orderDetailData, orderData: orderData);
-
-}
+  _UpdateDocumentPageState createState() => _UpdateDocumentPageState(img: img,userData: userData, orderDetailData: orderDetailData);}
 
 class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
 
   UserJsonModel userData;
-  OrderJsonModel orderData;
   OrderDetailJsonModel orderDetailData;
   Belgeleri img;
-
   List<String> base = [];
 
-  _UpdateDocumentPageState({this.img,this.userData, this.orderDetailData, this.orderData});
+  _UpdateDocumentPageState({this.img,this.userData, this.orderDetailData});
 
-  //-----------------fotograf çekme - kırpma fonksiyonları----------------------
-  Future uploadSelectedImage(ImageSource source, List<String> base) async {
+  //-----------------------------------------------FOTOĞRAF ÇEKME - DÖNÜŞTÜRME-----------------------------------------------------
+  // ignore: missing_return
+  Future<OrderDetailJsonModel> uploadSelectedImage(ImageSource source, List<String> base) async {
     final imagePicker = ImagePicker();
     final selected = await imagePicker.getImage(source: source);
 
@@ -45,18 +37,14 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
       setState(() {
         selectedImage = File(selected.path);
       });
-      base.add(imageToBase64(selectedImage));
-      //çekilen resim base64 e dönüştürüldü
+      base.add(imageToBase64(selectedImage)); //çekilen resim base64 e dönüştürme     
+      await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, img.id, base.last);
+      imageCache.clear(); // İmage önbelleğini temizleme
+      imageCache.clearLiveImages(); // önbellekteki resimlere yapılan tüm canlı referansları temizleme
+      return orderDetailData = await orderDetailJsonFunc(orderDetailData.siparisDetay.siparisDetay.id);
     }
   }
-//------------------------------------------------------------------------------
-
-    Future refreshList(int durumId, int companyId) async {
-    final OrderJsonModel orderList = await orderJsonFunc(durumId,companyId); 
-    setState(() {
-      orderData = orderList;
-    });
-  }
+//------------------------------------------------------------------------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +62,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
               Flexible(
                 child: ListView.builder(
                   itemCount: 1,
-                  itemBuilder: (BuildContext context, int index){
+                  itemBuilder: (BuildContext context, int index){                   
                   return Column(children: [
                         Padding(
                           padding: const EdgeInsets.all(maxSpace),
@@ -84,6 +72,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                             child: Column(children: [
                                 SizedBox(height: maxSpace),
                                 Padding( padding: const EdgeInsets.all(8.0),
+                                //------------------------Card başlık-------------------------------
                                   child: Text("dolum belgesi güncelle",
                                       style: TextStyle(
                                       color: Colors.white,
@@ -91,12 +80,13 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                       fontSize: 18,
                                     ),
                                   ),
+                                //------------------------------------------------------------------
                                 ),
-                                Divider(color: Colors.grey),
+                                Divider(color: Colors.grey), // başlık - resim arası gri çizgi
                                 Container(
                                   width : deviceWidth(context),
                                   height: deviceHeight(context),
-                                  child : Image.network(img.belgeLink,
+                                  child : Image.network(img.belgeLink, // İlgili siaprişin linkteki fotoğrafı                  
                                   loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
                                     if (loadingProgress == null) return child;
                                       return Center(
@@ -110,24 +100,19 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                 SizedBox(height: maxSpace),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
+                                  //---------------------------------GÜNCELLE BUTONU-------------------------------------
                                   child: ButtonWidget(
                                     buttonColor: btnColor,
                                     buttonText : "güncelle",
                                     buttonWidth: deviceWidth(context),
-                                    onPressed  : () async {
-
-                                        await uploadSelectedImage(ImageSource.camera,base);
-                                        await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, img.id, base.first);
-                                        setState(() {
-                                           globalOrderId = orderData.siparisList[index].id;
-                                        });  
-                                        orderDetailData = await orderDetailJsonFunc(globalOrderId);     
-                                        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: this.orderDetailData, userData: userData))); 
-                                         
+                                    onPressed  : () async {                                       
+                                        await uploadSelectedImage(ImageSource.camera,base); // kameradan fotoğraf çekip, base Listesine kaydetme                                     
+                                        Navigator.pop(context); // Döküman detay sayfasına yönlendirme                                   
                                     },
                                   ),
+                                  //-------------------------------------------------------------------------------------
                                 ),
-                                SizedBox(height: defaultPadding),
+                                SizedBox(height: defaultPadding), // güncelle butonu - card arası boşluk
                               ],
                             ),
                           ),
@@ -139,7 +124,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
             ],
           ),
         ),
-        bottomNavigationBar: LogoWidget(), // alttaki Logo görünümü
+        bottomNavigationBar: LogoWidget(), // altta yer alan Logo görünümü Widgetı
       ),
     );
   }

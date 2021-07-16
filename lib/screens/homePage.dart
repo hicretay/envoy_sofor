@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               SizedBox(height: maxSpace),
               Flexible(child : RefreshIndicator(
-                onRefresh: ()=> refreshList(globalOrderId, userData.user.id), // yukarıdan aşağı kaydırılınca listeyi yenileme
+                onRefresh: ()=> refreshList(globalDurumId, userData.user.id), // yukarıdan aşağı kaydırılınca listeyi yenileme
                 child: ListView.builder(
                     itemCount  : orderData.siparisList.length,
                     itemBuilder: (BuildContext context, int index){
@@ -101,6 +101,7 @@ class _HomePageState extends State<HomePage> {
                         return CircularProgressIndicator();
                       }
                       else
+                      //------------------------------Sipaişler Card İçeriği---------------------------------------
                       return OrdersCardWidget(
                         deliveryDate   : orderData.siparisList[index].teslimTarihi,
                         fillingPoint   : orderData.siparisList[index].dolumyeri,
@@ -108,70 +109,76 @@ class _HomePageState extends State<HomePage> {
                         totalLT        : orderData.siparisList[index].toplamLitre,
                         status         : orderData.siparisList[index].durumId == 1 ? "Yeni Sipariş" : "Onaylandı" ,
                         statusColor    : orderData.siparisList[index].durumId == 1 ? Colors.white : checkedTxtColor,
+                      //--------------------------------------------------------------------------------------------
+                      //---------------SLİADABLE ON TAP'İ-------------------------
                         onTap: () async {
-
-                          // slidable onTap'i  
                           setState(() {
                               globalOrderId = orderData.siparisList[index].id;
                           });                        
-                          final orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);                           
+                          final orderDetailData = await orderDetailJsonFunc(globalOrderId);
                           Navigator.push(context, 
                           MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill,userData: userData)));
-                        },
-                        //sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
-                        
+                        },                       
+                      //-------------------------------------------------------------------------
+                      // Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
+                      // durumId = 1 ise onayla görünümü gelecek tıklandığında durum id = 2 olacak
                         child: (orderData.siparisList[index].durumId == 1) 
                             ?  ButtonWidget(
                                 buttonText : "onayla",
                                 buttonWidth: deviceWidth(context),
                                 buttonColor: btnColor,
-                                onPressed  : () async{                                                                                                 
+                                onPressed  : () async{  // belge ve belge id'si gönderilmiyor, yalnızca durumId güncelleniyor                                                                                              
                                     await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, null,null); // belgeId = null, belgeiçerik = null
-                                    await refreshList(globalDurumId,userData.user.id);                                                                                                                               
+                                    await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme                                                                                                                              
                                 })
 
-                                // Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
-                                :Row(
+                                : // sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
+                                  // durumId 1 değilse 2 veya 3 ise oluşacak durumlar
+                                Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   //--------------------------------------DOLDUR BUTONU-----------------------------------
+                                  // durumId = 2 ise liste boş değilse(fotoğraf çekilmişse) durumId = 3 olarak güncellenecek, 
+                                  // doldur butonu pasifleştirilecek ve fotoğraf servise gönderilecek
                                   ButtonWidget(
                                     buttonText : "doldur",
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
                                     buttonColor: btnColor,
                                     onPressed  : orderData.siparisList[index].durumId == 2 ?
                                     () async{
-                                        await uploadSelectedImage(ImageSource.camera, base64DocFill);
+                                        await uploadSelectedImage(ImageSource.camera, base64DocFill); // kameradan fotoğraf çekip base64DocFill listesine ekleme
                                         if(base64DocFill.isNotEmpty)
                                         {
-                                        showMessage(context, base64DocFill,3,orderData.siparisList[index].id);}
-                                        await refreshList(globalDurumId,userData.user.id);                                       
+                                        showMessage(context, base64DocFill,3,orderData.siparisList[index].id);} // fotoğrafı değişen durumlarıyla servise gönderme, alertDialog gösterme
+                                        await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme                                       
                                         //show message
                                         
                                     } 
-                                    :  (){}
+                                    :  (){} // durumId 2'den farklı olduğunda doldur butonunu pasifleştirme
                                   ),
                                   //----------------------------------------------------------------------------------------
                                   //-------------------------------------BOŞALT BUTONU---------------------------------------
+                                  // durumId = 3 ise liste boş değilse(fotoğraf çekilmişse) durumId = 4 olarak güncellenecek, 
+                                  // boşalt butonu pasifleştirilecek ve fotoğraf servise gönderilecek
                                   ButtonWidget(
                                     buttonText : "boşalt",
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
                                     buttonColor: checkDateColor,
                                     onPressed  : orderData.siparisList[index].durumId == 3 ? 
                                     () async{
-                                        await uploadSelectedImage(ImageSource.camera, base64DocEmpty);
+                                        await uploadSelectedImage(ImageSource.camera, base64DocEmpty); // kameradan fotoğraf çekip base64DocEmpty listesine ekleme
                                         if(base64DocEmpty.isNotEmpty)
                                         {
-                                        showMessage(context, base64DocEmpty,4,orderData.siparisList[index].id);}
-                                        await refreshList(orderData.siparisList[index].durumId, userData.user.id);  
+                                        showMessage(context, base64DocEmpty,4,orderData.siparisList[index].id);} // fotoğrafı değişen durumlarıyla servise gönderme, alertDialog gösterme
+                                        await refreshList(globalOrderId, userData.user.id); // listeyi güncelleme   
                                         //show message
                                         
                                     } 
-                                    : (){}
+                                    : (){} // durumId 3'ten farklı olduğunda doldur butonunu pasifleştirme
                                   ),
                                   //-------------------------------------------------------------------------------------------
                                 ],
-                              )
+                         )
                       );  
                     },
                   ),
@@ -210,10 +217,9 @@ class _HomePageState extends State<HomePage> {
 
               // Toast message çekilen döküman sayısını gösterecek  
               Toast.show("${document.length} belge kaydedildi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
-              refreshList(globalDurumId,userData.user.id);              
+              refreshList(globalOrderId,userData.user.id);              
               Navigator.of(context).pop();
               document.clear();
-
             }),
           //---------------------------------------------------------------------------------------
         ]),        

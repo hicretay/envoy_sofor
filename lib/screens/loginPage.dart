@@ -141,18 +141,9 @@ class _LoginPageState extends State<LoginPage> {
                     final UserJsonModel userData = await userJsonFunc(uSERNAME, pASSWORD);
                     //------------------------------------------------------------------------
                 
-
-                     //--------------------SİPARİŞ DATASININ DOLDURULMASI-------------------------             
+                    //--------------------SİPARİŞ DATASININ DOLDURULMASI-------------------------             
                     OrderJsonModel orderData = await orderJsonFunc(globalDurumId,userData.user.id);
-                    setState(() {
-                      globalDurumId = orderData.siparisList[index].durumId;
-                    });
-                    orderData = await orderJsonFunc(globalDurumId,userData.user.id);
                     //---------------------------------------------------------------------------
-
-                    //-----------------SİPARİŞ DETAY DATASI------------------------
-                    //final OrderDetailJsonModel orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);
-                    //----------------------------------------------------------------------------
 
                     String username = txtUsername.text; // Kullanıcı Adı TextField'ının texti = username
                     String password = txtPassword.text; // Şifre TextField'ının texti = password

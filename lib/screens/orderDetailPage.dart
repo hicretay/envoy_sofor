@@ -2,7 +2,6 @@ import 'package:envoy/models.dart/orderDetailJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/updateDocumentPage.dart';
 import 'package:envoy/settings/consts.dart';
-import 'package:envoy/settings/functions.dart';
 import 'package:envoy/widgets/leadingContainerWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:envoy/widgets/orderDetailCardWidget.dart';
@@ -37,10 +36,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
   List<Belgeleri> docEmpty = [];
   List<Belgeleri> docFill = [];
-  
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
+    imageCache.clearLiveImages();
+    imageCache.clear();
     // Listeleri servis verileri ile doldurma
     docEmpty= orderDetailData.siparisDetay.bosaltmaBelgeleri;
     docFill= orderDetailData.siparisDetay.yuklemeBelgeleri;
@@ -63,6 +63,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           child   : Column(
                           children: [
                             SizedBox(height: maxSpace), // card - içerik arası boşluk
+                            //------------------------------Sipariş Detay Card İçeriği-------------------------------------
                             OrderDetailCardWidget(
                               company        : orderDetailData.siparisDetay.siparisDetay.sirket,
                               deliveryDate   : orderDetailData.siparisDetay.siparisDetay.teslimTarihi,
@@ -71,18 +72,14 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               deliveryAddress: orderDetailData.siparisDetay.siparisDetay.teslimatAdresi,
                               totalLT        : orderDetailData.siparisDetay.siparisDetay.toplamLitre,
                               ),
-                            //------------------------------------------------------------
-
-                            //------------------------------------------------------------
-                            SizedBox(height: minSpace),
-                            // divider - satırlar arası boşluk
-                            Divider(color: Colors.grey),
-                            // satırlar - depo içeriği arası çizgi
-
+                            //-----------------------------------------------------------------------------------------------
+                            SizedBox(height: minSpace), // divider - satırlar arası boşluk                          
+                            Divider(color: Colors.grey), // satırlar - depo içeriği arası çizgi
+                            
                             //------------depo içeriği başlık containerı------------------
                             LeadingContainerWidget(leading: "depo içeriği"),
                             //------------------------------------------------------------
-                            //--------------depo içeriği içerik containerı----------------
+                            //---------------------------------depo içeriği içerik containerı---------------------------------------
                             Container(
                                 color: lightCardColor,
                                 width: deviceWidth(context),
@@ -95,11 +92,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                         return Row(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(left: maxSpace),
-                                              child  : Text(orderDetailData.siparisDetay.depoIcerigi[index].yakitTipi,style: cardTextStyle)),
+                                            Padding(padding: const EdgeInsets.only(left: maxSpace), child: 
+                                            Text(orderDetailData.siparisDetay.depoIcerigi[index].yakitTipi,style: cardTextStyle)), // Yakıt Tipi
                                             SizedBox(width: deviceWidth(context)*0.3),
-                                            Text(orderDetailData.siparisDetay.depoIcerigi[index].litre,style: contentTextStyle)
+                                            Text(orderDetailData.siparisDetay.depoIcerigi[index].litre,style: contentTextStyle), // Yakıt Miktarı
                                           ],
                                         );
                                       }),
@@ -136,14 +132,15 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               width : deviceWidth(context),
                               child : Padding(padding: const EdgeInsets.only(top: maxSpace),
                                     child       : GridView.builder(
-                                    itemCount   : docFill.length + 1,
+                                    itemCount   : docFill.length + 1, // Fotoğrafların uzunluğu + ekle butonu
                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 4,
                                       mainAxisSpacing: maxSpace,
                                     ),
                                     itemBuilder: (BuildContext context, int index) {
-                                      if(index == docFill.length){
-                                      //--------------------------------------FOTOĞRAF EKLE BUTONU (DOLDUR)-------------------------------------------
+                                      
+                                      if(index == docFill.length){ // index dökümanların uzunluğu kadar ise ekleme butonunu çizdir
+                                      //----------------------------------GRİDVİEWDEN FOTOĞRAF EKLE BUTONU (DOLDUR)-----------------------------------
                                         return GestureDetector(
                                           child: Column(children: [
                                             Container(height: deviceHeight(context)*0.238,width: deviceWidth(context)*0.2,color: bgColor,child: 
@@ -151,32 +148,30 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               SizedBox(height: deviceHeight(context)*0.05),
                                               Icon(Icons.image,color: btnColor,size: 30),
                                               Text("Ekle",style: contentTextStyle),
-                                               SizedBox(height: deviceHeight(context)*0.05)]))]),
+                                              SizedBox(height: deviceHeight(context)*0.05)]))]),
 
                                           onTap: (){},
                                         );
                                         //-----------------------------------------------------------------------------------------------------------
                                       }
                                       // fotoğrafları listeye doldurma
-                                      //-------------------------------ÇEKİLEN FOTOĞRAFLAR (DOLDURMA FOTOĞRAFLARI)------------------------------------
+                                      //------------------------------- FOTOĞRAFLAR (DOLDURMA FOTOĞRAFLARI)------------------------------------
                                       return GestureDetector( 
-                                        child: Image.network(docFill[index].belgeLink,
+                                        child: Image.network(docFill[index].belgeLink, // doldurma fotoğrafının linki
                                         loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
-                                        if (loadingProgress == null) return child;
+                                        if (loadingProgress == null) return child; // fotoğraf yüklenirken circular döndürme
                                             return Center(
                                             child: CircularProgressIndicator(
                                             value: loadingProgress.expectedTotalBytes != null 
                                             ?  loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
                                             : null,
                                           ));
-                                        }),
-
-                                        onTap: () async{
-                                          
-                                          final orderData = await orderJsonFunc(globalOrderId, userData.user.id);
-                                          final orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);
+                                        }
+                                        ),
+                                        onTap: () async{                                                                                
                                           Navigator.push(context, MaterialPageRoute(builder: (context)=> 
-                                          UpdateDocumentPage(img: docFill[index],orderDetailData: orderDetailData,userData: userData, orderData: orderData)));
+                                          UpdateDocumentPage(img: docFill[index],userData: userData, orderDetailData: orderDetailData))); 
+                                          // döküman güncelleme sayfasına yönlendirme
                                         },
                                       );
                                       //-----------------------------------------------------------------------------------------------------------------------
@@ -195,14 +190,14 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               width : deviceWidth(context),
                               child : Padding(padding: const EdgeInsets.only(top: maxSpace),
                               child : GridView.builder(
-                                    itemCount: docEmpty.length + 1,
+                                    itemCount: docEmpty.length + 1, // Fotoğrafların uzunluğu + ekle butonu
                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 4,
                                       mainAxisSpacing: maxSpace),
                                     itemBuilder:(BuildContext context, int index){
 
-                                      if(index == docEmpty.length){
-                                        //--------------------------------------FOTOĞRAF EKLE BUTONU (BOŞALT)-------------------------------------------
+                                      if(index == docEmpty.length){ // index dökümanların uzunluğu kadar ise ekleme butonunu çizdir
+                                        //---------------------------------GRİDVİEWDEN FOTOĞRAF EKLE BUTONU (BOŞALT)---------------------------------------
                                         return GestureDetector(
                                           child: Column(children: [
                                             Container(height: deviceHeight(context)*0.238,width: deviceWidth(context)*0.2,color: bgColor,child: 
@@ -216,11 +211,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                         );
                                         //-----------------------------------------------------------------------------------------------------------------    
                                       }
-                                      //----------------------------------ÇEKİLEN FOTOĞRAFLAR (BOŞALTMA FOTOĞRAFLARI)---------------------------------------
+                                      //---------------------------------- FOTOĞRAFLAR (BOŞALTMA FOTOĞRAFLARI)---------------------------------------
                                       return GestureDetector(
-                                        child: Image.network(docEmpty[index].belgeLink,
+                                        child: Image.network(docEmpty[index].belgeLink, // boşaltma fotoğrafının linki
                                         loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
-                                        if (loadingProgress == null) return child;
+                                        if (loadingProgress == null) return child; // fotoğraf yüklenirken circular döndürme
                                             return Center(
                                             child: CircularProgressIndicator(
                                             value: loadingProgress.expectedTotalBytes != null 
@@ -229,13 +224,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                           ));
                                         }),
                               
-                                        onTap: () async{
-                                          
-                                          final orderData = await orderJsonFunc(globalOrderId, userData.user.id);
-                                          final orderDetailData = await orderDetailJsonFunc(orderData.siparisList[index].id);
-                                         
+                                        onTap: () async{                                       
                                           Navigator.push(context, MaterialPageRoute(builder: (context)=> 
-                                          UpdateDocumentPage(img: docEmpty[index],userData: userData, orderDetailData: orderDetailData, orderData: orderData))); 
+                                          UpdateDocumentPage(img: docEmpty[index],userData: userData, orderDetailData: orderDetailData))); 
+                                          // döküman güncelleme sayfasına yönlendirme
                                         },
                                       );
                                       //----------------------------------------------------------------------------------------------------------------------
@@ -251,11 +243,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 ),
               ),
             ),
-            SizedBox(height: maxSpace),
+            SizedBox(height: maxSpace), // card - logo arası uzaklık
           ],
         ),
       ),
-      bottomNavigationBar: LogoWidget(),
+      bottomNavigationBar: LogoWidget(),  // bottomda yer alan logo görünüm widgetı
     );
   }
 }
