@@ -11,6 +11,7 @@ import 'package:envoy/widgets/textFieldWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -25,12 +26,37 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController txtUsername = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
 
+  SharedPreferences loginData; // SharedPreferences nesnesi
+  bool newUser; // Kullanıcı aktif ise false değilse true verilecek
 
 //--------------------Kullanıcı Giriş Kontrolü Fonksiyonu-----------------------
+  void checkLogin() async {
+    //---------------kullanıcı ve sipariş verilerinin çekilmesi-----------------
+    final String uSERNAME = "sselman";
+    final String pASSWORD = "0";
+    final int durumId = 1;
+    final UserJsonModel  userData  = await userJsonFunc(uSERNAME, pASSWORD); // kullanıcı verileri
+    final OrderJsonModel orderData = await orderJsonFunc(durumId, userData.user.id); // sipariş verileri
+    //--------------------------------------------------------------------------
 
-
+    loginData = await SharedPreferences.getInstance();
+    newUser = loginData.getBool('login') ?? true; // login olunmamışsa true 
+    if (newUser == false) { // daha önceden login olunmuşsa false
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => 
+      HomePage(orderData: orderData,userData: userData)));
+      // kullanıcı giriş yapmışsa direkt HomePage 'e gidecek
+    }
+  }
 //------------------------------------------------------------------------------
 
+  @override
+  void initState() { 
+    super.initState();
+    setState(() {
+      checkLogin(); // Sayfa yüklenirken kullanıcı giriş kontrolü yapılacak     
+    });
+    
+  }
 
   @override
   void didChangeDependencies() {   
@@ -121,8 +147,12 @@ class _LoginPageState extends State<LoginPage> {
 
                     String username = txtUsername.text; // Kullanıcı Adı TextField'ının texti = username
                     String password = txtPassword.text; // Şifre TextField'ının texti = password
-                   
-                    if (username != "" && password != "") { // kullanıcı adı ve şifre boş değilse                   
+
+                    
+                    if (username != "" && password != "") { // kullanıcı adı ve şifre boş değilse
+                      loginData.setBool("login", false); // login işlemi yapıldı
+                      loginData.setString("username", username);
+                    
                     if(orderData.siparisList.length != 0){ // siparişler boş değilse anasayfaya yönlendir
                     progressUHD.show();
                     Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) => 
