@@ -93,7 +93,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             Padding(padding: const EdgeInsets.only(left: maxSpace), child: 
-                                            Text(orderDetailData.siparisDetay.depoIcerigi[index].yakitTipi,style: cardTextStyle)), // Yakıt Tipi
+                                            Text(orderDetailData.siparisDetay.depoIcerigi[index].yakitTipi.toLowerCase(),style: cardTextStyle)), // Yakıt Tipi
                                             SizedBox(width: deviceWidth(context)*0.3),
                                             Text(orderDetailData.siparisDetay.depoIcerigi[index].litre,style: contentTextStyle), // Yakıt Miktarı
                                           ],
