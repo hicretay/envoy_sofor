@@ -1,11 +1,16 @@
+import 'dart:io';
+
+import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderDetailJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/updateDocumentPage.dart';
 import 'package:envoy/settings/consts.dart';
+import 'package:envoy/settings/functions.dart';
 import 'package:envoy/widgets/leadingContainerWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:envoy/widgets/orderDetailCardWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 // ignore: must_be_immutable
 class OrderDetailPage extends StatefulWidget {
@@ -30,12 +35,31 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   List<String> base64DocEmpty = [];
   // base64 images listesi (boşaltma)
 
+  List<String> base = [];
+
   OrderDetailJsonModel orderDetailData;
   UserJsonModel userData;
   _OrderDetailPageState({this.orderDetailData, this.base64DocEmpty, this.base64DocFill, this.userData});
 
   List<Belgeleri> docEmpty = [];
   List<Belgeleri> docFill = [];
+
+  var connectivityResult = Connectivity().checkConnectivity();
+
+  //--------------------seçilen resmi yükleme fonksiyonu--------------------------
+  Future uploadSelectedImage(ImageSource source,List<String> base) async {
+    final imagePicker = ImagePicker();
+    final selected    = await imagePicker.getImage(source: source);
+   
+      if (selected != null) {
+          selectedImage = File(selected.path);  
+          base.add(imageToBase64(selectedImage));
+          //çekilen resim base64 e dönüştürülüp, listeye eklendi
+          imageCache.clear(); // İmage önbelleğini temizleme
+          imageCache.clearLiveImages();
+      }  
+  }
+//------------------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {    
@@ -150,7 +174,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               Text("Ekle",style: contentTextStyle),
                                               SizedBox(height: deviceHeight(context)*0.05)]))]),
 
-                                          onTap: (){},
+                                          onTap: ()async{
+                                              await uploadSelectedImage(ImageSource.camera, base64DocFill);
+                                              await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, -1, base64DocFill.first);
+                                              imageCache.clear(); // İmage önbelleğini temizleme
+                                              imageCache.clearLiveImages();
+                                          },
                                         );
                                         //-----------------------------------------------------------------------------------------------------------
                                       }
@@ -207,7 +236,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               Text("Ekle",style: contentTextStyle),
                                               SizedBox(height: deviceHeight(context)*0.05)]))]),
                                           
-                                           onTap: (){},
+                                           onTap: ()async{
+                                              await uploadSelectedImage(ImageSource.camera, base64DocEmpty);
+                                              await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, -1, base64DocEmpty.first);
+                                              imageCache.clear(); // İmage önbelleğini temizleme
+                                              imageCache.clearLiveImages();
+                                           },
                                         );
                                         //-----------------------------------------------------------------------------------------------------------------    
                                       }
