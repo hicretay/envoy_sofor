@@ -46,15 +46,7 @@ const contentTextStyle = TextStyle(color: Colors.white, fontSize: 12);
 int globalOrderId = 1;
 int globalDurumId = 1; // ekledim
 
-//-----------------------------------URLs---------------------------------------
-//Kullanıcı
-const loginUrl = "https://portalservice.kirbag.com/api/User";
-//Sipariş
-const orderUrl = "https://portalservice.kirbag.com/api/Order";
-//Sipariş Detay
-const orderDetailUrl = "https://portalservice.kirbag.com/api/OrderDetail";
-// Döküman
-const documentUrl = "https://portalservice.kirbag.com/api/Document";
+const url = "https://portalservice.kirbag.com/api"; // api url'i
 
 File selectedImage; // cihazdan çekilen resim
 
@@ -74,3 +66,4 @@ Image base64ToImage(String image) {
   return Image.memory(_imageBytesDecoded);
 }
 //------------------------------------------------------------------------------
+

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/loginPage.dart';
@@ -10,6 +11,7 @@ import 'package:envoy/widgets/ordersCardApprove.dart';
 import 'package:envoy/widgets/ordersCardFillEmptyWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,7 +47,7 @@ class _HomePageState extends State<HomePage> {
       username = logindata.getString('username');
     });
   }
-  
+
   List<String> base64DocFill = [];
   // base64 images listesi (yükleme)
 
@@ -73,7 +75,7 @@ class _HomePageState extends State<HomePage> {
       }  
   }
 //------------------------------------------------------------------------------
-
+  var connectivityResult = Connectivity().checkConnectivity();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +84,7 @@ class _HomePageState extends State<HomePage> {
         title: Text("siparişler", style: leadingStyle),
         actions: [
           IconButton(icon: Icon(Icons.exit_to_app),onPressed: (){
-                
+                logindata.setBool('login', true);
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
           })
         ],
@@ -114,15 +116,20 @@ class _HomePageState extends State<HomePage> {
                       //--------------------------------------------------------------------------------------------
                       // Sipariş onaylanmamışsa onayla butonu olan görünüm gelecek
                       // durumId = 1 ise onayla görünümü gelecek tıklandığında durum id = 2 olacak
-                      
-                        child:  ButtonWidget(
+                      //-------------------------------------------ONAYLA BUTONU-------------------------------------------------------
+                        child:  ButtonWidget(                         
                                 buttonText : "onayla",
                                 buttonWidth: deviceWidth(context),
                                 buttonColor: btnColor,
-                                onPressed  : () async{  // belge ve belge id'si gönderilmiyor, yalnızca durumId güncelleniyor                                                                                              
-                                    await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, 0,null); // belgeId = null, belgeiçerik = null
-                                    await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme                                                                                                                              
-                                }),
+                                onPressed  : () async{  // belge ve belge id'si gönderilmiyor, yalnızca durumId güncelleniyor 
+                                final progressUHD = ProgressHUD.of(context);
+                                if(await connectivityResult != ConnectivityResult.none){
+                                    progressUHD.show();                                                                                               
+                                    await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, 0,null); // belgeId = 0, belgeiçerik = null
+                                    await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme  
+                                    progressUHD.dismiss();
+                                                                                                                                                                
+                          }}),
                       )
                       :
                       OrdersCardFillEmptyWidget(
@@ -133,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                         status         : "Onaylandı" ,
                         statusColor    : checkedTxtColor,
                       //--------------------------------------------------------------------------------------------
-                      //--------------------------SLİADABLE ON TAP'İ----------------------------
+                      //--------------------------SLİDABLE ON TAP'İ----------------------------
                         onTap: () async {
                           setState(() {
                               globalOrderId = orderData.siparisList[index].id;
@@ -158,14 +165,16 @@ class _HomePageState extends State<HomePage> {
                                     buttonColor: btnColor,
                                     onPressed  : orderData.siparisList[index].durumId == 2 ?
                                     () async{
+                                      final progressUHD = ProgressHUD.of(context);
+                                      if(await connectivityResult != ConnectivityResult.none){
+                                        progressUHD.show();   
                                         await uploadSelectedImage(ImageSource.camera, base64DocFill); // kameradan fotoğraf çekip base64DocFill listesine ekleme
                                         if(base64DocFill.isNotEmpty)
                                         {
                                         showMessage(context, base64DocFill,3,orderData.siparisList[index].id);} // fotoğrafı değişen durumlarıyla servise gönderme, alertDialog gösterme
-                                        await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme                                       
-                                        //show message
-                                        
-                                    } 
+                                        await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme   
+                                        progressUHD.dismiss();                                                                           
+                                    }} 
                                     :  (){} // durumId 2'den farklı olduğunda doldur butonunu pasifleştirme
                                   ),
                                   //----------------------------------------------------------------------------------------
@@ -178,14 +187,16 @@ class _HomePageState extends State<HomePage> {
                                     buttonColor: checkDateColor,
                                     onPressed  : orderData.siparisList[index].durumId == 3 ? 
                                     () async{
+                                      final progressUHD = ProgressHUD.of(context);
+                                      if(await connectivityResult != ConnectivityResult.none){
+                                      progressUHD.show();   
                                         await uploadSelectedImage(ImageSource.camera, base64DocEmpty); // kameradan fotoğraf çekip base64DocEmpty listesine ekleme
                                         if(base64DocEmpty.isNotEmpty)
                                         {
                                         showMessage(context, base64DocEmpty,4,orderData.siparisList[index].id);} // fotoğrafı değişen durumlarıyla servise gönderme, alertDialog gösterme
-                                        await refreshList(globalOrderId, userData.user.id); // listeyi güncelleme   
-                                        //show message
-                                        
-                                    } 
+                                        await refreshList(globalOrderId, userData.user.id); // listeyi güncelleme  
+                                        progressUHD.dismiss(); 
+                                    }}
                                     : (){} // durumId 3'ten farklı olduğunda doldur butonunu pasifleştirme
                                   ),
                                   //-------------------------------------------------------------------------------------------

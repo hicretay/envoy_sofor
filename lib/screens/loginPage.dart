@@ -30,13 +30,13 @@ class _LoginPageState extends State<LoginPage> {
   bool newUser; // Kullanıcı aktif ise false değilse true verilecek
 
 //--------------------Kullanıcı Giriş Kontrolü Fonksiyonu-----------------------
+  
   void checkLogin() async {
-    //---------------kullanıcı ve sipariş verilerinin çekilmesi-----------------
+    //---------------kullanıcı ve sipariş verilerinin çekilmesi-----------------  
     final String uSERNAME = "sselman";
     final String pASSWORD = "0";
-    final int durumId = 1;
     final UserJsonModel  userData  = await userJsonFunc(uSERNAME, pASSWORD); // kullanıcı verileri
-    final OrderJsonModel orderData = await orderJsonFunc(durumId, userData.user.id); // sipariş verileri
+    final OrderJsonModel orderData = await orderJsonFunc(globalDurumId, userData.user.id); // sipariş verileri
     //--------------------------------------------------------------------------
 
     loginData = await SharedPreferences.getInstance();
@@ -69,7 +69,8 @@ class _LoginPageState extends State<LoginPage> {
     txtPassword.dispose();
     super.dispose();
   }
-
+  var connectivityResult = Connectivity().checkConnectivity();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,8 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: defaultPadding), // logo - giriş ikonu arası boşluk          
                 SvgPicture.asset("assets/images/logo.svg", color: logoColor),  // logo svg'sinin gösterilmesi           
                 SizedBox(height: deviceHeight(context) * 0.2),  //logo - textFieldlar arası boşluk   
-              
-
+            
                 ListView.builder(
                   itemCount: 1,
                   shrinkWrap: true,
@@ -129,13 +129,12 @@ class _LoginPageState extends State<LoginPage> {
                   buttonWidth: deviceWidth(context) * 0.52,// buton genişliği             
                   onPressed  : () async { 
                     
-                    final progressUHD = ProgressHUD.of(context);              
+                    final progressUHD = ProgressHUD.of(context);
+                    if(await connectivityResult != ConnectivityResult.none){
+                     progressUHD.show();              
                     //------------------login verisinin çekilmesi-------------------
                     final String uSERNAME = "sselman";
                     final String pASSWORD = "0";
-                    
-                    var connectivityResult = Connectivity().checkConnectivity();
-                    if(await connectivityResult != ConnectivityResult.none){
 
                     //----------------------USER DATASININ DOLDURULMASI-----------------------
                     final UserJsonModel userData = await userJsonFunc(uSERNAME, pASSWORD);
@@ -153,13 +152,11 @@ class _LoginPageState extends State<LoginPage> {
                       loginData.setBool("login", false); // login işlemi yapıldı
                       loginData.setString("username", username);
                     
-                    if(orderData.siparisList.length != 0){ // siparişler boş değilse anasayfaya yönlendir
-                    progressUHD.show();
                     Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) => 
                     HomePage(userData: userData, orderData: orderData)));
                     //tıklandığında anasayfaya yönlendirilecek 
-                    progressUHD.dismiss();}}}
-
+                    progressUHD.dismiss();
+                    }}
                     else {
                     progressUHD.dismiss();
                     showDialog(context: context, builder: (BuildContext context){
