@@ -176,9 +176,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
                                           onTap: ()async{
                                               await uploadSelectedImage(ImageSource.camera, base64DocFill);
-                                              await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, -1, base64DocFill.first);
+                                              await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId-1, -1, base64DocFill.first);
                                               imageCache.clear(); // İmage önbelleğini temizleme
                                               imageCache.clearLiveImages();
+                                              Navigator.pop(context);
+                                              base64DocFill.clear();
                                           },
                                         );
                                         //-----------------------------------------------------------------------------------------------------------
@@ -241,6 +243,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, -1, base64DocEmpty.first);
                                               imageCache.clear(); // İmage önbelleğini temizleme
                                               imageCache.clearLiveImages();
+                                              Navigator.pop(context);
+                                              base64DocEmpty.clear();
                                            },
                                         );
                                         //-----------------------------------------------------------------------------------------------------------------    
