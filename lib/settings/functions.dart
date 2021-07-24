@@ -4,6 +4,7 @@ import 'package:envoy/models.dart/orderDetailJsonModel.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/settings/consts.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 Map<String, String> header = {
@@ -89,4 +90,27 @@ Future<DocumentJsonModel> documentJsnAddFunc(int siparisId, int soforId, int dur
     return null;
   }
 }
+//--------------------------------------------------------------------------------------------------------------
+//-------------------------------Kullanıcıya Dönüt - Uyarı Dialog Fonksiyonu------------------------------------
+  showAlert(BuildContext context, String content) { 
+    return showDialog(context: context, builder: (BuildContext context){
+      return AlertDialog(
+        content: Text(content, style: TextStyle(fontFamily: contentFont)),
+        actions: <Widget>[
+           Row(
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: [
+               MaterialButton(
+               color: btnColor,
+               child: Text("Kapat",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
+               onPressed: () async{
+                 Navigator.of(context).pop();
+            }),
+          ],
+           ),
+          
+        ],
+      );
+    });
+  }
 //--------------------------------------------------------------------------------------------------------------

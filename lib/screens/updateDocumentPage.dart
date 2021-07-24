@@ -110,20 +110,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                         base.length != 0 ?                                    
                                         Navigator.pop(context) // Döküman detay sayfasına yönlendirme   
                                         : 
-                                        showDialog(context: context, builder: (BuildContext context){
-                                         return AlertDialog(
-                                           content: Text("Belge güncellenmedi !", style: TextStyle(fontFamily: contentFont)),
-                                           actions: <Widget>[
-                                              MaterialButton(
-                                              color: btnColor,
-                                              child: Text("Kapat",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
-                                              onPressed: () async{
-                                                Navigator.of(context).pop();
-                                             }),
-                                             
-                                           ],
-                                         );
-                                       });                                
+                                        showAlert(context, "Belge güncellenmedi !");                                
                                     },
                                   ),
                                   //-------------------------------------------------------------------------------------

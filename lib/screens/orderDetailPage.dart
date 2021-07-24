@@ -158,7 +158,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     child       : GridView.builder(
                                     itemCount   : docFill.length + 1, // Fotoğrafların uzunluğu + ekle butonu
                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 4,
+                                      crossAxisCount : 4,
                                       mainAxisSpacing: maxSpace,
                                     ),
                                     itemBuilder: (BuildContext context, int index) {
@@ -175,30 +175,22 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               SizedBox(height: deviceHeight(context)*0.05)]))]),
 
                                           onTap: ()async{
+                                            if(orderDetailData.siparisDetay.siparisDetay.durumId == 4 || orderDetailData.siparisDetay.siparisDetay.durumId == 3){ 
                                               await uploadSelectedImage(ImageSource.camera, base64DocFill);
                                               if(base64DocFill.length != 0){                                            
-                                              await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId-1, -1, base64DocFill.first);
+                                              await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, -1, base64DocFill.first);
                                               imageCache.clear(); // İmage önbelleğini temizleme
                                               imageCache.clearLiveImages();
                                               Navigator.pop(context);
                                               base64DocFill.clear();} 
                                               else
                                               {
-                                                showDialog(context: context, builder: (BuildContext context){
-                                                  return AlertDialog(
-                                                    content: Text("Belge eklenmedi !", style: TextStyle(fontFamily: contentFont)),
-                                                    actions: <Widget>[
-                                                       MaterialButton(
-                                                       color: btnColor,
-                                                       child: Text("Kapat",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
-                                                       onPressed: () async{
-                                                         Navigator.of(context).pop();
-                                                      }),
-                                                      
-                                                    ],
-                                                  );
-                                                });
+                                                showAlert(context, "Belge eklenmedi !");
                                               }
+                                            } 
+                                            else{
+                                              showAlert(context,"Doldur butonunu kullanınız !");
+                                            }
                                           },
                                         );
                                         //-----------------------------------------------------------------------------------------------------------
@@ -257,6 +249,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               SizedBox(height: deviceHeight(context)*0.05)]))]),
                                           
                                            onTap: ()async{
+                                             if(orderDetailData.siparisDetay.siparisDetay.durumId == 4){
                                               await uploadSelectedImage(ImageSource.camera, base64DocEmpty);
                                               if(base64DocEmpty.length != 0){
                                               await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, -1, base64DocEmpty.first);
@@ -266,21 +259,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               base64DocEmpty.clear();}
                                               else
                                               {
-                                                showDialog(context: context, builder: (BuildContext context){
-                                                  return AlertDialog(
-                                                    content: Text("Belge eklenmedi !", style: TextStyle(fontFamily: contentFont)),
-                                                    actions: <Widget>[
-                                                       MaterialButton(
-                                                       color: btnColor,
-                                                       child: Text("Kapat",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
-                                                       onPressed: () async{
-                                                         Navigator.of(context).pop();
-                                                      }),
-                                                      
-                                                    ],
-                                                  );
-                                                });
+                                                showAlert(context, "Belge eklenmedi !");
                                               }
+                                            }
+                                            else{
+                                              showAlert(context,"Boşalt butonunu kullanınız !");
+                                            }
                                            },
                                         );
                                         //-----------------------------------------------------------------------------------------------------------------    
