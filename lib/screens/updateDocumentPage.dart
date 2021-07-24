@@ -106,8 +106,24 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                     buttonText : "güncelle",
                                     buttonWidth: deviceWidth(context),
                                     onPressed  : () async {                                       
-                                        await uploadSelectedImage(ImageSource.camera,base); // kameradan fotoğraf çekip, base Listesine kaydetme                                     
-                                        Navigator.pop(context); // Döküman detay sayfasına yönlendirme                                   
+                                        await uploadSelectedImage(ImageSource.camera,base); // kameradan fotoğraf çekip, base Listesine kaydetme 
+                                        base.length != 0 ?                                    
+                                        Navigator.pop(context) // Döküman detay sayfasına yönlendirme   
+                                        : 
+                                        showDialog(context: context, builder: (BuildContext context){
+                                         return AlertDialog(
+                                           content: Text("Belge güncellenmedi !", style: TextStyle(fontFamily: contentFont)),
+                                           actions: <Widget>[
+                                              MaterialButton(
+                                              color: btnColor,
+                                              child: Text("Kapat",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
+                                              onPressed: () async{
+                                                Navigator.of(context).pop();
+                                             }),
+                                             
+                                           ],
+                                         );
+                                       });                                
                                     },
                                   ),
                                   //-------------------------------------------------------------------------------------

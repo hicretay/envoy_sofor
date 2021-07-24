@@ -176,11 +176,29 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
                                           onTap: ()async{
                                               await uploadSelectedImage(ImageSource.camera, base64DocFill);
+                                              if(base64DocFill.length != 0){                                            
                                               await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId-1, -1, base64DocFill.first);
                                               imageCache.clear(); // İmage önbelleğini temizleme
                                               imageCache.clearLiveImages();
                                               Navigator.pop(context);
-                                              base64DocFill.clear();
+                                              base64DocFill.clear();} 
+                                              else
+                                              {
+                                                showDialog(context: context, builder: (BuildContext context){
+                                                  return AlertDialog(
+                                                    content: Text("Belge eklenmedi !", style: TextStyle(fontFamily: contentFont)),
+                                                    actions: <Widget>[
+                                                       MaterialButton(
+                                                       color: btnColor,
+                                                       child: Text("Kapat",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
+                                                       onPressed: () async{
+                                                         Navigator.of(context).pop();
+                                                      }),
+                                                      
+                                                    ],
+                                                  );
+                                                });
+                                              }
                                           },
                                         );
                                         //-----------------------------------------------------------------------------------------------------------
@@ -240,11 +258,29 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                           
                                            onTap: ()async{
                                               await uploadSelectedImage(ImageSource.camera, base64DocEmpty);
+                                              if(base64DocEmpty.length != 0){
                                               await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, -1, base64DocEmpty.first);
                                               imageCache.clear(); // İmage önbelleğini temizleme
                                               imageCache.clearLiveImages();
                                               Navigator.pop(context);
-                                              base64DocEmpty.clear();
+                                              base64DocEmpty.clear();}
+                                              else
+                                              {
+                                                showDialog(context: context, builder: (BuildContext context){
+                                                  return AlertDialog(
+                                                    content: Text("Belge eklenmedi !", style: TextStyle(fontFamily: contentFont)),
+                                                    actions: <Widget>[
+                                                       MaterialButton(
+                                                       color: btnColor,
+                                                       child: Text("Kapat",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
+                                                       onPressed: () async{
+                                                         Navigator.of(context).pop();
+                                                      }),
+                                                      
+                                                    ],
+                                                  );
+                                                });
+                                              }
                                            },
                                         );
                                         //-----------------------------------------------------------------------------------------------------------------    
