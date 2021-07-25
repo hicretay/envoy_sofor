@@ -46,22 +46,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   List<Belgeleri> docFill = [];
 
   var connectivityResult = Connectivity().checkConnectivity();
-
-  //--------------------seçilen resmi yükleme fonksiyonu--------------------------
-  Future uploadSelectedImage(ImageSource source,List<String> base) async {
-    final imagePicker = ImagePicker();
-    final selected    = await imagePicker.getImage(source: source);
-   
-      if (selected != null) {
-          selectedImage = File(selected.path);  
-          base.add(imageToBase64(selectedImage));
-          //çekilen resim base64 e dönüştürülüp, listeye eklendi
-          imageCache.clear(); // İmage önbelleğini temizleme
-          imageCache.clearLiveImages();
-      }  
-  }
-//------------------------------------------------------------------------------
-
   @override
   Widget build(BuildContext context) {    
     imageCache.clearLiveImages();

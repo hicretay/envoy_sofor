@@ -61,19 +61,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 //------------------------------------------------------------------------------
-
-//--------------------seçilen resmi yükleme fonksiyonu--------------------------
-  Future uploadSelectedImage(ImageSource source,List<String> base) async {
-    final imagePicker = ImagePicker();
-    final selected    = await imagePicker.getImage(source: source);
-   
-      if (selected != null) {
-          selectedImage = File(selected.path);  
-          base.add(imageToBase64(selectedImage));
-          //çekilen resim base64 e dönüştürülüp, listeye eklendi
-      }  
-  }
-//------------------------------------------------------------------------------
   var connectivityResult = Connectivity().checkConnectivity();
   @override
   Widget build(BuildContext context) {

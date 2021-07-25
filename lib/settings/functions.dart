@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:envoy/models.dart/documentJsonModel.dart';
 import 'package:envoy/models.dart/orderDetailJsonModel.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
@@ -6,6 +7,7 @@ import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 Map<String, String> header = {
   "Content-Type": "application/json",
@@ -114,3 +116,18 @@ Future<DocumentJsonModel> documentJsnAddFunc(int siparisId, int soforId, int dur
     });
   }
 //--------------------------------------------------------------------------------------------------------------
+
+//--------------------seçilen resmi yükleme fonksiyonu--------------------------
+  Future uploadSelectedImage(ImageSource source,List<String> base) async {
+    final imagePicker = ImagePicker();
+    final selected    = await imagePicker.getImage(source: source);
+   
+      if (selected != null) {
+          selectedImage = File(selected.path);  
+          base.add(imageToBase64(selectedImage));
+          //çekilen resim base64 e dönüştürülüp, listeye eklendi
+          imageCache.clear(); // İmage önbelleğini temizleme
+          imageCache.clearLiveImages();
+      }  
+  }
+//------------------------------------------------------------------------------

@@ -29,7 +29,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
 
   //-----------------------------------------------FOTOĞRAF ÇEKME - DÖNÜŞTÜRME-----------------------------------------------------
   // ignore: missing_return
-  Future<OrderDetailJsonModel> uploadSelectedImage(ImageSource source, List<String> base) async {
+  Future<OrderDetailJsonModel> uploadSelectedImg(ImageSource source, List<String> base) async {
     final imagePicker = ImagePicker();
     final selected = await imagePicker.getImage(source: source);
 
@@ -106,7 +106,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                     buttonText : "güncelle",
                                     buttonWidth: deviceWidth(context),
                                     onPressed  : () async {                                       
-                                        await uploadSelectedImage(ImageSource.camera,base); // kameradan fotoğraf çekip, base Listesine kaydetme 
+                                        await uploadSelectedImg(ImageSource.camera,base); // kameradan fotoğraf çekip, base Listesine kaydetme 
                                         base.length != 0 ?                                    
                                         Navigator.pop(context) // Döküman detay sayfasına yönlendirme   
                                         : 
