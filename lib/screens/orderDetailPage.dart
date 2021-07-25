@@ -7,6 +7,7 @@ import 'package:envoy/screens/updateDocumentPage.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:envoy/widgets/leadingContainerWidget.dart';
+import 'package:envoy/widgets/leadingDateContainerWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:envoy/widgets/orderDetailCardWidget.dart';
 import 'package:flutter/material.dart';
@@ -126,30 +127,15 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                 )),
                             //-------------------------------------------------------------------------------------------
                             SizedBox(height: maxSpace), // depo içeriği açıklması - şöför onay tarihi arası boşluk
-                            //-----------------------------şöför onay tarihi container'ı---------------------------------
-                            Container(
-                              width : deviceWidth(context),
-                              height: deviceHeight(context) * 0.05,
-                              color : checkDateColor,
-                              child : Center(child: Align(alignment: Alignment.centerLeft,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(" şoför onay tarihi",style: cardTextStyle),
-                                      Padding(padding: const EdgeInsets.only(right: minSpace),
-                                        child: Text(orderDetailData.siparisDetay.soforonayTarihi,style: contentTextStyle),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            //----------------------------------------------------------------------------
+                            //------------------------------------------------------şöför onay tarihi container'ı-----------------------------------------------------------
+                            LeadingDateContainerWidget(containerColor: checkDateColor,content: orderDetailData.siparisDetay.soforonayTarihi,leading: "şoför onay tarihi",),
+                            //---------------------------------------------------------------------------------------------------------------------------------------------
                             SizedBox(height: maxSpace), // şöför onay tarihi - yükleme belgeleri arası boşluk
-                            //-------------yükleme belgeleri başlık container'ı---------------------------
-                            LeadingContainerWidget( leading: "yükleme belgeleri"),
-                            //--------------------------------------------------------------------------------
-                            //--------------------------yükleme belgeleri içeriği-----------------------------
+
+                            //-----------------------------------------------yükleme belgeleri başlık container'ı--------------------------------------------------------------
+                            LeadingDateContainerWidget(containerColor: btnColor,leading: "yükleme belgeleri",content: docFill.isNotEmpty? orderDetailData.siparisDetay.yuklemeBelgeleri.last.tarih : "",),
+                            //-------------------------------------------------------------------------------------------------------------------------------------------------
+                            //-----------------------------------------------------yükleme belgeleri içeriği-------------------------------------------------------------------
                             Container(
                               height: deviceHeight(context) * 0.3,
                               color : lightCardColor,
@@ -162,7 +148,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       mainAxisSpacing: maxSpace,
                                     ),
                                     itemBuilder: (BuildContext context, int index) {
-                                      
                                       if(index == docFill.length){ // index dökümanların uzunluğu kadar ise ekleme butonunu çizdir
                                       //----------------------------------GRİDVİEWDEN FOTOĞRAF EKLE BUTONU (DOLDUR)-----------------------------------
                                         return GestureDetector(
@@ -188,8 +173,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                                 showAlert(context, "Belge eklenmedi !");
                                               }
                                             } 
-                                            else{
-                                              showAlert(context,"Doldur butonunu kullanınız !");
+                                             else{
+                                               showAlert(context,"Doldur butonunu kullanınız !");
                                             }
                                           },
                                         );
@@ -197,7 +182,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       }
                                       // fotoğrafları listeye doldurma
                                       //------------------------------- FOTOĞRAFLAR (DOLDURMA FOTOĞRAFLARI)------------------------------------
-                                      return GestureDetector( 
+                                      return GestureDetector(
                                         child: Image.network(docFill[index].belgeLink, // doldurma fotoğrafının linki
                                         loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
                                         if (loadingProgress == null) return child; // fotoğraf yüklenirken circular döndürme
@@ -222,7 +207,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                             //------------------------------------------------------------
                             SizedBox(height: maxSpace),
                             //-------------boşaltma belgeleri başlık container'ı---------
-                            LeadingContainerWidget(leading: "boşaltma belgeleri"),
+                            LeadingDateContainerWidget(containerColor: btnColor,leading: "boşaltma belgeleri",content: docEmpty.isNotEmpty? orderDetailData.siparisDetay.bosaltmaBelgeleri.last.tarih : ""),
                             //------------------------------------------------------------
                             //----------------boşaltma belgeleri içeriği------------------
                             Container(
@@ -256,7 +241,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               imageCache.clear(); // İmage önbelleğini temizleme
                                               imageCache.clearLiveImages();
                                               Navigator.pop(context);
-                                              base64DocEmpty.clear();}
+                                              base64DocEmpty.clear();
+                                              }
                                               else
                                               {
                                                 showAlert(context, "Belge eklenmedi !");
