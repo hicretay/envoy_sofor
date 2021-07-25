@@ -6,6 +6,7 @@ import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:toast/toast.dart';
 import '../settings/consts.dart';
 
 // ignore: must_be_immutable
@@ -109,8 +110,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                         await uploadSelectedImg(ImageSource.camera,base); // kameradan fotoğraf çekip, base Listesine kaydetme 
                                         base.length != 0 ?                                    
                                         Navigator.pop(context) // Döküman detay sayfasına yönlendirme   
-                                        : 
-                                        showAlert(context, "Belge güncellenmedi !");                                
+                                        : Toast.show("Belge güncellenmedi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);                            
                                     },
                                   ),
                                   //-------------------------------------------------------------------------------------

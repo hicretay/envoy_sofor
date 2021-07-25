@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderDetailJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
@@ -12,6 +10,7 @@ import 'package:envoy/widgets/logoWidget.dart';
 import 'package:envoy/widgets/orderDetailCardWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:toast/toast.dart';
 
 // ignore: must_be_immutable
 class OrderDetailPage extends StatefulWidget {
@@ -154,11 +153,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               base64DocFill.clear();} 
                                               else
                                               {
-                                                showAlert(context, "Belge eklenmedi !");
+                                                Toast.show("Belge eklenmedi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
                                               }
                                             } 
                                              else{
-                                               showAlert(context,"Doldur butonunu kullanınız !");
+                                              Toast.show("Doldur butonunu kullanınız !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
                                             }
                                           },
                                         );
@@ -229,11 +228,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               }
                                               else
                                               {
-                                                showAlert(context, "Belge eklenmedi !");
+                                                Toast.show("Belge eklenmedi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
                                               }
                                             }
                                             else{
-                                              showAlert(context,"Boşalt butonunu kullanınız !");
+                                              Toast.show("Boşalt butonunu kullanınız !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
                                             }
                                            },
                                         );

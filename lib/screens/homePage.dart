@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
@@ -7,7 +6,6 @@ import 'package:envoy/screens/orderDetailPage.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/ordersCardApprove.dart';
-
 import 'package:envoy/widgets/ordersCardFillEmptyWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
@@ -107,13 +105,9 @@ class _HomePageState extends State<HomePage> {
                                 buttonText : "onayla",
                                 buttonWidth: deviceWidth(context),
                                 buttonColor: btnColor,
-                                onPressed  : () async{  // belge ve belge id'si gönderilmiyor, yalnızca durumId güncelleniyor 
-                                
-                                                                                                                                
+                                onPressed  : () async{  // belge ve belge id'si gönderilmiyor, yalnızca durumId güncelleniyor                                                                                             
                                     await documentJsnAddFunc(orderData.siparisList[index].id, userData.user.id, 2, 0,null); // belgeId = 0, belgeiçerik = null
-                                    await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme  
-                                    
-                                                                                                                                                                
+                                    await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme                                                                                                                                      
                           }),
                       )
                       :
@@ -150,13 +144,12 @@ class _HomePageState extends State<HomePage> {
                                     buttonColor: btnColor,
                                     onPressed  : orderData.siparisList[index].durumId == 2 ?
                                     () async{
-                                       
                                         await uploadSelectedImage(ImageSource.camera, base64DocFill); // kameradan fotoğraf çekip base64DocFill listesine ekleme
                                         if(base64DocFill.isNotEmpty)
                                         {
                                         showMessage(context, base64DocFill,3,orderData.siparisList[index].id);} // fotoğrafı değişen durumlarıyla servise gönderme, alertDialog gösterme
                                         await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme   
-                                       } 
+                                      } 
                                     :  (){} // durumId 2'den farklı olduğunda doldur butonunu pasifleştirme
                                   ),
                                   //----------------------------------------------------------------------------------------
@@ -168,9 +161,7 @@ class _HomePageState extends State<HomePage> {
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
                                     buttonColor: checkDateColor,
                                     onPressed  : orderData.siparisList[index].durumId == 3 ? 
-                                    () async{
-                                      
-                                        
+                                    () async{                                      
                                         await uploadSelectedImage(ImageSource.camera, base64DocEmpty); // kameradan fotoğraf çekip base64DocEmpty listesine ekleme
                                         if(base64DocEmpty.isNotEmpty)
                                         {
@@ -217,7 +208,6 @@ class _HomePageState extends State<HomePage> {
             onPressed: () async{                                    
               for (var i = 0; i <= document.length -1; i++){            
               await documentJsnAddFunc(orderID, userData.user.id, stateID, 0,document[i]);}
-
               // Toast message çekilen döküman sayısını gösterecek  
               Toast.show("${document.length} belge kaydedildi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
               refreshList(globalOrderId,userData.user.id);              
