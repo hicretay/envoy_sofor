@@ -145,7 +145,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                           //----------------------------------GRİDVİEWDEN FOTOĞRAF EKLE BUTONU (DOLDUR)-----------------------------------
                                             return GestureDetector(
                                               child: Column(children: [
-                                                Container(height: deviceHeight(context)*0.239,width: deviceWidth(context)*0.175,color: bgColor,child: 
+                                                Container(height: deviceHeight(context)*0.238,width: deviceWidth(context)*0.175,color: bgColor,child: 
                                                 Column(children: [
                                                   SizedBox(height: deviceHeight(context)*0.05),
                                                   Icon(Icons.image,color: btnColor,size: 30),
@@ -235,7 +235,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                             //---------------------------------GRİDVİEWDEN FOTOĞRAF EKLE BUTONU (BOŞALT)---------------------------------------
                                             return GestureDetector(
                                               child: Column(children: [
-                                                Container(height: deviceHeight(context)*0.239,width: deviceWidth(context)*0.175,color: bgColor,child: 
+                                                Container(height: deviceHeight(context)*0.238,width: deviceWidth(context)*0.175,color: bgColor,child: 
                                                 Column(children: [
                                                   SizedBox(height: deviceHeight(context)*0.05),
                                                   Icon(Icons.image,color: btnColor,size: 30),
