@@ -243,10 +243,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                                   ]))]),
                                               
                                                onTap: ()async{
-                                                 final progressUHD = ProgressHUD.of(context);
-                                                 if(await connectivityResult != ConnectivityResult.none){
-                                                 progressUHD.show(); 
-                                                 if(orderDetailData.siparisDetay.siparisDetay.durumId == 4){
+                                                  final progressUHD = ProgressHUD.of(context);
+                                                  if(await connectivityResult != ConnectivityResult.none){
+                                                  progressUHD.show(); 
+                                                  if(orderDetailData.siparisDetay.siparisDetay.durumId == 4){
                                                   await uploadSelectedImage(ImageSource.camera, base64DocEmpty);
                                                   if(base64DocEmpty.length != 0){
                                                   await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, -1, base64DocEmpty.first);

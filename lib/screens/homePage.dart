@@ -28,22 +28,8 @@ class _HomePageState extends State<HomePage> {
   OrderJsonModel orderData;
   _HomePageState({this.userData, this.orderData});
 
-  SharedPreferences logindata;
-  String username;
-
-  @override
-  void initState() {
-  super.initState();
-    setState(() { 
-      initial();   
-   });
-  }
-   void initial() async {
-    logindata = await SharedPreferences.getInstance();
-    setState(() {
-      username = logindata.getString('username');
-    });
-  }
+  SharedPreferences prefs;
+  
 
   List<String> base64DocFill = [];
   // base64 images listesi (yükleme)
@@ -67,8 +53,9 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
         title: Text("siparişler", style: leadingStyle),
         actions: [
-          IconButton(icon: Icon(Icons.exit_to_app),onPressed: (){
-                logindata.setBool('login', true);
+          IconButton(icon: Icon(Icons.exit_to_app),onPressed: ()async{
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.remove("user");
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
           })
         ],

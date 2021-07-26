@@ -1,6 +1,11 @@
+import 'package:envoy/models.dart/orderJsonModel.dart';
+import 'package:envoy/models.dart/userJsonModel.dart';
+import 'package:envoy/screens/homePage.dart';
 import 'package:envoy/settings/consts.dart';
+import 'package:envoy/settings/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   SplashPage({Key key}) : super(key: key);
@@ -17,11 +22,21 @@ class _SplashPageState extends State<SplashPage> {
     await precachePicture(ExactAssetPicture((SvgPicture.svgStringDecoder),'assets/images/bg.svg'), null);    
   } 
     Future.wait([loadPictures()]);
-    Future.delayed(Duration(seconds: 2), (){
+    Future.delayed(Duration(seconds: 2), ()async{
       // Sayfanın görünme süresi
       //----Önceki sayfayı silerek LoginPage'e geçiş--------
-      Navigator.pushNamedAndRemoveUntil(
-          context, "/loginPage", (route) => false);
+      WidgetsFlutterBinding.ensureInitialized();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = prefs.getString("user");
+      if(user == null)
+      Navigator.pushNamedAndRemoveUntil(context, "/loginPage", (route) => false);
+
+      else{
+      final UserJsonModel  userData  = await userJsonFunc("sselman", "0"); // kullanıcı verileri
+      final OrderJsonModel orderData = await orderJsonFunc(globalDurumId, userData.user.id);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => 
+      HomePage(orderData: orderData,userData: userData))); // home verilerini doldur
+      }
       //----------------------------------------------------      
     });
   }
