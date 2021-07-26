@@ -44,6 +44,14 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
   List<Belgeleri> docEmpty = [];
   List<Belgeleri> docFill = [];
+  //--------------------Sipariş Listesi Yenileme Fonksiyonu-----------------------
+  Future refreshList() async {
+    final OrderDetailJsonModel orderList = await orderDetailJsonFunc(orderDetailData.siparisDetay.siparisDetay.id); 
+    setState(() {
+      orderDetailData = orderList;
+    });
+  }
+//------------------------------------------------------------------------------
 
   var connectivityResult = Connectivity().checkConnectivity();
   @override
@@ -156,7 +164,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                                   Toast.show("DOLDURMA belgesi eklendi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
                                                   imageCache.clear(); // İmage önbelleğini temizleme
                                                   imageCache.clearLiveImages();
-                                                  Navigator.pop(context);
+                                                  refreshList();
                                                   base64DocFill.clear();} 
                                                   else
                                                   {
@@ -246,7 +254,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                                   Toast.show("BOŞALTMA belgesi eklendi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
                                                   imageCache.clear(); // İmage önbelleğini temizleme
                                                   imageCache.clearLiveImages();
-                                                  Navigator.pop(context);
+                                                  refreshList();
                                                   base64DocEmpty.clear();
                                                   }
                                                   else
@@ -255,7 +263,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                                   }
                                                 }
                                                 else{
-                                                  Toast.show("Boşalt butonunu kullanınız !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+                                                  Toast.show("Boşalt butonunu kullanınız !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black,gravity: Toast.LENGTH_SHORT);
                                                 }
                                                 progressUHD.dismiss();
                                             }
