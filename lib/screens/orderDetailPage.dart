@@ -150,7 +150,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                                   SizedBox(height: deviceHeight(context)*0.05),
                                                   Icon(Icons.image,color: btnColor,size: 30),
                                                   Text("Ekle",style: contentTextStyle),
-                                                  //SizedBox(height: deviceHeight(context)*0.05)
                                                   ]))]),
 
                                               onTap: ()async{
@@ -236,12 +235,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                             //---------------------------------GRİDVİEWDEN FOTOĞRAF EKLE BUTONU (BOŞALT)---------------------------------------
                                             return GestureDetector(
                                               child: Column(children: [
-                                                Container(height: MediaQuery.of(context).size.height*0.238,width: MediaQuery.of(context).size.width*0.175,color: bgColor,child: 
+                                                Container(height: deviceHeight(context)*0.23,width:deviceWidth(context)*0.175,color: bgColor,child: 
                                                 Column(children: [
                                                   SizedBox(height: deviceHeight(context)*0.05),
                                                   Icon(Icons.image,color: btnColor,size: 30),
                                                   Text("Ekle",style: contentTextStyle),
-                                                  SizedBox(height: MediaQuery.of(context).size.height*0.05)]))]),
+                                                  ]))]),
                                               
                                                onTap: ()async{
                                                  final progressUHD = ProgressHUD.of(context);
