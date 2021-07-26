@@ -124,13 +124,20 @@ class _HomePageState extends State<HomePage> {
                           //--------------------------------------------------------------------------------------------
                           //--------------------------SLİDABLE ON TAP'İ----------------------------
                             onTap: () async {
+                              final progressUHD = ProgressHUD.of(context);
+                              if(await connectivityResult != ConnectivityResult.none){
+                              progressUHD.show();
                               setState(() {
                                   globalOrderId = orderData.siparisList[index].id;
                               });                        
                               final orderDetailData = await orderDetailJsonFunc(globalOrderId);
                               Navigator.push(context, 
                               MaterialPageRoute(builder: (context) => OrderDetailPage(orderDetailData: orderDetailData,base64DocEmpty: base64DocEmpty,base64DocFill: base64DocFill,userData: userData)));
-                            },                       
+                              progressUHD.dismiss();
+                            }
+                            else{
+                               showAlert(context, "İnternet bağlantınızı kontrol ediniz.");
+                            }},                       
                           //-------------------------------------------------------------------------
                           child: 
                           // sipariş onaylanmışsa doldur - boşalt butonları olan görünüm gelecek
