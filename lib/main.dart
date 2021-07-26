@@ -1,6 +1,7 @@
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/settings/roots.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
  //WidgetsFlutterBinding.ensureInitialized();
@@ -18,10 +19,9 @@ void main() async {
     ),
     //--------------------------------------------------------------------------
   );
-  // await precachePicture(
-  //     ExactAssetPicture(SvgPicture.svgStringDecoder, 'assets/images/bg.svg'),
-  //     null);
 
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((value) => // ekran yönü dikeye sabitleme
   runApp(
     MaterialApp(
       theme: theme,
@@ -29,5 +29,6 @@ void main() async {
       debugShowCheckedModeBanner: false,
       initialRoute: splashRoute, // uygulama başlangıcı
     ),
-  );
+  ),
+ );
 }
