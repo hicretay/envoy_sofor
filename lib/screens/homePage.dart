@@ -13,7 +13,6 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:toast/toast.dart';
 
 class HomePage extends StatefulWidget {
   final UserJsonModel userData;
@@ -163,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                                             {
                                             showMessage(context,"doldurma",base64DocFill,3,orderData.siparisList[index].id);} // fotoğrafı değişen durumlarıyla servise gönderme, alertDialog gösterme
                                             else{
-                                              Toast.show("Doldurma belgesi ÇEKİLMEDİ !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+                                               showToast(context,"Doldurma belgesi ÇEKİLMEDİ !");
                                             }
                                             await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme   
                                             progressUHD.dismiss();
@@ -193,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                                             {
                                             showMessage(context,"boşaltma",base64DocEmpty,4,orderData.siparisList[index].id);} // fotoğrafı değişen durumlarıyla servise gönderme, alertDialog gösterme
                                             else{
-                                              Toast.show("Boşaltma belgesi ÇEKİLMEDİ !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+                                              showToast(context,"Boşaltma belgesi ÇEKİLMEDİ !");
                                             }
                                             await refreshList(globalOrderId, userData.user.id); // listeyi güncelleme  
                                               progressUHD.dismiss();
@@ -245,7 +244,7 @@ class _HomePageState extends State<HomePage> {
               for (var i = 0; i <= document.length -1; i++){            
               await documentJsnAddFunc(orderID, userData.user.id, stateID, 0,document[i]);}
               // Toast message çekilen döküman sayısını gösterecek  
-              Toast.show("${document.length} belge kaydedildi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+              showToast(context,"${document.length} belge kaydedildi !");
               refreshList(globalOrderId,userData.user.id);              
               Navigator.of(context).pop();
               document.clear();

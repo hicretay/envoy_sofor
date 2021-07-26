@@ -8,7 +8,6 @@ import 'package:envoy/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:toast/toast.dart';
 import '../settings/consts.dart';
 
 // ignore: must_be_immutable
@@ -115,10 +114,13 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                             if(await connectivityResult != ConnectivityResult.none){
                                             progressUHD.show();                                      
                                             await uploadSelectedImg(ImageSource.camera,base); // kameradan fotoğraf çekip, base Listesine kaydetme 
-                                            base.length != 0 ?                                    
-                                            Navigator.pop(context) // Döküman detay sayfasına yönlendirme   
-                                            : Toast.show("Belge güncellenmedi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
-                                            progressUHD.dismiss();                            
+                                            if(base.length != 0){                                  
+                                            Navigator.pop(context); // Döküman detay sayfasına yönlendirme  
+                                            showToast(context,"Belge güncellendi !"); } 
+                                            else {
+                                            showToast(context,"Belge güncellenmedi !");
+                                            progressUHD.dismiss(); 
+                                            }                           
                                         }
                                          else{
                                             showAlert(context, "İnternet bağlantınızı kontrol ediniz.");

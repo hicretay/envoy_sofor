@@ -8,6 +8,7 @@ import 'package:envoy/settings/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:toast/toast.dart';
 
 Map<String, String> header = {
   "Content-Type": "application/json",
@@ -131,3 +132,8 @@ Future<DocumentJsonModel> documentJsnAddFunc(int siparisId, int soforId, int dur
       }  
   }
 //------------------------------------------------------------------------------
+//------------------------------Toast Mesaj Gösterme Fonksiyonu-----------------------------------------
+showToast(BuildContext context, String content){
+  return Toast.show(content, context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+}
+//------------------------------------------------------------------------------------------------------

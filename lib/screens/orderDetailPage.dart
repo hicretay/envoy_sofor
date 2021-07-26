@@ -11,7 +11,6 @@ import 'package:envoy/widgets/orderDetailCardWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:toast/toast.dart';
 
 // ignore: must_be_immutable
 class OrderDetailPage extends StatefulWidget {
@@ -161,18 +160,18 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                                   await uploadSelectedImage(ImageSource.camera, base64DocFill);
                                                   if(base64DocFill.length != 0){                                            
                                                   await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId == 4 ? orderDetailData.siparisDetay.siparisDetay.durumId-1 :orderDetailData.siparisDetay.siparisDetay.durumId, -1, base64DocFill.first);
-                                                  Toast.show("DOLDURMA belgesi eklendi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+                                                  showToast(context,"DOLDURMA belgesi eklendi !");
                                                   imageCache.clear(); // İmage önbelleğini temizleme
                                                   imageCache.clearLiveImages();
                                                   refreshList();
                                                   base64DocFill.clear();} 
                                                   else
                                                   {
-                                                    Toast.show("DOLDURMA belgesi eklenmedi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+                                                    showToast(context,"DOLDURMA belgesi eklenmedi !");
                                                   }
                                                 } 
                                                  else{
-                                                  Toast.show("Doldur butonunu kullanınız !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+                                                  showToast(context,"Doldur butonunu kullanınız !");
                                                 }
                                                 progressUHD.dismiss();
                                               }
@@ -251,7 +250,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                                   await uploadSelectedImage(ImageSource.camera, base64DocEmpty);
                                                   if(base64DocEmpty.length != 0){
                                                   await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, -1, base64DocEmpty.first);
-                                                  Toast.show("BOŞALTMA belgesi eklendi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+                                                  showToast(context,"BOŞALTMA belgesi eklendi !");
                                                   imageCache.clear(); // İmage önbelleğini temizleme
                                                   imageCache.clearLiveImages();
                                                   refreshList();
@@ -259,11 +258,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                                   }
                                                   else
                                                   {
-                                                    Toast.show("BOŞALTMA belgesi eklenmedi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+                                                    showToast(context,"BOŞALTMA belgesi eklenmedi !");
                                                   }
                                                 }
                                                 else{
-                                                  Toast.show("Boşalt butonunu kullanınız !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black,gravity: Toast.LENGTH_SHORT);
+                                                  //Toast.show("Boşalt butonunu kullanınız !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black,gravity: Toast.LENGTH_SHORT);
+                                                  showToast(context,"Boşalt butonunu kullanınız !");
                                                 }
                                                 progressUHD.dismiss();
                                             }
@@ -286,10 +286,18 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               ));
                                             }),
                                   
-                                            onTap: () async{                                       
+                                            onTap: () async{  
+                                              final progressUHD = ProgressHUD.of(context);
+                                              if(await connectivityResult != ConnectivityResult.none){
+                                              progressUHD.show();                                      
                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> 
                                               UpdateDocumentPage(img: docEmpty[index],userData: userData, orderDetailData: orderDetailData))); 
                                               // döküman güncelleme sayfasına yönlendirme
+                                              progressUHD.dismiss();
+                                            }
+                                            else{
+                                              showAlert(context, "İnternet bağlantınızı kontrol ediniz.");
+                                            }
                                             },
                                           );
                                           //----------------------------------------------------------------------------------------------------------------------
