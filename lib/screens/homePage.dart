@@ -147,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                                         await uploadSelectedImage(ImageSource.camera, base64DocFill); // kameradan fotoğraf çekip base64DocFill listesine ekleme
                                         if(base64DocFill.isNotEmpty)
                                         {
-                                        showMessage(context, base64DocFill,3,orderData.siparisList[index].id);} // fotoğrafı değişen durumlarıyla servise gönderme, alertDialog gösterme
+                                        showMessage(context,"doldurma",base64DocFill,3,orderData.siparisList[index].id);} // fotoğrafı değişen durumlarıyla servise gönderme, alertDialog gösterme
                                         await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme   
                                       } 
                                     :  (){} // durumId 2'den farklı olduğunda doldur butonunu pasifleştirme
@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                                         await uploadSelectedImage(ImageSource.camera, base64DocEmpty); // kameradan fotoğraf çekip base64DocEmpty listesine ekleme
                                         if(base64DocEmpty.isNotEmpty)
                                         {
-                                        showMessage(context, base64DocEmpty,4,orderData.siparisList[index].id);} // fotoğrafı değişen durumlarıyla servise gönderme, alertDialog gösterme
+                                        showMessage(context,"boşaltma",base64DocEmpty,4,orderData.siparisList[index].id);} // fotoğrafı değişen durumlarıyla servise gönderme, alertDialog gösterme
                                         await refreshList(globalOrderId, userData.user.id); // listeyi güncelleme  
                                       }
                                     : (){} // durumId 3'ten farklı olduğunda doldur butonunu pasifleştirme
@@ -184,10 +184,10 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: LogoWidget()); // en alttaki logo görünümü
   }
 
-  showMessage(BuildContext context, List<String> document,int stateID, int orderID) { 
+  showMessage(BuildContext context, String documentType, List<String> document,int stateID, int orderID) { 
   return showDialog(context: context, builder: (BuildContext context){
     return AlertDialog(
-      content: Text("Tekrar belge fotoğrafı çekmek ister misiniz ?",style: TextStyle(fontFamily: contentFont)),
+      content: Text("Tekrar $documentType belgesi fotoğrafı çekmek ister misiniz ?",style: TextStyle(fontFamily: contentFont)),
       actions: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

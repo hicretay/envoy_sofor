@@ -146,7 +146,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                             if(orderDetailData.siparisDetay.siparisDetay.durumId == 4 || orderDetailData.siparisDetay.siparisDetay.durumId == 3){ 
                                               await uploadSelectedImage(ImageSource.camera, base64DocFill);
                                               if(base64DocFill.length != 0){                                            
-                                              await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId-1, -1, base64DocFill.first);
+                                              await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId == 4 ? orderDetailData.siparisDetay.siparisDetay.durumId-1 :orderDetailData.siparisDetay.siparisDetay.durumId, -1, base64DocFill.first);
+                                              Toast.show("DOLDURMA belgesi eklendi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
                                               imageCache.clear(); // İmage önbelleğini temizleme
                                               imageCache.clearLiveImages();
                                               Navigator.pop(context);
@@ -221,6 +222,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               await uploadSelectedImage(ImageSource.camera, base64DocEmpty);
                                               if(base64DocEmpty.length != 0){
                                               await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, -1, base64DocEmpty.first);
+                                              Toast.show("BOŞALTMA belgesi eklendi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
                                               imageCache.clear(); // İmage önbelleğini temizleme
                                               imageCache.clearLiveImages();
                                               Navigator.pop(context);
