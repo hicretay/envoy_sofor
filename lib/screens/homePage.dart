@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                                   ButtonWidget(
                                     buttonText : "doldur",
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
-                                    buttonColor: btnColor,
+                                    buttonColor: orderData.siparisList[index].durumId == 2 ? btnColor : checkDateColor,
                                     onPressed  : orderData.siparisList[index].durumId == 2 ?
                                     () async{
                                         await uploadSelectedImage(ImageSource.camera, base64DocFill); // kameradan fotoğraf çekip base64DocFill listesine ekleme
@@ -159,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                                   ButtonWidget(
                                     buttonText : "boşalt",
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
-                                    buttonColor: checkDateColor,
+                                    buttonColor: orderData.siparisList[index].durumId == 3 ? btnColor:checkDateColor,
                                     onPressed  : orderData.siparisList[index].durumId == 3 ? 
                                     () async{                                      
                                         await uploadSelectedImage(ImageSource.camera, base64DocEmpty); // kameradan fotoğraf çekip base64DocEmpty listesine ekleme
