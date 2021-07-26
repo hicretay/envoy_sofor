@@ -139,6 +139,7 @@ class _HomePageState extends State<HomePage> {
                                   // durumId = 2 ise liste boş değilse(fotoğraf çekilmişse) durumId = 3 olarak güncellenecek, 
                                   // doldur butonu pasifleştirilecek ve fotoğraf servise gönderilecek
                                   ButtonWidget(
+                                    
                                     buttonText : "doldur",
                                     buttonWidth: deviceWidth(context) * 0.46, // buton genişliği
                                     buttonColor: orderData.siparisList[index].durumId == 2 ? btnColor : Colors.grey[800],
@@ -148,6 +149,9 @@ class _HomePageState extends State<HomePage> {
                                         if(base64DocFill.isNotEmpty)
                                         {
                                         showMessage(context,"doldurma",base64DocFill,3,orderData.siparisList[index].id);} // fotoğrafı değişen durumlarıyla servise gönderme, alertDialog gösterme
+                                        else{
+                                          Toast.show("Doldurma belgesi ÇEKİLMEDİ !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+                                        }
                                         await refreshList(globalOrderId,userData.user.id); // listeyi güncelleme   
                                       } 
                                     :  (){} // durumId 2'den farklı olduğunda doldur butonunu pasifleştirme
@@ -166,6 +170,9 @@ class _HomePageState extends State<HomePage> {
                                         if(base64DocEmpty.isNotEmpty)
                                         {
                                         showMessage(context,"boşaltma",base64DocEmpty,4,orderData.siparisList[index].id);} // fotoğrafı değişen durumlarıyla servise gönderme, alertDialog gösterme
+                                        else{
+                                          Toast.show("Boşaltma belgesi ÇEKİLMEDİ !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+                                        }
                                         await refreshList(globalOrderId, userData.user.id); // listeyi güncelleme  
                                       }
                                     : (){} // durumId 3'ten farklı olduğunda doldur butonunu pasifleştirme

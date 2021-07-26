@@ -154,7 +154,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               base64DocFill.clear();} 
                                               else
                                               {
-                                                Toast.show("Belge eklenmedi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+                                                Toast.show("DOLDURMA belgesi eklenmedi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
                                               }
                                             } 
                                              else{
@@ -230,7 +230,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               }
                                               else
                                               {
-                                                Toast.show("Belge eklenmedi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+                                                Toast.show("BOŞALTMA belgesi eklenmedi !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
                                               }
                                             }
                                             else{
