@@ -146,7 +146,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                             if(orderDetailData.siparisDetay.siparisDetay.durumId == 4 || orderDetailData.siparisDetay.siparisDetay.durumId == 3){ 
                                               await uploadSelectedImage(ImageSource.camera, base64DocFill);
                                               if(base64DocFill.length != 0){                                            
-                                              await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId, -1, base64DocFill.first);
+                                              await documentJsnAddFunc(orderDetailData.siparisDetay.siparisDetay.id, userData.user.id, orderDetailData.siparisDetay.siparisDetay.durumId-1, -1, base64DocFill.first);
                                               imageCache.clear(); // İmage önbelleğini temizleme
                                               imageCache.clearLiveImages();
                                               Navigator.pop(context);
