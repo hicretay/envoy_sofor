@@ -262,7 +262,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                                   }
                                                 }
                                                 else{
-                                                  //Toast.show("Boşalt butonunu kullanınız !", context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black,gravity: Toast.LENGTH_SHORT);
                                                   showToast(context,"Boşalt butonunu kullanınız !");
                                                 }
                                                 progressUHD.dismiss();

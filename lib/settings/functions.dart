@@ -134,6 +134,6 @@ Future<DocumentJsonModel> documentJsnAddFunc(int siparisId, int soforId, int dur
 //------------------------------------------------------------------------------
 //------------------------------Toast Mesaj Gösterme Fonksiyonu-----------------------------------------
 showToast(BuildContext context, String content){
-  return Toast.show(content, context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black);
+  return Toast.show(content, context, backgroundColor: Colors.grey,duration: 3, textColor: Colors.black,gravity: Toast.LENGTH_SHORT);
 }
 //------------------------------------------------------------------------------------------------------
