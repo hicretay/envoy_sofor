@@ -159,20 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                     }}
                     else {
                     progressUHD.dismiss();
-                    showDialog(context: context, builder: (BuildContext context){
-                      return AlertDialog(
-                        content: Text("İnternet bağlantınızı kontrol ediniz.", style: TextStyle(fontFamily: contentFont)),
-                        actions: <Widget>[
-                           MaterialButton(
-                           color: btnColor,
-                           child: Text("Kapat",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
-                           onPressed: () async{
-                             Navigator.of(context).pop();
-                          }),
-                          
-                        ],
-                      );
-                    });
+                     showAlert(context, "İnternet bağlantınızı kontrol ediniz.");
                     }
                   },
                 ),
