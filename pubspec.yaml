@@ -19,7 +19,6 @@ dependencies:
   flutter_svg_provider: ^0.1.9
   http: ^0.13.3
   image: ^3.0.2
-  image_cropper: ^1.4.1
   image_picker: ^0.8.1+2
   path_provider: ^2.0.2
   shared_preferences: ^2.0.6
