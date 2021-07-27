@@ -1,3 +1,4 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/homePage.dart';
@@ -15,6 +16,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  var connectivityResult = Connectivity().checkConnectivity();
   @override
   void initState() {
     super.initState();
@@ -22,8 +24,9 @@ class _SplashPageState extends State<SplashPage> {
     await precachePicture(ExactAssetPicture((SvgPicture.svgStringDecoder),'assets/images/bg.svg'), null);    
   } 
     Future.wait([loadPictures()]);
-    Future.delayed(Duration(seconds: 2), ()async{
-      // Sayfanın görünme süresi
+    Future.delayed(Duration(seconds: 2), ()async{ // Sayfanın görünme süresi
+      if(await connectivityResult != ConnectivityResult.none){
+     
       //----Önceki sayfayı silerek LoginPage'e geçiş--------
       WidgetsFlutterBinding.ensureInitialized();
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -40,7 +43,11 @@ class _SplashPageState extends State<SplashPage> {
       HomePage(orderData: orderData,userData: userData))); // home verilerini doldur
       }
       //----------------------------------------------------      
-    });
+  }
+  else{
+    showAlert(context, "İnternet bağlantınızı kontrol ediniz.");
+  }
+  });
   }
 
   @override
