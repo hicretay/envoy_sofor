@@ -25,10 +25,14 @@ Future<UserJsonModel> userJsonFunc(String userName, String password) async {
       body: '{"userName":' +'"$userName"' + ',' +'"password":' + '"$password"' + '}',
       headers: header
       );
-
+  
   if (response.statusCode == 200) {
+    if (response.body.contains("true")) {
     final String responseString = response.body;
-    return userJsonModelFromJson(responseString);
+    return userJsonModelFromJson(responseString);  
+    }else{
+      return null;
+    }    
   } else {
     return null;
   }

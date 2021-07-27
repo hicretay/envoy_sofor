@@ -105,23 +105,28 @@ class _LoginPageState extends State<LoginPage> {
                            final UserJsonModel userData = await userJsonFunc(txtUsername.text, txtPassword.text);
                            //------------------------------------------------------------------------
                        
-                           //--------------------SİPARİŞ DATASININ DOLDURULMASI-------------------------             
-                           OrderJsonModel orderData = await orderJsonFunc(globalDurumId,userData.user.id);
+                           
                            //---------------------------------------------------------------------------
-
                            String username = txtUsername.text; // Kullanıcı Adı TextField'ının texti = username
                            String password = txtPassword.text; // Şifre TextField'ının texti = password
-                         
-                           if (username == "sselman" && password == "0") { // kullanıcı adı ve şifre boş değilse
-                             SharedPreferences prefs = await SharedPreferences.getInstance();
-                             prefs.setString("user", "sselman");
-                           
-                           Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) => 
-                           HomePage(userData: userData, orderData: orderData)));
+
+                            if(userData==null){
+                              showToast(context,"Kullanıcı Adı veya Şifre Yanlış");
+                              progressUHD.dismiss();
+                            }else{ // kullanıcı adı ve şifre boş değilse
+                           //--------------------SİPARİŞ DATASININ DOLDURULMASI-------------------------             
+                            OrderJsonModel orderData = await orderJsonFunc(globalDurumId,userData.user.id);
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            prefs.setBool("login", true);
+                            prefs.setString("user", username);     
+                            prefs.setString("pass", password);                           
+                            Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) => 
+                            HomePage(userData: userData, orderData: orderData)));
                            //tıklandığında anasayfaya yönlendirilecek 
-                           progressUHD.dismiss();
-                           }
+                            progressUHD.dismiss();
                            //doğru giriş
+                           showToast(context,"Giriş başarılı !");
+                            }                           
                            }
                            else {
                            progressUHD.dismiss();

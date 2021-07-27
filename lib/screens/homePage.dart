@@ -54,8 +54,10 @@ class _HomePageState extends State<HomePage> {
         title: Text("siparişler", style: leadingStyle),
         actions: [
           IconButton(icon: Icon(Icons.exit_to_app),onPressed: ()async{
-                SharedPreferences prefs = await SharedPreferences.getInstance();
+                SharedPreferences prefs = await SharedPreferences.getInstance();                
                 prefs.remove("user");
+                prefs.remove("pass");
+                prefs.setBool("login", false);
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
           })
         ],

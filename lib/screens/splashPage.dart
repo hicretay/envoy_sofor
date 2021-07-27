@@ -27,12 +27,14 @@ class _SplashPageState extends State<SplashPage> {
       //----Önceki sayfayı silerek LoginPage'e geçiş--------
       WidgetsFlutterBinding.ensureInitialized();
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var user = prefs.getString("user");
-      if(user == null)
+      String user = prefs.getString("user");
+      String pass = prefs.getString("pass");
+      bool login = prefs.getBool("login");
+      if(!login)
       Navigator.pushNamedAndRemoveUntil(context, "/loginPage", (route) => false);
 
       else{
-      final UserJsonModel  userData  = await userJsonFunc("sselman", "0"); // kullanıcı verileri
+      final UserJsonModel  userData  = await userJsonFunc(user, pass); // kullanıcı verileri
       final OrderJsonModel orderData = await orderJsonFunc(globalDurumId, userData.user.id);
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => 
       HomePage(orderData: orderData,userData: userData))); // home verilerini doldur
