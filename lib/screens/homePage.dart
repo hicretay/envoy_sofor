@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                 SharedPreferences prefs = await SharedPreferences.getInstance();                
                 prefs.remove("user");
                 prefs.remove("pass");
-                prefs.setBool("login", false);
+                //prefs.setBool("login", false);
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
           })
         ],

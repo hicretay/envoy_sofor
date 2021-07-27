@@ -29,8 +29,8 @@ class _SplashPageState extends State<SplashPage> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String user = prefs.getString("user");
       String pass = prefs.getString("pass");
-      bool login = prefs.getBool("login");
-      if(!login)
+      //bool login = prefs.getBool("login");
+      if(user==null)
       Navigator.pushNamedAndRemoveUntil(context, "/loginPage", (route) => false);
 
       else{

@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                            //--------------------SİPARİŞ DATASININ DOLDURULMASI-------------------------             
                             OrderJsonModel orderData = await orderJsonFunc(globalDurumId,userData.user.id);
                             SharedPreferences prefs = await SharedPreferences.getInstance();
-                            prefs.setBool("login", true);
+                            //prefs.setBool("login", true);
                             prefs.setString("user", username);     
                             prefs.setString("pass", password);                           
                             Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) => 
