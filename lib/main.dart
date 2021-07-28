@@ -1,10 +1,13 @@
+import 'package:envoy/settings/connection.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/settings/roots.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() async {
- //WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance();
+  connectionStatus.initialize();
   ThemeData theme = ThemeData(
     fontFamily: contentFont, // uygulama yazı tipi
     //------------------------------AppBar teması-------------------------------
@@ -20,7 +23,7 @@ void main() async {
     //--------------------------------------------------------------------------
   );
 
-  WidgetsFlutterBinding.ensureInitialized();
+  
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((value) => // ekran yönü dikeye sabitleme
   runApp(
     MaterialApp(

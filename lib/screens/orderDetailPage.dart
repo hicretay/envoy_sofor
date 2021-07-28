@@ -1,7 +1,8 @@
-import 'package:connectivity/connectivity.dart';
+import 'dart:async';
 import 'package:envoy/models.dart/orderDetailJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/updateDocumentPage.dart';
+import 'package:envoy/settings/connection.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:envoy/widgets/leadingContainerWidget.dart';
@@ -52,7 +53,27 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   }
 //------------------------------------------------------------------------------
 
-  var connectivityResult = Connectivity().checkConnectivity();
+  StreamSubscription _connectionChangeStream;
+  bool isOffline = false;
+
+  @override
+  void initState() { 
+    super.initState();
+    ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance();
+        _connectionChangeStream = connectionStatus.connectionChange.listen(connectionChanged);
+  }
+
+  void connectionChanged(dynamic hasConnection) {
+    setState(() {
+        isOffline = !hasConnection;
+    });
+}
+ @override
+   void dispose() {
+     _connectionChangeStream.cancel();
+     super.dispose();
+   }
+
   @override
   Widget build(BuildContext context) {    
     imageCache.clearLiveImages();
@@ -154,7 +175,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
                                               onTap: ()async{
                                                 final progressUHD = ProgressHUD.of(context);
-                                                if(await connectivityResult != ConnectivityResult.none){
+                                                if(!isOffline){
                                                 progressUHD.show();
                                                 if(orderDetailData.siparisDetay.siparisDetay.durumId == 4 || orderDetailData.siparisDetay.siparisDetay.durumId == 3){ 
                                                   await uploadSelectedImage(ImageSource.camera, base64DocFill);
@@ -197,7 +218,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                             ),
                                             onTap: () async{ 
                                               final progressUHD = ProgressHUD.of(context);
-                                              if(await connectivityResult != ConnectivityResult.none){
+                                              if(!isOffline){
                                               progressUHD.show();                                                                               
                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> 
                                               UpdateDocumentPage(img: docFill[index],userData: userData, orderDetailData: orderDetailData))); 
@@ -244,7 +265,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               
                                                onTap: ()async{
                                                   final progressUHD = ProgressHUD.of(context);
-                                                  if(await connectivityResult != ConnectivityResult.none){
+                                                  if(!isOffline){
                                                   progressUHD.show(); 
                                                   if(orderDetailData.siparisDetay.siparisDetay.durumId == 4){
                                                   await uploadSelectedImage(ImageSource.camera, base64DocEmpty);
@@ -287,7 +308,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   
                                             onTap: () async{  
                                               final progressUHD = ProgressHUD.of(context);
-                                              if(await connectivityResult != ConnectivityResult.none){
+                                              if(!isOffline){
                                               progressUHD.show();                                      
                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> 
                                               UpdateDocumentPage(img: docEmpty[index],userData: userData, orderDetailData: orderDetailData))); 

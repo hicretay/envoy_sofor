@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/homePage.dart';
+import 'package:envoy/settings/connection.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:envoy/widgets/bgWidget.dart';
@@ -22,6 +25,22 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController txtUsername = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
 
+  StreamSubscription _connectionChangeStream;
+  bool isOffline = false;
+
+    @override
+    initState() {
+        super.initState();
+        ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance();
+        _connectionChangeStream = connectionStatus.connectionChange.listen(connectionChanged);
+    }
+
+    void connectionChanged(dynamic hasConnection) {
+        setState(() {
+            isOffline = !hasConnection;
+        });
+    }
+
   @override
   void didChangeDependencies() {   
     super.didChangeDependencies();   
@@ -31,9 +50,9 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     txtUsername.dispose();
     txtPassword.dispose();
+    _connectionChangeStream.cancel();
     super.dispose();
   }
-  var connectivityResult = Connectivity().checkConnectivity();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                          onPressed  : () async { 
                            
                            final progressUHD = ProgressHUD.of(context);
-                           if(await connectivityResult != ConnectivityResult.none){
+                           if(!isOffline){
                             progressUHD.show();              
                            //----------------------USER DATASININ DOLDURULMASI-----------------------
                            final UserJsonModel userData = await userJsonFunc(txtUsername.text, txtPassword.text);
@@ -128,8 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                            showToast(context,"Giriş başarılı !");
                             }                           
                            }
-                           else {
-                           progressUHD.dismiss();
+                           else {               
                             showAlert(context, "İnternet bağlantınızı kontrol ediniz.");
                            }
                          },

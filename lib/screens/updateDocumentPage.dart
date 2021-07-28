@@ -1,7 +1,8 @@
+import 'dart:async';
 import 'dart:io';
-import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderDetailJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
+import 'package:envoy/settings/connection.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/logoWidget.dart';
@@ -47,7 +48,28 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
     }
   }
 //------------------------------------------------------------------------------------------------------------------------------------
-  var connectivityResult = Connectivity().checkConnectivity();
+
+  StreamSubscription _connectionChangeStream;
+  bool isOffline = false;
+
+  @override
+  void initState() { 
+    super.initState();
+    ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance();
+        _connectionChangeStream = connectionStatus.connectionChange.listen(connectionChanged);
+  }
+
+  void connectionChanged(dynamic hasConnection) {
+    setState(() {
+        isOffline = !hasConnection;
+    });
+}
+ @override
+   void dispose() {
+     _connectionChangeStream.cancel();
+     super.dispose();
+   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -111,7 +133,7 @@ class _UpdateDocumentPageState extends State<UpdateDocumentPage> {
                                         buttonWidth: deviceWidth(context),
                                         onPressed  : () async { 
                                             final progressUHD = ProgressHUD.of(context);
-                                            if(await connectivityResult != ConnectivityResult.none){
+                                            if(!isOffline){
                                             progressUHD.show();                                      
                                             await uploadSelectedImg(ImageSource.camera,base); // kameradan fotoğraf çekip, base Listesine kaydetme 
                                             if(base.length != 0){                                  

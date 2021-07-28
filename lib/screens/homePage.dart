@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/loginPage.dart';
 import 'package:envoy/screens/orderDetailPage.dart';
+import 'package:envoy/settings/connection.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/widgets/buttonWidget.dart';
 import 'package:envoy/widgets/ordersCardApprove.dart';
@@ -37,6 +39,22 @@ class _HomePageState extends State<HomePage> {
   List<String> base64DocEmpty = [];
   // base64 images listesi (boşaltma)
 
+  StreamSubscription _connectionChangeStream;
+  bool isOffline = false;
+
+  @override
+  void initState() { 
+    super.initState();
+    ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance();
+        _connectionChangeStream = connectionStatus.connectionChange.listen(connectionChanged);
+  }
+
+  void connectionChanged(dynamic hasConnection) {
+    setState(() {
+        isOffline = !hasConnection;
+    });
+}
+
 //--------------------Sipariş Listesi Yenileme Fonksiyonu-----------------------
   Future refreshList(int durumId, int companyId) async {
     final OrderJsonModel orderList = await orderJsonFunc(durumId,companyId); 
@@ -45,7 +63,14 @@ class _HomePageState extends State<HomePage> {
     });
   }
 //------------------------------------------------------------------------------
-  var connectivityResult = Connectivity().checkConnectivity();
+  var connectivityResult = Connectivity().checkConnectivity(); //silinecek
+
+   @override
+   void dispose() {
+     _connectionChangeStream.cancel();
+     super.dispose();
+   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +82,6 @@ class _HomePageState extends State<HomePage> {
                 SharedPreferences prefs = await SharedPreferences.getInstance();                
                 prefs.remove("user");
                 prefs.remove("pass");
-                //prefs.setBool("login", false);
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
           })
         ],
@@ -112,8 +136,10 @@ class _HomePageState extends State<HomePage> {
                           //--------------------------------------------------------------------------------------------
                           //--------------------------SLİDABLE ON TAP'İ----------------------------
                             onTap: () async {
+                              
                               final progressUHD = ProgressHUD.of(context);
-                              if(await connectivityResult != ConnectivityResult.none){
+                              //final result = await InternetAddress.lookup("https://google.com/");
+                              if (!isOffline){
                               progressUHD.show();
                               setState(() {
                                   globalOrderId = orderData.siparisList[index].id;
