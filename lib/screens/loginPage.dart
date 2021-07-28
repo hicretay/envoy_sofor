@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                          onPressed  : () async { 
                            
                            final progressUHD = ProgressHUD.of(context);
-                           if(!isOffline){
+                           if(!isOffline) {
                             progressUHD.show();              
                            //----------------------USER DATASININ DOLDURULMASI-----------------------
                            final UserJsonModel userData = await userJsonFunc(txtUsername.text, txtPassword.text);
@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                             }                           
                            }
                            else {               
-                            showAlert(context, "İnternet bağlantınızı kontrol ediniz.");
+                            await showAlert(context, "İnternet bağlantınızı kontrol ediniz.");
                            }
                          },
                        ),

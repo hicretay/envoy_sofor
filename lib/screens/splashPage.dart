@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/homePage.dart';
@@ -18,7 +17,6 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  var connectivityResult = Connectivity().checkConnectivity();
   StreamSubscription _connectionChangeStream;
   bool isOffline = false;
 
