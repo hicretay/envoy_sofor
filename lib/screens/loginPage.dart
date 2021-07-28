@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:connectivity/connectivity.dart';
-import 'package:envoy/models.dart/orderJsonModel.dart';
-import 'package:envoy/models.dart/userJsonModel.dart';
+import 'package:envoy/models/orderJsonModel.dart';
+import 'package:envoy/models/userJsonModel.dart';
 import 'package:envoy/screens/homePage.dart';
 import 'package:envoy/settings/connection.dart';
 import 'package:envoy/settings/consts.dart';

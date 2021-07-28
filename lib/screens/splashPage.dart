@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:connectivity/connectivity.dart';
-import 'package:envoy/models.dart/orderJsonModel.dart';
-import 'package:envoy/models.dart/userJsonModel.dart';
+import 'package:envoy/models/orderJsonModel.dart';
+import 'package:envoy/models/userJsonModel.dart';
 import 'package:envoy/screens/homePage.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/settings/functions.dart';
@@ -32,7 +32,7 @@ class _SplashPageState extends State<SplashPage> {
    // Future.delayed(Duration(seconds: 2), x);
 
     Future.delayed(Duration(seconds: 2), ()async{ // Sayfanın görünme süresi
-      if(await connectivityResult != ConnectivityResult.none){ //await connectivityResult != ConnectivityResult.none        
+      if(await connectivityResult != ConnectivityResult.none){ //await connectivityResult != ConnectivityResult.none     
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String user = prefs.getString("user");
       String pass = prefs.getString("pass");

@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:envoy/models.dart/documentJsonModel.dart';
-import 'package:envoy/models.dart/orderDetailJsonModel.dart';
-import 'package:envoy/models.dart/orderJsonModel.dart';
-import 'package:envoy/models.dart/userJsonModel.dart';
+import 'package:envoy/models/documentJsonModel.dart';
+import 'package:envoy/models/orderDetailJsonModel.dart';
+import 'package:envoy/models/orderJsonModel.dart';
+import 'package:envoy/models/userJsonModel.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
