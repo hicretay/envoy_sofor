@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/homePage.dart';
-import 'package:envoy/settings/connection.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,28 +18,21 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  StreamSubscription _connectionChangeStream;
-  bool isOffline = false;
-
-  @override
-    void dispose() {
-      _connectionChangeStream.cancel();
-      super.dispose();
-    }
+  var connectivityResult = Connectivity().checkConnectivity();
 
   @override
   void initState() {
+    //WidgetsFlutterBinding.ensureInitialized();
     super.initState();
-  Future<void> loadPictures() async {
+    Future<void> loadPictures() async {
     await precachePicture(ExactAssetPicture((SvgPicture.svgStringDecoder),'assets/images/bg.svg'), null);    
   } 
     Future.wait([loadPictures()]);
+
+   // Future.delayed(Duration(seconds: 2), x);
+
     Future.delayed(Duration(seconds: 2), ()async{ // Sayfanın görünme süresi
-      if(!isOffline){ //await connectivityResult != ConnectivityResult.none
-      WidgetsFlutterBinding.ensureInitialized();
-      ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance();
-      _connectionChangeStream = connectionStatus.connectionChange.listen(connectionChanged);
-        
+      if(await connectivityResult != ConnectivityResult.none){ //await connectivityResult != ConnectivityResult.none        
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String user = prefs.getString("user");
       String pass = prefs.getString("pass");
@@ -46,7 +40,7 @@ class _SplashPageState extends State<SplashPage> {
       Navigator.pushNamedAndRemoveUntil(context, "/loginPage", (route) => false);
       //Önceki sayfayı silerek LoginPage'e geçiş
 
-      else{
+      else {
       final UserJsonModel  userData  = await userJsonFunc(user, pass); // kullanıcı verileri
       final OrderJsonModel orderData = await orderJsonFunc(globalDurumId, userData.user.id);
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => 
@@ -55,19 +49,32 @@ class _SplashPageState extends State<SplashPage> {
       //----------------------------------------------------      
   }
   else{
-    showAlert(context, "İnternet bağlantınızı kontrol ediniz.");
+    //await showAlert(context, "İnternet bağlantınızı kontrol ediniz.");
+    showDialog(context: context, builder: (BuildContext context){
+      return AlertDialog(
+        content: Text("İnternet bağlantınızı kontrol ediniz.", style: TextStyle(fontFamily: contentFont)),
+        actions: <Widget>[
+           Row(
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: [
+               MaterialButton(
+               color: btnColor,
+               child: Text("Kapat",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
+               onPressed: () async{
+                 SystemNavigator.pop();
+            }),
+          ],
+           ),
+          
+        ],
+      );
+    });
   }
-  });
+  });  
   }
-
-      void connectionChanged(dynamic hasConnection) {
-        setState(() {
-            isOffline = !hasConnection;
-        });
-    }
-
   @override
   Widget build(BuildContext context) {
+      
     return Container(
       width: deviceWidth(context),
       height: deviceHeight(context),

@@ -34,10 +34,9 @@ class _LoginPageState extends State<LoginPage> {
         _connectionChangeStream = connectionStatus.connectionChange.listen(connectionChanged);
     }
 
-    void connectionChanged(dynamic hasConnection) {
-        setState(() {
-            isOffline = !hasConnection;
-        });
+    void connectionChanged(dynamic hasConnection) {      
+        isOffline = !hasConnection;
+        setState(() {});
     }
 
   @override
