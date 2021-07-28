@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
@@ -53,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
     _connectionChangeStream.cancel();
     super.dispose();
   }
+  var connectivityResult = Connectivity().checkConnectivity();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,7 +136,6 @@ class _LoginPageState extends State<LoginPage> {
                            //--------------------SİPARİŞ DATASININ DOLDURULMASI-------------------------             
                             OrderJsonModel orderData = await orderJsonFunc(globalDurumId,userData.user.id);
                             SharedPreferences prefs = await SharedPreferences.getInstance();
-                            //prefs.setBool("login", true);
                             prefs.setString("user", username);     
                             prefs.setString("pass", password);                           
                             Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) => 

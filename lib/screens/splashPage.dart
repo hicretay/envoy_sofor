@@ -3,6 +3,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models.dart/orderJsonModel.dart';
 import 'package:envoy/models.dart/userJsonModel.dart';
 import 'package:envoy/screens/homePage.dart';
+import 'package:envoy/settings/connection.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,15 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   var connectivityResult = Connectivity().checkConnectivity();
+  StreamSubscription _connectionChangeStream;
+  bool isOffline = false;
+
+  @override
+    void dispose() {
+      _connectionChangeStream.cancel();
+      super.dispose();
+    }
+
   @override
   void initState() {
     super.initState();
@@ -26,16 +36,17 @@ class _SplashPageState extends State<SplashPage> {
   } 
     Future.wait([loadPictures()]);
     Future.delayed(Duration(seconds: 2), ()async{ // Sayfanın görünme süresi
-      if(await connectivityResult != ConnectivityResult.none){
-     
-      //----Önceki sayfayı silerek LoginPage'e geçiş--------
+      if(!isOffline){ //await connectivityResult != ConnectivityResult.none
       WidgetsFlutterBinding.ensureInitialized();
+      ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance();
+      _connectionChangeStream = connectionStatus.connectionChange.listen(connectionChanged);
+        
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String user = prefs.getString("user");
       String pass = prefs.getString("pass");
-      //bool login = prefs.getBool("login");
       if(user==null)
       Navigator.pushNamedAndRemoveUntil(context, "/loginPage", (route) => false);
+      //Önceki sayfayı silerek LoginPage'e geçiş
 
       else{
       final UserJsonModel  userData  = await userJsonFunc(user, pass); // kullanıcı verileri
@@ -50,6 +61,12 @@ class _SplashPageState extends State<SplashPage> {
   }
   });
   }
+
+      void connectionChanged(dynamic hasConnection) {
+        setState(() {
+            isOffline = !hasConnection;
+        });
+    }
 
   @override
   Widget build(BuildContext context) {

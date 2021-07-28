@@ -22,8 +22,6 @@ void main() async {
     ),
     //--------------------------------------------------------------------------
   );
-
-  
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((value) => // ekran yönü dikeye sabitleme
   runApp(
     MaterialApp(
