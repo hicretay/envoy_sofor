@@ -22,15 +22,11 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void initState() {
-    //WidgetsFlutterBinding.ensureInitialized();
     super.initState();
     Future<void> loadPictures() async {
     await precachePicture(ExactAssetPicture((SvgPicture.svgStringDecoder),'assets/images/bg.svg'), null);    
   } 
     Future.wait([loadPictures()]);
-
-   // Future.delayed(Duration(seconds: 2), x);
-
     Future.delayed(Duration(seconds: 2), ()async{ // Sayfanın görünme süresi
       if(await connectivityResult != ConnectivityResult.none){ //await connectivityResult != ConnectivityResult.none     
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -49,7 +45,6 @@ class _SplashPageState extends State<SplashPage> {
       //----------------------------------------------------      
   }
   else{
-    //await showAlert(context, "İnternet bağlantınızı kontrol ediniz.");
     showDialog(context: context, builder: (BuildContext context){
       return AlertDialog(
         content: Text("İnternet bağlantınızı kontrol ediniz.", style: TextStyle(fontFamily: contentFont)),
@@ -59,7 +54,7 @@ class _SplashPageState extends State<SplashPage> {
              children: [
                MaterialButton(
                color: btnColor,
-               child: Text("Kapat",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
+               child: Text("Kapat",style: TextStyle(fontFamily: leadingFont)), 
                onPressed: () async{
                  SystemNavigator.pop();
             }),
@@ -73,8 +68,7 @@ class _SplashPageState extends State<SplashPage> {
   });  
   }
   @override
-  Widget build(BuildContext context) {
-      
+  Widget build(BuildContext context) {     
     return Container(
       width: deviceWidth(context),
       height: deviceHeight(context),
