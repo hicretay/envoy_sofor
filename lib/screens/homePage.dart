@@ -171,7 +171,7 @@ class _HomePageState extends State<HomePage> {
                                           final progressUHD = ProgressHUD.of(context);
                                           if(await connectivityResult != ConnectivityResult.none){
                                             progressUHD.show();
-                                            
+
                                             await uploadSelectedImage(ImageSource.camera, base64DocFill); // kameradan fotoğraf çekip base64DocFill listesine ekleme
                                             if(base64DocFill.isNotEmpty)
                                             {
@@ -236,37 +236,48 @@ class _HomePageState extends State<HomePage> {
 
   showMessage(BuildContext context, String documentType, List<String> document,int stateID, int orderID) { 
   return showDialog(context: context, builder: (BuildContext context){
-    return AlertDialog(
-      content: Text("Tekrar $documentType belgesi fotoğrafı çekmek ister misiniz ?",style: TextStyle(fontFamily: contentFont)),
-      actions: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [   
-          //-----------------------------------EVET BUTONU-----------------------------------------     
-          MaterialButton(
-            color: btnColor,
-            child: Text("Evet",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
-            onPressed: () async{
-            await uploadSelectedImage(ImageSource.camera, document);
-            }),
-          //---------------------------------------------------------------------------------------
-          SizedBox(width: maxSpace), // iki buton arası boşluk
-          //-----------------------------------HAYIR BUTONU----------------------------------------
-          MaterialButton( 
-            color    : btnColor,
-            child    : Text("Hayır",style: TextStyle(fontFamily: leadingFont)),
-            onPressed: () async{                                    
-              for (var i = 0; i <= document.length -1; i++){            
-              await documentJsnAddFunc(orderID, userData.user.id, stateID, 0,document[i]);}
-              // Toast message çekilen döküman sayısını gösterecek  
-              showToast(context,"${document.length} belge kaydedildi !");
-              refreshList(globalOrderId,userData.user.id);              
-              Navigator.of(context).pop();
-              document.clear();
-            }),
-          //---------------------------------------------------------------------------------------
-        ]),        
-      ],
+   
+    return ProgressHUD(
+      child: Builder(builder:(context)=>
+        AlertDialog(
+          content: Text("Tekrar $documentType belgesi fotoğrafı çekmek ister misiniz ?",style: TextStyle(fontFamily: contentFont)),
+          actions: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [   
+              //-----------------------------------EVET BUTONU-----------------------------------------     
+              MaterialButton(
+                color: btnColor,
+                child: Text("Evet",style: TextStyle(fontFamily: leadingFont)), // fotoğraf çekilmeye devam edilecek
+                onPressed: () async{
+                final progressUHD = ProgressHUD.of(context);  
+                progressUHD.show();
+                await uploadSelectedImage(ImageSource.camera, document);
+                progressUHD.dismiss();
+                }),
+              //---------------------------------------------------------------------------------------
+              SizedBox(width: maxSpace), // iki buton arası boşluk
+              //-----------------------------------HAYIR BUTONU----------------------------------------
+              MaterialButton( 
+                color    : btnColor,
+                child    : Text("Hayır",style: TextStyle(fontFamily: leadingFont)),
+                onPressed: () async{ 
+                  final progressUHD = ProgressHUD.of(context);   
+                  progressUHD.show();                             
+                  for (var i = 0; i <= document.length -1; i++){            
+                  await documentJsnAddFunc(orderID, userData.user.id, stateID, 0,document[i]);}
+                  // Toast message çekilen döküman sayısını gösterecek  
+                  showToast(context,"${document.length} belge kaydedildi !");
+                  refreshList(globalOrderId,userData.user.id);   
+                  Navigator.of(context).pop();
+                  progressUHD.dismiss();
+                  document.clear();
+                }),
+              //---------------------------------------------------------------------------------------
+            ]),        
+          ],
+        ),
+      ),
     );
   });    
 }
