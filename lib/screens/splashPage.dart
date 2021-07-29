@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:connectivity/connectivity.dart';
 import 'package:envoy/models/orderJsonModel.dart';
 import 'package:envoy/models/userJsonModel.dart';
@@ -6,7 +7,6 @@ import 'package:envoy/screens/homePage.dart';
 import 'package:envoy/settings/consts.dart';
 import 'package:envoy/settings/functions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -56,7 +56,7 @@ class _SplashPageState extends State<SplashPage> {
                color: btnColor,
                child: Text("Kapat",style: TextStyle(fontFamily: leadingFont)), 
                onPressed: () async{
-                 SystemNavigator.pop();
+                 exit(0);
             }),
           ],
            ),
